@@ -1,0 +1,222 @@
+
+.contenedorStatisticDashboard {
+  height: 100vh;
+  margin-left: -40px;
+  position: relative;
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  gap: 10px; /* Espacio entre los elementos */
+  flex-direction: column;/* Espacio entre los elementos, puedes ajustar este valor */
+}
+  
+  .contenedorStatisticDashboard .card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    padding: 20px;
+    width: 300px;
+    margin: 60px -10px -40px 70px;
+    height: 20%;
+    /* Estilos de la tarjeta normal */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+
+  .contenedorStatisticDashboard .card.selected {
+    /* Estilos de la tarjeta seleccionada */
+    background-color: #b84935; /* Cambia esto por el color que desees */
+    transform: scale(1.05); /* Opcional: aumenta ligeramente el tamaño */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opcional: añade sombra */
+  }
+
+  .contenedorStatisticDashboard #iconoEstadistica{
+    height: 60px;
+    width: 60px;
+    padding-top: 15px;
+    border-radius: 50%;
+    background-color: #e9c2be;
+  }
+
+  .contenedorStatisticDashboard #infoPlato{
+    text-align: left;
+  }
+
+  .contenedorStatisticDashboard #textoGris {
+    color: var(--color-fondoLogin);
+  }
+
+
+  .contenedorStatisticDashboard .inline {
+    
+        display: inline-block;
+        margin-right: 10px; /* Espacio entre los elementos, puedes ajustar este valor */
+    }
+  
+  .contenedorStatisticDashboard .contenidoCard {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  .contenedorStatisticDashboard .contenidoCard button {
+    font-size: 14px;
+  }
+  
+  .contenedorStatisticDashboard .card-more{
+    background-color: var(--color-button);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 300px;
+    margin: 100px  10px -80px 10px;
+    height: 70%;
+  }
+  .contenedorStatisticDashboard .card-more button {
+    margin: auto auto; 
+    width: 60%;
+    background-color: #fff;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    color: var(--color-button);
+    border-radius: 5px;
+  }
+  
+  .contenedorStatisticDashboard .card-more button:hover{
+    cursor: pointer;
+    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(167, 163, 163) 30%, rgb(209, 209, 209) 100%);
+    color: black;
+  }
+  .contenedorStatisticDashboard h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: black;
+  }
+  
+  .contenedorStatisticDashboard p {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: black;
+  }
+  
+  .contenedorStatisticDashboard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .contenedorStatisticDashboard li {
+    margin-bottom: 5px;
+    color: black;
+  }
+
+  @media only screen and (max-width: 1440px) {
+    /* Estilos para pantallas de hasta 1440px de ancho */
+    /* Puedes agregar aquí tus estilos específicos para esta resolución */
+  }
+  
+  @media only screen and (max-width: 1366px) {
+    /* Estilos para pantallas de hasta 1366px de ancho */
+    /* Puedes agregar aquí tus estilos específicos para esta resolución */
+  }
+  
+  @media only screen and (max-width: 1280px) {
+    /* Estilos para pantallas de hasta 1280px de ancho */
+    /* Puedes agregar aquí tus estilos específicos para esta resolución */
+  }
+  
+  @media only screen and (max-width: 1024px) {
+    /* Estilos para pantallas de hasta 1024px de ancho */
+    /* Puedes agregar aquí tus estilos específicos para esta resolución */
+  }
+  
+  @media only screen and (max-width: 768px) {
+    /* Estilos para pantallas de hasta 768px de ancho */
+    /* Puedes agregar aquí tus estilos específicos para esta resolución */
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .contenedorStatisticDashboard {
+      display: flex;
+      justify-content: center; /* Centra horizontalmente */
+      align-items: center; /* Centra verticalmente si es necesario */
+      width: 100%;
+      height: 25%;
+      margin: auto;
+    }
+
+    .contenedorStatisticDashboard .card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      padding: 20px;
+      width: 78%;
+      height: 15%;
+      /* Estilos de la tarjeta normal */
+      margin: auto;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+  
+    .contenedorStatisticDashboard .card.selected {
+      /* Estilos de la tarjeta seleccionada */
+      background-color: #b84935; /* Cambia esto por el color que desees */
+      transform: scale(1.00); /* Opcional: aumenta ligeramente el tamaño */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opcional: añade sombra */
+    }
+  }
+  
+  @media only screen and (max-width: 320px) {
+    .contenedorStatisticDashboard {
+      width: 70%;
+      display: flex;
+      justify-content: center; /* Centra horizontalmente */
+      align-items: center; /* Centra verticalmente si es necesario */
+    }
+
+    .contenedorStatisticDashboard .card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      padding: 20px;
+      width: 78%;
+      height: 15%;
+      margin: auto;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+  
+    .contenedorStatisticDashboard .card.selected {
+      /* Estilos de la tarjeta seleccionada */
+      background-color: #b84935; /* Cambia esto por el color que desees */
+      transform: scale(1.00); /* Opcional: aumenta ligeramente el tamaño */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opcional: añade sombra */
+    }
+
+    .contenedorStatisticDashboard p {
+      font-size: 0.75rem;
+      margin-bottom: 5px;
+      color: black;
+    }
+  }
+  
+  
+  
+  
+  

@@ -1,0 +1,290 @@
+.container-crud-categoria {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Esto hará que el contenedor ocupe el 100% del alto de la pantalla */
+    width: 100vw; /* Esto hará que el contenedor ocupe el 100% del ancho de la pantalla */
+}
+.crud-categoria-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    position: relative;
+}
+
+.crud-categoria-container .crud-categoria {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(245, 243, 243);
+    padding-left: 25px;
+    padding-right: 25px; 
+}
+
+.crud-categoria-container .botonAgregarCategoria{
+    background-color: var(--color-button);
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-inline: 35px;
+    width: 100%;
+    font-size: 12px;
+}
+
+
+.crud-categoria-container .BusquedaCategoria {
+    background-color: white;
+    margin-right: 400px;
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.crud-categoria-container .FotoBuscarCategoria{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.crud-categoria-container .TextoBusquedaCategoria {
+    width: 100%;
+    padding: 0;
+    border:none;
+}
+
+.crud-categoria-container .tabla-categoria-container {
+    margin-top: 30px;
+    max-height: 400px;
+    overflow-y: auto; 
+    width:90%;
+}
+
+.crud-categoria-container .botonesCrudCategoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.crud-categoria-container .sc-cwHqhk.kzZBXj{
+    margin: 0 auto;
+    font-weight: bold;
+
+}
+.crud-categoria-container div[id^="row-"] {
+    background-color: rgb(245, 243, 243);
+    border: 2px solid #ccc;
+}
+
+.crud-categoria-container div[id^="row-"] div {
+    margin: 0 auto;
+}
+
+.crud-categoria-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+    background-color: rgb(245, 243, 243);
+}
+  
+.crud-categoria-container .sc-eqUzNf.dODGfY.rdt_TableHeadRow> div {
+    border-right: 2px solid #ccc;
+}
+
+.crud-categoria-container .sc-eqUzNf.dODGfY.rdt_TableHeadRow > div:last-child {
+    border-right: none;
+}
+
+.crud-categoria-container .botonesCrudCategoria button {
+    background-color: var(--color-button);
+    cursor: pointer;
+    padding: 10px;
+    width: 50px;
+    margin: 10px;
+}
+
+.logoOfertasCrudProd, .logoCombosCrudProd, .logoBebidasCrudProd, .logoSanduchesCrudProd, .logoPremiumCrudProd{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin: 0 auto;
+}  
+
+.contenedorFooter-categoria {
+    margin-top: auto;
+    position: relative;
+    width: 100%;
+    background-color: var(--color-fondoLogin);
+    color: var(--color-button);
+    text-align: right;
+    padding-right: 40px;
+    border-radius: 60px 60px 0 0;
+    z-index: 2;
+}
+
+.waves-background2-categoria {
+    position: absolute;
+    top: 2%;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/waves.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.contenedorFooter-categoria .textoFooter2 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding-right: 40px;
+    text-align: right;
+  }
+
+  .crud-categoria-container input {
+    width: 100%;
+    padding: 0;
+    border:none;
+}
+
+
+/*responsive para dispositivos móviles*/
+@media screen and (max-width: 768px){
+
+    .crud-categoria-container input {
+        width: 100%;
+        padding: 0;
+        border:none;
+    }
+
+    .crud-categoria-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+        background-color: rgb(255, 255, 255);
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+
+    .crud-categoria-container input {
+        width: 100%;
+        padding: 0;
+        border:none;
+    }
+
+    .crud-categoria-container .crud-categoria {
+        flex-direction: column;
+        align-items: center;
+        padding-left: 10px;
+        padding-right: 10px; 
+        margin: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .logoOfertasCrudProd, .logoCombosCrudProd, .logoBebidasCrudProd, .logoSanduchesCrudProd, .logoPremiumCrudProd{
+        width: 40px;
+        height: 40px;
+    }  
+
+    .crud-categoria-container .TextoBusquedaCategoria {
+        width: 100%;
+    }
+    
+    .crud-categoria-container .botonAgregarCategoria {
+        width: 60%;
+        text-align: center;
+        padding: 5px 10px 10px 10px;
+        font-size: 12px;
+    }
+
+    .crud-categoria-container .BusquedaCategoria {
+        margin-right: 50px;
+        width: 100%;
+        display: flex;
+        margin-left: 50px;
+        min-width: 200px;
+    }
+
+    .crud-categoria-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+        background-color: rgb(255, 255, 255);
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .crud-categoria-container .botonesCrudCategoria button {
+        background-color: var(--color-button);
+        cursor: pointer;
+        padding: 5px;
+        width: 35px; 
+        height: 35px;
+        margin: 5px;
+        font-size: 10px; 
+    }
+}
+
+
+@media screen and (min-width: 1025px) and (max-width: 1250px) {
+    .crud-categoria-container input {
+        width: 100%;
+        padding: 0;
+        border:none;
+    }
+
+    .crud-categoria-container .crud-categoria {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .crud-categoria-container .BusquedaCategoria {
+        width: 300%;
+        margin-right: 400px;
+        padding: 0;
+        padding-right: 20px;
+    }
+
+    .crud-categoria-container .botonAgregarCategoria {
+        width: 90%;
+        padding: 5px 12px 10px 10px;
+        font-size: 12px;
+    }
+
+    .crud-categoria-container .botonesCrudCategoria button {
+        padding: 8px;
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 1250px) {
+    .crud-categoria-container .crud-categoria {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .crud-categoria-container .BusquedaCategoria {
+        width: 100%;
+        margin-right: 600px;
+    }
+
+    .crud-categoria-container .botonAgregarCategoria {
+        width: 100%;
+        padding: 5px 12px 10px 10px;
+        font-size: 12px;
+    }
+
+    .botonesCrudCategoria button {
+        padding: 8px;
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+    }
+}

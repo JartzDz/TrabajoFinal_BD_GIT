@@ -1,0 +1,600 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.cont-detallesReserva  p {
+    /*Le quitamos toda la herencia */
+    all: unset;
+}
+.cont-detallesReserva div{
+    unicode-bidi: normal;
+}
+
+
+.cont-principalReserva {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-areas: "resumen detalles detalles"
+        "resumen detalles detalles"
+        "resumen detalles detalles"
+        "resumen detalles detalles"
+    ;
+    padding: 0px;
+    margin: 0px;
+}
+
+.cont-resumenReserva {
+    /*Aplicamos el font*/
+    font-family: 'Poppins', sans-serif;
+    grid-area: resumen;
+    background-color: rgba(176, 24, 24, 0.80);
+    opacity: 1;
+    min-width: 28rem;
+    z-index: 10;
+    
+}
+
+.cont-detallesReserva {
+    grid-area: detalles;
+    overflow-y: auto;
+    position: relative; /* o absolute/fixed */
+    z-index: 1;
+
+}
+
+.logoTooGoodToGo {
+    grid-area: resumen;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 2.1rem;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    font-weight: bold;
+    /*Le agregamos sombra debajo de las letras*/
+    text-shadow: 2px 2px 4px #000000;
+    margin: 0px;
+    padding: 30px 50px 10px 75px;
+
+}
+
+.iconLogo {
+    margin-left: 20px;
+    font-size: 3.3rem;
+    color: rgb(255, 255, 255);
+    filter: drop-shadow(5px 5px 8px rgba(0, 0, 0, 0.3));
+
+}
+
+.nombreRestaurante {
+    color: #F6E9B9;
+    text-align: center;
+    -webkit-text-stroke-width: 1px;
+    /* Ancho del borde de la letra*/
+    -webkit-text-stroke-color: #949617;
+    /* Color del borde de la letra*/
+    font-family: Poppins;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 46px;
+    /*agregamos sombra*/
+    text-shadow: 2px 2px 4px #000000;
+
+}
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 1rem;
+    background-color: var(--color-button);
+    color: white;
+    border: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000; /* Asegúrate de que esté sobre otros elementos */
+    width: 40px;
+    height: auto;
+  }
+
+
+/************************************TOGGLE_TEXT********************************************************************************/
+.triggerContent {
+    display: flex;
+    justify-content: space-between;
+    font-family: Poppins;
+    font-size: 1.2rem;
+    margin: 0px;
+    padding: 0px;
+    background-color: hsl(0, 100%, 100%);
+    color: #B01818;
+}
+
+.Collapsible {
+    background-color: hsl(0, 100%, 100%);
+    margin: 30px;
+    text-align: start;
+    min-width: 20rem;
+    opacity: 1; /* Asegúrate de que no hay transparencia */
+    max-height: 25rem; /* Ajusta esto a la altura máxima deseada */
+    overflow-y: auto; 
+    filter: drop-shadow(5px 5px 8px rgba(0, 0, 0, 0.3));
+    
+    
+}
+
+.Collapsible__trigger {
+    background-color: #F7F7FB;
+    width: 100%;
+}
+
+.is-open {
+    color: #B01818; 
+    text-align: start;
+    font-family: Poppins;
+    font-size: 1.2rem;
+}
+
+.triggerButton {
+    background-color: #F7F7FB;  
+    color: #a42929 ;  
+    margin: 0px 12px;
+    width: auto;
+    height: auto;
+    border: none; 
+    padding: 0; 
+    cursor: pointer;
+}
+.triggerButton:hover,
+.triggerButton:focus,
+.triggerButton:active {
+    background-color: #F7F7FB !important;
+    color: #a42929 !important;
+    outline: none !important;
+}
+
+.triggerButton svg {
+   
+    background-color: #F7F7FB !important;  /* Asegura que el color de fondo no cambie */
+    color: #a42929!important; 
+    margin: 0;  /* Elimina cualquier margen */
+    padding: 0;  /* Elimina cualquier padding */
+    border: none;  /* Asegura que no haya borde */
+    outline: none;  /* Elimina cualquier outline */
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+button.triggerButton {
+    background-color: #F7F7FB !important;
+    color: #a42929 !important;
+    border: none;  /* Asegura que no haya borde */
+    outline: none;  /* Elimina cualquier outline */
+}
+
+/************************************ DENTRO DEL TOGGLE_TEXT ********************************************************************************/
+
+.productoReservado {
+    padding-top: 1rem;
+    display: grid;
+    align-items: center;
+    font-family: Poppins, sans-serif;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+    grid-template-areas: "imagen nombre cantidad"
+        "imagen descripcion cantidad"
+        "imagen descripcion cantidad"
+        "imagen valor cantidad";
+    height: auto;
+
+}
+
+.imgProductoReservado {
+    width: 6rem;
+    height: 6rem;
+
+    aspect-ratio: 1 / 1;
+    /*Relación de aspecto*/
+    object-fit: cover;
+    border-radius: 15px;
+    margin: 10px;
+    grid-area: imagen;
+    justify-self: center;
+    /* Centra horizontalmente */
+    align-self: center;
+    /* Centra verticalmente */
+}
+
+.productoReservado p {
+    flex: 1 1 auto;
+    margin: 0px;
+
+}
+
+.nombreProductoReservado {
+    font-size: 1rem;
+
+    /*Espaciado entre líneas*/
+    line-height: 1.2;
+    grid-area: nombre;
+    padding-left: 0.3rem;
+}
+
+.descripcionProductoReservado {
+    font-size: 0.6rem;
+    width: 10rem;
+    grid-area: descripcion;
+    padding-left: 0.3rem;
+}
+
+.precioProductoReservado {
+    font-size: 0.8rem;
+    grid-area: valor;
+    padding-left: 0.3rem;
+
+}
+
+.cantidadProductoReservado {
+    font-size: 1rem;
+    grid-area: cantidad;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column ;
+    
+}
+
+.borrarProductoReservado {
+    grid-row: 1/ 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.borrarProductoReservado .remove-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: none;
+    cursor: pointer;
+}
+
+
+.texto_cantidad{
+    padding-left: 0.2rem;
+}
+.btn_modificaCantidad{
+    /*Le quitamos toda la herencia */
+    all: unset;
+}
+.totalReserva{
+    display: flex;
+    justify-content: center;
+    font-family: Poppins;
+    font-size: 1.2rem;
+    height: auto;
+    color: #070606;
+    background-color: hsl(0, 100%, 100%);
+    margin: 30px;
+    min-width: 20rem;
+    max-height: 20rem; /* Ajusta esto a la altura máxima deseada */
+    filter: drop-shadow(5px 5px 8px rgba(0, 0, 0, 0.3));
+    border-radius: 25px;
+    font-weight: normal;
+
+    
+}
+
+
+/************************************************************ PARTE DETALLES DE LA RESERVA ***********************************************************/
+.texto_CompletaReserva{
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 2rem 0rem 2rem;
+    
+
+}
+.texto_DetallesReserva{
+    font-family: Poppins;
+    font-size: x-large;
+    font-weight: bold;
+    color: #a42929;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 4rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+  
+
+}
+
+.formularioDatosPersonales {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem 4rem;
+    
+}
+.labelDatosPersonales{
+    font-size: 1rem;
+    font-weight: 600;
+    color: #000000;
+    margin-top: 0.5rem;
+    padding-left:  4rem;
+    width: 22rem;
+    display: flex;
+    justify-content: space-between;
+    
+    
+
+}
+.inputDatosPersonales{
+    font-family: Poppins;
+    font-size: 0.9rem;
+    color: #000000;
+    margin-top: 0.5rem;
+    padding-left: 2rem;
+    margin-left: 4rem;
+    width: auto;
+    border-radius: 5px;
+    border: 1px solid #000000;
+    width: 16rem;
+    display: flex;
+    height: 2rem;
+   
+}
+
+.cont-EleccionTarjeta{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.imgTarjeta{
+    width: 5rem;
+    height: 2.5rem;
+    margin:0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0.5rem;
+}
+.cont-EleccionTarjeta .btn_EleccionTarjeta{
+    /*Le quitamos toda la herencia */
+    all: unset;
+    margin-top: 0.5rem;
+    padding-left: 0.5rem;
+    margin-left: 4rem;
+    border-radius: 10px;
+    width: 6rem;
+    display: flex;
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+.cont-EleccionTarjeta .btn_EleccionTarjeta.active{
+    background-color: #25172b48;
+    color: #ffffff;
+
+}
+.formularioDatosPago{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem 4rem;
+    padding-top: 2rem;
+}
+
+.cont-DetallesDePago{
+    display: row;
+    flex-direction: column;
+    gap: 1rem;
+    padding-left: 4rem;
+    padding-right: 2rem;
+   
+    flex-wrap: wrap;
+
+}
+/* Estilos generales */
+.cont-DetallesDePago {
+    display: flex;
+    flex-direction: column; /* Para que cada par esté en una fila */
+    gap: 1rem; /* Espacio entre cada par */
+}
+
+.detalle-pago {
+    display: flex;
+    align-items: center; /* Alinea verticalmente los elementos */
+    gap: 0.5rem; /* Espacio entre <p> y <label> */
+}
+
+.texto_InformacionReserva {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    margin: 0;
+}
+
+.label_InformacionReserva {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #000;
+    margin: 0;
+}
+
+.textoAviso{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #000;
+    margin: 0;
+    padding-left: 4rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    font-weight: 200;
+}
+
+.grupoDeBotones{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding:2rem;
+}
+
+#btnCancelar{
+    margin-left: 2rem;
+    background-color: #992b1a;
+    color:#ffffff;
+    border-radius: 10px;
+    width: 10rem;
+    
+}
+
+#contenedor_boton_estado{
+    color:#ffffff;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+  justify-content: center;
+}
+
+#btnReservar{
+    margin-left: 2rem;
+    background-color: #2caa5e;
+    color:#ffffff;
+    border-radius: 10px;
+    width: 10rem;
+}
+#btnReservar :hover {
+    background-color: #1e7f4c!important; /* Cambia el color cuando se hace clic */
+}
+/**********************************RECEPCIÓN DE RESERVA****************************************************/
+.cont-CardsReserva{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+
+.cont-CardsReserva .card {
+    margin-top: 5rem;
+    width: 40%;
+    min-width: 20rem;
+    border: 2px solid #b64722;
+    background-color: #e69a8129;
+    
+}
+#btn_ConfirmarReserva{
+    margin-left: 2rem;
+    font-size: small;
+    background-color: #0b8c3f;
+    color:#ffffff;
+    border-radius: 10px;
+    width: 10rem;
+}
+#btn_CancelarReserva{
+    margin-left: 2rem;
+    font-size: small;
+    background-color: #992b1a;
+    color:#ffffff;
+    border-radius: 10px;
+    width: 10rem;
+}
+
+#btn_RealizarReserva{
+    margin-left: 2rem;
+    font-size: small;
+    background-color: #1a991a;
+    color:#ffffff;
+    border-radius: 10px;
+    width: 10rem;
+}
+
+#btn_EntregarReserva{
+    margin-left: 2rem;
+    font-size: small;
+    background-color: #0a14d2;
+    color:#ffffff;
+    border-radius: 10px;
+    width: 10rem;
+}
+.contenedorFooter-ReservasRecibidas{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height:auto;
+    padding-right: 40px;
+    margin-top: 25%;
+    margin-bottom: 0;
+    text-align: right;
+    background-color: var(--color-fondoLogin);
+    color: var(--color-button);
+}
+/* Estilos generales */
+
+/*********************************************************************************** PARTE RESPONSIVE ************************************************/
+
+@media screen and (max-width: 820px) {
+    .cont-principalReserva {
+        grid-template-areas: "resumen resumen resumen"
+            "resumen resumen resumen"
+            "detalles detalles detalles"
+            "detalles detalles detalles"
+        ;
+    }
+    .inputDatosPersonales{
+        margin-top: 0.5rem;
+        padding-left: 1rem;
+        margin-left: 2rem;
+        width: 15rem;
+        
+    }
+    .texto_DetallesReserva{
+        padding-left: 2rem;
+        padding-right: 1rem;
+        font-size: x-large;
+        
+    
+    }
+    .labelDatosPersonales{
+        padding-left:  2rem;
+        width: auto;
+    
+    }
+    
+    
+    
+   
+}
+@media screen and (max-height: 750px) {
+    .Collapsible {
+        
+        overflow-y: auto;
+    }
+    
+    
+}
+@media screen and (max-width: 530px) {
+    .cont-CardsReserva{
+        flex-direction: column;
+        align-items: center;
+        
+    }
+    
+    .cont-resumenReserva {
+        overflow-y: visible;
+      
+    }
+    .cont-detallesReserva {
+        height: 100vh;
+    }
+    .cont-principalReserva {
+        height: 150vh;
+    }
+
+}
+

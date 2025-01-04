@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  --color-primary: #d6712f ;
+  --color-secundary: #d4322a ;
+  --color-button: #B01818;
+  --color-fondoLogin:#e9cd8b;
+  --color-textos:#86553a ;
+}
+.containerLogin{
+  overflow: hidden;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.containerLogin body {
+  font-family: 'Poppins', sans-serif;
+ 
+}
+
+.containerLogin {
+  margin-left: 30vh;
+  display: flex;
+  min-height: 80vh;
+  justify-content: space-between;
+  margin-top: 60px;
+  align-items: center;
+ 
+}
+
+.containerLogin .loginForm {
+  flex: 1;
+  top: 10vh;
+  padding: 30px 80px 10px 80px;
+  border-radius: 40px 40px 0 0;
+  height: 120vh;
+  background-color: #dddfd4  ;
+  margin-bottom: 50vh;
+  overflow-y: hidden;
+  position: fixed;
+  width: 650px;
+
+}
+
+.containerLogin .input-box {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin: 30px 0;
+}
+
+.containerLogin input {
+  border-radius: 15px;
+  width: 80%;
+  height: 35px;
+  border: 1px solid rgba(255, 255, 255, 1);
+  font-size: 16px;
+  color: black;
+  padding: 20px 45px 20px 20px;
+}
+
+.containerLogin input::placeholder {
+  color: #d6712f;
+}
+
+.containerLogin .icon {
+  position: absolute;
+  right: 60px;
+  top: 40%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  color: var(--color-primary);
+}
+.icon-voler{
+  font-size: 36px;
+}
+button {
+  margin-bottom: 10px;
+  margin-top:20px;
+  height: 45px;
+  width: 60%;
+  background-color: #d4322a ;
+  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  color: white;
+  border-radius: 5px;
+
+  
+}
+button:hover{
+  cursor: pointer;
+  background: #d6712f;
+}
+
+
+ .para,
+.llevar {
+  font-size: 58px;
+  display: inline-block;
+}
+
+.para {
+  color: #d6712f;
+}
+
+.llevar {
+  color: #86553a;
+  margin-left: 10px;
+}
+
+.containerLogin .forgot-password {
+  margin-left: 10%;
+  margin-top: -25px;
+  display: flex;
+  font-size: 14px;
+}
+
+.containerLogin .forgot-password a {
+  text-decoration: none;
+  color: #595959;
+}
+
+.containerLogin .new-account {
+  font-size: 14px;
+  color: #595959;
+  margin-top: -10px;
+}
+
+.containerLogin .new-account a {
+  margin-left: 5px;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+.containerLogin .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #d4322a;
+    color: white;
+    text-align: center;
+    height: 23vh;
+    border-radius: 60px 60px 0 0;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5)
+}
+
+
+
+.containerLogin .textoFooter {
+    display: flex;
+    justify-content: right; 
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5%;
+    background-color: var(--color-secundary);
+    color: var(--color-button);
+    padding-right: 40px;
+    text-align: right;
+    border-radius: 60px 60px 0 0;
+}
+.containerLogin .imagenLogin {
+  position: fixed;
+  top: 5vh; 
+  margin-left: 47%; 
+  z-index: -1; 
+  width: 10vw;
+  height: auto; 
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+}
+  
+  
+.containerLogin .imagen {
+  width: 500px; 
+  height: 500px;
+  filter: drop-shadow(
+      0 0 10px rgba(0,0,0,0.5)
+  );
+}
+.containerLogin .waves-background {
+    position: fixed;
+    top: 10%;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/waves.png');
+    z-index: -1;
+}
+
+@media (max-width: 800px) {
+  /* Ocultar las waves y la imagen */
+  .containerLogin .waves-background,
+  .containerLogin .imagenLogin {
+    display: none;
+  }
+
+  /* Ajustes para el formulario en dispositivos móviles */
+  .containerLogin .loginForm {
+    width: 80%;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    background-color: var(--color-fondoLogin); 
+    margin: 0 auto; 
+    max-width: 90%; 
+    position: fixed;
+    top: 60%;
+    padding-top: 30px;
+    left: 50%;
+    bottom: -40%;
+    transform: translate(-50%, -50%); 
+  }
+
+  .containerLogin .input-box {
+    margin: 15px 0; /* Espaciado entre los campos */
+  }
+
+  .containerLogin input {
+    width: 100%; 
+    padding: 15px; 
+    font-size: 16px;
+    padding: 20px 45px 20px 20px;
+  }
+  .containerLogin .forgot-password{
+    font-size: 12px;
+    white-space: nowrap;
+    margin-top: 5px;
+    margin-left: 0;
+  }
+  .containerLogin button {
+    margin: 20px 0; /* Espaciado */
+  }
+
+  .containerLogin .para,
+  .containerLogin .llevar {
+    font-size: 36px; /* Tamaño de fuente más pequeño */
+  }
+  .containerLogin .icon {
+      position: absolute;
+      right: 15px; /* Ajusta el valor según sea necesario */
+      top: 40%; /* Centra verticalmente el icono */
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: var(--color-primary);
+    }
+    .containerLogin .textoFooter {
+      font-size: 10px;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding-left: 25px;
+  }
+}
+@media (max-width: 1366px) {
+  /* Estilos para pantallas con resolución máxima de 1366px */
+  .containerLogin .loginForm {
+    padding: 60px 80px 60px 80px;
+    height: 100vh; 
+    margin-bottom: 0; 
+    overflow-y: auto; 
+  }
+
+  .containerLogin .new-account {
+    margin-top: 0; 
+  }
+
+  .containerLogin button {
+    margin: 30px 0 10px; 
+  }
+  .containerLogin .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #d4322a ;
+    color: white;
+    text-align: center;
+    height: 15vh;
+    border-radius: 60px 60px 0 0;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5)
+  }
+}
+@media (max-width: 1280px) {
+  /* Estilos para pantallas con resolución máxima de 1366px */
+  .containerLogin .loginForm {
+    padding: 8px 80px 50px 80px;
+    height: 80vh; 
+    margin-bottom: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .containerLogin .new-account {
+    margin-top: 0; 
+  }
+
+  .containerLogin button {
+    margin: 30px 0 10px; 
+  }
+  .containerLogin .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #d4322a;
+    color: white;
+    text-align: center;
+    height: 15vh;
+    border-radius: 60px 60px 0 0;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5)
+  }
+}
+
+/* Estilo para el cuerpo del Toast */
+.toast-body {
+  font-size: 14px; /* Ajusta el tamaño del texto según sea necesario */
+  white-space: nowrap; /* Evita que el texto se envuelva en varias líneas */
+  overflow: hidden; /* Oculta cualquier desbordamiento del texto */
+  text-overflow: ellipsis; /* Agrega puntos suspensivos al final del texto si es necesario */
+}
+
+/* Ejemplo de estilo para Toast de éxito */
+.toast-success {
+  background-color: #4caf50; /* Color de fondo para Toast de éxito */
+  color: #fff; /* Color de texto para Toast de éxito */
+}
+
+/* Ejemplo de estilo para Toast de error */
+.toast-error {
+  background-color: #f44336; /* Color de fondo para Toast de error */
+  color: #fff; /* Color de texto para Toast de error */
+}
+
+.toast-container {
+  width: 800px; /* Ancho personalizado del ToastContainer */
+}
+
+.custom-toast-container {
+  width: 600px; /* Ancho deseado para ToastContainer */
+}
+
+.custom-toast-close-button {
+  font-size: 12px; /* Tamaño de fuente más pequeño */
+  padding: 4px; /* Espaciado interno reducido */
+}
+
+.footer2{
+  background: #4caf50;
+}
+
+ 
+  
+  
+  
+  

@@ -1,0 +1,310 @@
+.container-crud-prod {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Esto hará que el contenedor ocupe el 100% del alto de la pantalla */
+    width: 100vw; /* Esto hará que el contenedor ocupe el 100% del ancho de la pantalla */
+}
+.crud-producto-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    position: relative;
+}
+
+.crud-producto-container .crud-producto {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(245, 243, 243);
+    padding-left: 25px;
+    padding-right: 25px; 
+}
+
+.crud-producto-container .botonAgregarProducto{
+    background-color: var(--color-button);
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-inline: 35px;
+    width: 100%;
+    font-size: 12px;
+}
+
+
+.crud-producto-container .BusquedaProducto {
+    background-color: white;
+    margin-right: 600px;
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.crud-producto-container .FotoBuscar{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.crud-producto-container .TextoBusquedaProducto {
+    width: 100%;
+    padding: 0;
+    border:none;
+}
+
+.crud-producto-container .tabla-productos-container {
+    margin-top: 30px;
+    max-height: 400px;
+    overflow-y: auto; 
+    width:90%;
+}
+
+.crud-producto-container .tabla-productos-container button {
+    background-color: var(--color-button);
+    cursor: pointer;
+    padding: 10px;
+    width: 50px;
+    margin: 10px;
+}
+
+.crud-producto-container .botonesCrud {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.crud-producto-container .sc-cwHqhk.kzZBXj{
+    margin: 0 auto;
+    font-weight: bold;
+
+}
+.crud-producto-container div[id^="row-"] {
+    background-color: rgb(245, 243, 243);
+    border: 2px solid #ccc;
+}
+
+.crud-producto-container div[id^="row-"] div {
+    margin: 0 auto;
+}
+
+.crud-producto-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+    background-color: rgb(245, 243, 243);
+}
+
+  
+.crud-producto-container .sc-eqUzNf.dODGfY.rdt_TableHeadRow> div {
+    border-right: 2px solid #ccc;
+}
+
+.crud-producto-container .sc-eqUzNf.dODGfY.rdt_TableHeadRow > div:last-child {
+    border-right: none;
+}
+
+.crud-producto-container .botonesCrud button {
+    background-color: var(--color-button);
+    cursor: pointer;
+    padding: 10px;
+    width: 50px;
+    margin: 10px;
+}
+
+.crud-producto-container .imagenProd {
+    width: 50px;  
+    height: 50px; 
+    border-radius: 8px; 
+    object-fit: cover;
+    margin: 0 auto;
+}
+  
+.contenedorFooter-prod {
+    margin-top: auto; /* Esto empuja el footer hacia abajo */
+    position: relative;
+    width: 100%;
+    background-color: var(--color-fondoLogin);
+    color: var(--color-button);
+    text-align: right;
+    padding-right: 40px;
+    border-radius: 60px 60px 0 0;
+    z-index: 2;
+  }
+
+.waves-background2-prod {
+    position: absolute;
+    top: 2%;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/waves.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.contenedorFooter-prod .textoFooter2 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding-right: 40px;
+    text-align: right;
+  }
+
+/*responsive para dispositivos móviles*/
+
+@media screen and (max-width: 768px) {
+
+    .crud-producto-container .crud-producto {
+        flex-direction: column;
+        align-items: center;
+        padding-left: 10px;
+        padding-right: 10px; 
+        margin: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .crud-producto-container .TextoBusquedaProducto {
+        width: 100%;
+    }
+    
+    .crud-producto-container .botonAgregarProducto {
+        width: 60%;
+        text-align: center;
+        padding: 5px 10px 10px 10px;
+        font-size: 12px;
+    }
+
+    .crud-producto-container .BusquedaProducto {
+        margin-right: 50px;
+        width: 100%;
+        display: flex;
+        margin-left: 50px;
+        min-width: 200px;
+    }
+
+    .crud-producto-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+        background-color: rgb(255, 255, 255);
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .crud-producto-container .botonesCrud button {
+        background-color: var(--color-button);
+        cursor: pointer;
+        padding: 5px;
+        width: 35px; 
+        height: 35px;
+        margin: 5px;
+        font-size: 10px; 
+    }
+
+    .crud-producto-container .imagenProd {
+        width: 35px; 
+        height: 35px;
+        border-radius: 8px; 
+        object-fit: cover;  
+    }
+}
+
+/*responsive para tablets*/
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .crud-producto-container .crud-producto {
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 20px; 
+        margin: 20px;
+    }
+
+    .crud-producto-container .BusquedaProducto {
+        margin-right: 200px;
+        width: 100%; 
+        margin-left: 0; 
+    }
+
+    .crud-producto-container .TextoBusquedaProducto {
+        width: 100%; 
+        padding: 0;
+        border:none;
+    }
+    .crud-producto-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+        background-color: rgb(255, 255, 255);
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .crud-producto-container .botonAgregarProducto {
+        width: 90%;
+        max-width: 200px;
+        padding: 5px 10px 10px 10px;
+        font-size: 12px;
+    }
+    
+    .crud-producto-container .botonesCrud button {
+        padding: 5px;
+        width: 35px; 
+        height: 35px;
+        font-size: 10px;
+        margin: 5px;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1250px) {
+    .crud-producto-container .crud-producto {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .crud-producto-container .BusquedaProducto {
+        width: 100%;
+        margin-right: 350px;
+        padding: none;
+    }
+
+    .crud-producto-container .botonAgregarProducto {
+        width: 90%;
+        padding: 5px 12px 10px 10px;
+        font-size: 12px;
+    }
+
+    .crud-producto-container .botonesCrud button {
+        padding: 8px;
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 1250px) {
+    .crud-producto-container .crud-producto {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .crud-producto-container .BusquedaProducto {
+        width: 100%;
+        margin-right: 600px;
+    }
+
+    .crud-producto-container .botonAgregarProducto {
+        width: 100%;
+        padding: 5px 12px 10px 10px;
+        font-size: 12px;
+    }
+
+    .botonesCrud button {
+        padding: 8px;
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+    }
+}
+

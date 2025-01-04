@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+  --color-primary: #d6712f ;
+  --color-secundary: #d4322a ;
+  --color-button: #B01818;
+  --color-fondoLogin:#e9cd8b;
+  --color-textos:#86553a ;
+}
+*{
+  font-family: 'Poppins', sans-serif;
+  
+}
+
+nav {
+  margin: 0;
+  padding: 0;
+  left: 0;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--color-primary);
+  padding: 10px 30px;
+  height: 80px;
+  position: fixed;
+  z-index: 3;
+}
+
+
+nav a img {
+  width: 10%;
+  margin-left: -40px;
+  transition: 0.3s ease;
+  filter: invert(100%);
+}
+
+nav ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+nav .logo {
+  display: flex;
+  align-items: center; 
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  margin-left: -20px;
+  font-weight: bold;
+}
+nav .iconOrders{
+ 
+  margin-right: 10px;
+  font-size: 40px;
+  color: white;
+}
+nav .iconLogo {
+  margin-right: 10px;
+  font-size: 40px;
+  color: white;
+}
+
+nav ul li {
+  list-style: none;
+  padding: 0 20px;
+  position: relative;
+}
+
+nav ul li a {
+  width: 100px;
+  text-decoration: none;
+  font-size: 1.3rem;
+  color: white;
+  transition: 0.1s ease;
+}
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.buttonIniciarSesion:hover{
+  background-color: #d4322a;
+}
+.cart-icon {
+  position: relative;
+  display: inline-block;
+  font-size: 24px;
+}
+
+nav ul li a:hover {
+  color: var(--color-primary);
+}
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px; 
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-primary);
+  transition: width 0.3s; 
+}
+
+nav ul li a:hover::after {
+  width: 100%;
+}
+#menuToggle{
+  display: none;
+}
+nav .iconMenu {
+  display: flex;
+  align-items: center;
+  font-size: 40px;
+  color: var(--color-primary);
+  cursor: pointer;
+  display: none;
+}
+
+.buttonIniciarSesion {
+  margin: 30px;
+  height: 35px;
+  width: 90%;
+  background-color: #86553a  ;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.buttonRegistrarse {
+  margin: 30px;
+  height: 35px;
+  width: 90%;
+  background-color: #d1a05b ;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  border: none;
+  color: white;
+  border-radius: 5px;
+}
+
+.menu .reservas-menu {
+  position: relative;
+}
+
+.submenu {
+  display: none; 
+  position: fixed;
+  top: 100%; 
+  left: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  z-index: 9999;
+  padding: 0; 
+  transform: translateZ(0);
+}
+
+nav.custom-breadcrumb {
+  position: fixed; /* O usa absolute/fixed según sea necesario */
+  z-index: -1; /* Ajusta el z-index según sea necesario */
+  position: relative;
+}
+
+
+.submenu ul {
+  font-size: 10px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu li {
+  margin-bottom: 5px; 
+}
+
+.submenu a {
+  font-size: 14px;
+  text-decoration: none;
+  color: #333;
+  display: block;
+  padding: 10px; 
+}
+
+.submenu a:hover {
+  background-color: #f0f0f0;
+
+}
+
+.menu .reservas-menu:hover .submenu {
+  display: block;
+  z-index: 1000;
+  position: absolute;
+}
+
+
+.buttonRegistrarse:hover{
+  cursor: pointer;
+  background: #d4322a ;
+}
+
+.iconMenu {
+  margin-top: 20px; 
+}
+
+.cart-text {
+  display: none;
+}
+
+.show-small {
+  display: none;
+}
+
+
+@media (max-width: 800px) {
+  nav .iconOrders{
+    display: none;
+  }
+
+  nav .iconMenu {
+      display: initial; 
+      cursor: pointer;
+  }
+
+  .show-small {
+    display: block;
+  }
+
+  .menu {
+      display: none;
+      position: absolute;
+      top: 120px; 
+      left: 0;
+      right: 0;
+      background-color:var(--color-secundary);
+      padding: 10px 0;
+      transition: transform 0.3s ease;
+     
+  }
+
+  .menu.show {
+      display: block;
+  }
+
+  nav ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  nav ul li {
+      padding: 10px 0;
+  }
+  nav ul li a:hover {
+      color: var(--color-secundario) !important; /* Agrega !important para asegurarte de que se aplique el color de texto */
+      color: var(--color-secundario);
+      &::after{
+          content: "";
+          width: 30%;
+          height: 2px;
+          background-color: var(--color-secundario);
+          position: absolute;
+          bottom: -4px;
+          left: 20px;
+      }
+  }
+  
+  #menuToggle:checked + .menu {
+      transform: translateY(0); 
+  }
+
+  .buttonIniciarSesion, .buttonRegistrarse {
+    width: 120%;
+    font-size: 11px;
+    margin: auto auto;
+  }
+
+}
+
+@media screen and (min-width: 801px) and (max-width: 991px) {
+  nav {
+    padding: 10px 20px;
+  }
+
+  nav a img {
+    width: 8%;
+    margin-left: -30px;
+  }
+
+  nav .iconOrders{
+    margin-right: 10px;
+  }
+  nav .logo {
+    font-size: 1.1rem;
+    margin-left: -10px;
+  }
+
+  nav ul li a {
+    font-size: 1.1rem;
+  }
+
+  nav ul li {
+    padding: 0 15px;
+  }
+
+  .buttonIniciarSesion, .buttonRegistrarse {
+    width: 85%;
+    font-size: 11px;
+  }
+}

@@ -1,0 +1,417 @@
+
+  .RestauranteContainer .contenedorRojo {
+    position: relative;
+    bottom: -30vh;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(221,107,107,1) 0%, rgba(219,84,84,1) 30%, rgba(176,24,24,1) 100%);
+    color: white;
+    text-align: center;
+    height: 15vh;
+    border-radius: 60px 60px 0 0;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    z-index: 1; 
+  }
+
+
+
+.RestauranteContainer .seccionEstadistica {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.RestauranteContainer .componentesDashboard {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0px; 
+  width: 105%;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.RestauranteContainer .componentesDashboard .card {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+.RestauranteContainer .contenedorCardDashboard .card #infoPlato {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -30px;
+ }
+ 
+
+
+.RestauranteContainer .contenedorBlanco { 
+  position: relative;
+  bottom: 0;
+  top: 10rem;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-secundary);
+  color: var(--color-button);
+  padding: 20px;
+  text-align: left; 
+  border-radius: 60px 60px 0 0;
+  z-index: 2;
+  flex-direction: column; /* Asegura que los elementos se apilen verticalmente */
+}
+
+  .RestauranteContainer .contenedorBlanco h1 {
+    color: var(--color-textos);
+    text-align: center;
+    font-weight: bold;
+    
+  }
+  
+  .RestauranteContainer .contenedorBlanco h2{
+    text-align: center;
+  }
+ 
+  .RestauranteContainer .imagenPizza {
+    position: absolute;
+    top: 25vh; 
+    margin-left: 57%; 
+    z-index: 1; 
+    width: 10vw;
+    height: auto; 
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+  }
+    
+  .RestauranteContainer .imagen2 {
+    z-index: 1;
+      width: 500px; 
+      height: 350px;
+      filter: drop-shadow(
+          0 0 10px rgba(0,0,0,0.5)
+      );
+  }
+
+    .RestauranteContainer .imagenLogo {
+        margin-top: -100px; /* ajusta este valor según sea necesario */
+        z-index: 1;
+    }
+    .RestauranteContainer .waves-background2 {
+      position: fixed;
+      top: 2%;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('../images/waves.png');
+      z-index: -1;
+  }
+  .RestauranteContainer .texto1,.texto2{
+    font-size: 3.5rem;
+  }
+
+  .RestauranteContainer .subtexto{
+    font-size: 1.2rem;
+  }
+  .RestauranteContainer .textoImagen{
+    margin-top: 20vh;
+    margin-bottom: -25vh;
+    display: block;
+    margin-left: -40%;
+  }
+
+  .RestauranteContainer .textoImagen img{
+    height: 150px;
+    width: 200px;
+  }
+
+  .RestauranteContainer .textoRestaurante {
+    width: 25%; 
+    margin: 0 auto; 
+    text-align: justify;
+    }
+    .RestauranteContainer .contenedorBlanco h1{
+    margin-top: 30px;
+  }
+
+  
+  .RestauranteContainer .contenedorFooter {
+    margin-top: 8.5%; 
+    position: relative;
+    width: 100%;
+    height: 5vh;
+    background-color: var(--color-fondoLogin);
+    color: var(--color-button);
+    text-align: right;
+    padding-right: 40px;
+    border-radius: 60px 60px 0 0;
+    z-index: 2;
+}
+  
+  .RestauranteContainer .textoFooter2 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding-right: 40px;
+    text-align: right;
+  }
+
+  .RestauranteContainer .comentario {
+    width: 25%;
+    background-color: #575555; 
+    padding: 20px;
+    margin-top: 3%;
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+    border-radius: 10px;
+    opacity: 0.9; 
+    height: 180px;
+}
+
+.RestauranteContainer .cliente {
+    margin-bottom: 10px;
+    display: flex;
+    
+}
+
+
+
+.RestauranteContainer .fotoCliente img {
+    margin-top: 30px;
+    width: 70px; 
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    float: left;
+}
+
+.RestauranteContainer .textoComentario {
+    text-align: left;
+    
+}
+
+.RestauranteContainer .textoComentario h3 {
+    color: white;
+    height: auto;
+    margin: 0;
+    font-size: 16px;
+}
+
+.RestauranteContainer .contenido p {
+    color: white;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+@media only screen and (max-width: 768px) {
+
+  .RestauranteContainer {
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+
+  .RestauranteContainer .contenedorCard {
+    margin-bottom: 10vh;
+  }
+
+
+  .RestauranteContainer .componentesDashboard {
+    display: flex;
+    position: relative;
+    flex-direction: column;/* Espacio entre los elementos, puedes ajustar este valor */
+    justify-content: center;
+  }
+
+  .RestauranteContainer .titulosDashboard {
+    display: none;
+  }
+
+
+  .RestauranteContainer .subtexto{
+    text-align: justify;
+    width: 200px;
+    margin-left: -8vh;
+  }
+  .RestauranteContainer .comentario{
+    margin-top: 70%;
+    width: 280px;
+  }
+  .RestauranteContainer .textoImagen {
+    margin-left: 2%;
+    justify-content: center;
+    
+  }
+  
+  .RestauranteContainer .imagen2 {
+    display: none;
+  }
+  
+  .RestauranteContainer .contenedorRojo {
+    margin-top: 150px;
+  }
+  @media only screen and (max-width: 484px) {
+    .RestauranteContainer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+  
+    .RestauranteContainer .componentesDashboard {
+      display: flex;
+      flex-direction: column; 
+      align-items: center;
+      justify-content: center;
+      gap: 10px; 
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .RestauranteContainer .contenedorBlanco {
+      width: 100%; 
+      position: relative;
+    }
+  
+    .RestauranteContainer .componentesDashboard > * {
+      flex: none; 
+      width: 100%; 
+    }
+  
+    .RestauranteContainer .componentesDashboard .card {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+    }
+    .RestauranteContainer .contenedorCard .card:first-child{
+      margin-top: 10vh;
+    }
+
+    .RestauranteContainer .contenedorCard {
+      margin-bottom: 20vh;
+    }
+
+    .RestauranteContainer .contenedorGraficaDashboard{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 0;
+      margin-bottom: 10px;
+      height: 50vh;
+      bottom: -60px;
+      background-color: var(--color-secundary);
+    }
+    .RestauranteContainer .contenedorGraficaDashboard .card{
+      background-color: #fff;
+      height: 100%;
+    }
+    .RestauranteContainer .linea {
+      width: 80%; 
+      margin: 10px auto;
+    }
+  
+    .RestauranteContainer .contenedorFooter {
+      width: 100%;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      padding: 10px;
+      background-color: var(--color-fondoLogin);
+      color: var(--color-button);
+      text-align: center;
+      border-radius: 50px 50px 0 0;
+    }
+  
+    .RestauranteContainer .textoFooter2 {
+      font-size: 12px;
+    }
+  }
+  
+  
+  .RestauranteContainer .seccionEstadistica {
+    height: 20vw;
+    justify-content: center;
+  }
+
+  .RestauranteContainer .inline {
+    margin-right: 10px; /* Espacio entre los elementos, puedes ajustar este valor */
+}
+}
+@media only screen and (max-width: 484px) {
+  .RestauranteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .RestauranteContainer .componentesDashboard {
+    position: relative;
+    flex-direction: column;/* Espacio entre los elementos, puedes ajustar este valor */
+    justify-content: center;
+  }
+
+  .RestauranteContainer .titulosDashboard {
+    display: none;
+  }
+
+
+  .RestauranteContainer .subtexto{
+    text-align: justify;
+    width: 200px;
+    margin-left: -8vh;
+  }
+  .RestauranteContainer .comentario{
+    margin-top: 70%;
+    width: 280px;
+  }
+  .RestauranteContainer .textoImagen {
+    margin-left: 2%;
+    justify-content: center;
+    
+  }
+  
+  .RestauranteContainer .imagen2 {
+    display: none;
+  }
+  
+  .RestauranteContainer .contenedorRojo {
+    margin-top: 150px;
+  }
+  .RestauranteContainer .card:first-child {
+    margin-top: 30vh;
+  }
+  
+  .RestauranteContainer .card{
+    margin: 10px;
+  }
+  .RestauranteContainer .card-more{
+    margin-top: 10px;
+  }
+  .RestauranteContainer .contenedorFooter{
+    margin-top: 30%; 
+    position: relative;
+  }
+
+  .RestauranteContainer .seccionEstadistica {
+    height: 20vw;
+    justify-content: center;
+  }
+
+  .RestauranteContainer .inline {
+    margin-right: 10px; /* Espacio entre los elementos, puedes ajustar este valor */
+}
+}
+
