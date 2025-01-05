@@ -4,7 +4,7 @@ import "./assets/styles/App.css";
 import Cliente from "./pages/Cliente"
 import Restaurante from "./pages/Restaurante";
 import Bienvenida from "./pages/Bienvenida"
-import CrudProducto from "./pages/crudProducto";
+import CrudProducto from "./pages/Productos";
 import CrudOferta from "./pages/crudOferta";
 import AddProduct from "./pages/AddProduct";
 import Register from "./pages/Register";
@@ -41,7 +41,6 @@ function App() {
           <Route path="/Negocio" element={<Negocio />} /> //COLOCADO autenticación
           <Route path="/Registro" element={<Register />} />
           <Route path="/Registro-Cliente" element={<RegistroCliente />} />
-          <Route path="/Registro-Negocio" element={<RegistroNegocio />} />
           <Route path="/Restaurante" element={<Restaurante />} /> //COLOCADO autenticación
           <Route path="/" element={<Bienvenida />} />
           <Route path="/RegistroOfertas" element={<CrudOferta />} /> //COLOCADO autenticación

@@ -9,25 +9,24 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
   useEffect(() => {
     const updateVisibleSlides = () => {
       if (window.innerWidth <= 820) {
-        setVisibleSlides(1);
+        setVisibleSlides(1); // 1 slide visible en pantallas pequeñas
       } else if (window.innerWidth <= 1024) {
-        setVisibleSlides(2);
+        setVisibleSlides(2); // 2 slides visibles en pantallas medianas
       } else {
-        setVisibleSlides(3);
+        setVisibleSlides(3); // 3 slides visibles en pantallas grandes
       }
     };
 
     window.addEventListener('resize', updateVisibleSlides);
-    updateVisibleSlides();
+    updateVisibleSlides(); // Asegurarse de que se ajuste correctamente en carga
 
     return () => window.removeEventListener('resize', updateVisibleSlides);
   }, []);
 
-  // Función auxiliar para mapear campos
   const mapFields = (producto) => {
     return {
-      imagen: producto.imagen_oferta || producto.imagen,
-      nombre: producto.nombre_oferta || producto.nombre_producto,
+      imagen: producto.imagen_oferta || producto.imagen, // Imagen de oferta o imagen del producto
+      nombre: producto.nombre_oferta || producto.nombre_producto, // Nombre de oferta o nombre de producto
     };
   };
 
@@ -40,7 +39,7 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
         visibleSlides={visibleSlides}
         step={1}
         infinite
-        orientation={window.innerWidth <= 820 ? 'vertical' : 'horizontal'}
+        orientation={window.innerWidth <= 820 ? 'vertical' : 'horizontal'} // Carrusel vertical en pantallas pequeñas
         className='carousel-container'
         id={carruselId}
       >
@@ -52,7 +51,7 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
                 <div className='card' style={cardStyle}>
                   <h3>${producto.precio}</h3>
                   <div className='contenidoCard'>
-                    <img src={imagen} alt={`${nombre} Logo`} />
+                    <img src={`http://localhost:5000/${imagen}`} alt={`${nombre} Logo`} className='producto-imagen' />
                     <h3>{nombre}</h3>
                     <p>{producto.descripcion}</p>
                     <button onClick={() => onBuyClick(producto)}>{nombreBoton}</button>

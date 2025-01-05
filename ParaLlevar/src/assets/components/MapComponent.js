@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -7,12 +7,11 @@ import userMarkerIcon from '../images/marker_user.png'; // Asegúrate de tener u
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-const MapComponent = ({ locations, user }) => {
+const MapComponent = ({ user }) => {
   const idUsuario = Cookies.get('id');
 
   const enviarCoordenadas = async () => {
     try {
-
       const formData = new FormData();
       formData.append('posicion_x', user.latitud);
       formData.append('posicion_y', user.longitud);
@@ -27,12 +26,10 @@ const MapComponent = ({ locations, user }) => {
   };
 
   useEffect(() => {
-    if(user && user.latitud && user.longitud){
+    if (user && user.latitud && user.longitud) {
       enviarCoordenadas();
     }
-
-  }, []);
-
+  }, [user]);
 
   const customIcon = L.icon({
     iconUrl: markerIcon,
@@ -50,17 +47,19 @@ const MapComponent = ({ locations, user }) => {
     tooltipAnchor: [16, -28],
   });
 
+  // Ubicación predeterminada
+  const defaultPosition = [-2.9188998846326286, -79.01474831911743]; // Cambia esto a la latitud y longitud que desees
+
   return (
-    <MapContainer center={[-2.9188998846326286, -79.01474831911743]} zoom={15} style={{ height: '500px', width: '100%' }}>
+    <MapContainer center={defaultPosition} zoom={15} style={{ height: '500px', width: '100%' }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      {locations.map((location, index) => (
-        <Marker key={index} position={location.position} icon={customIcon}>
-          <Popup>{location.name}</Popup>
-        </Marker>
-      ))}
+      <Marker position={defaultPosition} icon={customIcon}>
+        <Popup>Ubicación predeterminada</Popup>
+      </Marker>
+
       {user && user.latitud && user.longitud && (
         <Marker position={[user.latitud, user.longitud]} icon={userIcon}>
           <Popup>Tu ubicación</Popup>
@@ -69,4 +68,5 @@ const MapComponent = ({ locations, user }) => {
     </MapContainer>
   );
 };
+
 export default MapComponent;

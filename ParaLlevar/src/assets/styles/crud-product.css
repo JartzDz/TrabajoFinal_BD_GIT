@@ -1,17 +1,29 @@
-.container-crud-prod {
+body.container-crud-prod {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Esto hará que el contenedor ocupe el 100% del alto de la pantalla */
-    width: 100vw; /* Esto hará que el contenedor ocupe el 100% del ancho de la pantalla */
+    min-height: 100vh; 
+    margin: 0;
+}
+main.crud-producto-container {
+    flex-grow: 1;  
+    
 }
 .crud-producto-container {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    margin-top: 70px;
-    margin-bottom: 70px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     position: relative;
+    height: 100%; 
+    overflow: hidden; 
+}
+
+.producto-imagen {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; 
 }
 
 .crud-producto-container .crud-producto {
@@ -19,21 +31,30 @@
     flex-direction: row; 
     align-items: center;
     justify-content: center;
-    background-color: rgb(245, 243, 243);
-    padding-left: 25px;
+    margin-left: 75px;
+    background-color: #ccc;
+    margin-right: 75px;
     padding-right: 25px; 
+    width: 100%;
+    border-radius: 15px;
+  
 }
 
-.crud-producto-container .botonAgregarProducto{
-    background-color: var(--color-button);
+.crud-producto-container .botonAgregarProducto {
+    background-color: #d4322a;
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 10px;
     padding-inline: 35px;
     width: 100%;
     font-size: 12px;
+    white-space: nowrap; 
+
 }
 
+.botonAgregarProducto:hover{
+    background-color: #f46c3c ;
+}
 
 .crud-producto-container .BusquedaProducto {
     background-color: white;
@@ -44,6 +65,22 @@
     margin-bottom: 10px;
     display: flex;
     align-items: center;
+
+    input {
+        height: 40px;
+        margin: 10px;
+        padding-left: 10px;
+        padding-right: 10px; 
+        border: 2px solid #ccc;
+        border-radius: 5px; 
+        font-size: 16px;
+    }
+    
+    input:focus {
+        border-color: #f46c3c ;
+        outline: none;
+    }
+
 }
 
 .crud-producto-container .FotoBuscar{
@@ -62,6 +99,7 @@
     max-height: 400px;
     overflow-y: auto; 
     width:90%;
+    margin-bottom: 50px;
 }
 
 .crud-producto-container .tabla-productos-container button {
@@ -123,8 +161,9 @@
 }
   
 .contenedorFooter-prod {
-    margin-top: auto; /* Esto empuja el footer hacia abajo */
+    margin-top: auto;
     position: relative;
+    bottom: 0;
     width: 100%;
     background-color: var(--color-fondoLogin);
     color: var(--color-button);
@@ -132,14 +171,15 @@
     padding-right: 40px;
     border-radius: 60px 60px 0 0;
     z-index: 2;
-  }
+}
+
 
 .waves-background2-prod {
     position: absolute;
-    top: 2%;
+    margin-top: 8%;
     width: 100%;
     height: 100%;
-    background-image: url('../images/waves.png');
+    background-image: url('../images/wave3.svg');
     background-size: cover;
     background-repeat: no-repeat;
     top: 0;
@@ -156,7 +196,6 @@
     text-align: right;
   }
 
-/*responsive para dispositivos móviles*/
 
 @media screen and (max-width: 768px) {
 
