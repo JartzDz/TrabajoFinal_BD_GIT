@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function FormularioProducto() {
   const [nombreProducto, setNombreProducto] = useState('');
@@ -14,34 +16,34 @@ function FormularioProducto() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append('nombreProducto', nombreProducto);
     formData.append('descripcion', descripcion);
     formData.append('precio', precio);
     formData.append('imagen', imagenArchivo);
-    formData.append('esOferta', false); // Si quieres que esté marcado como oferta, cambia este valor
-
+    formData.append('esOferta', false);
+  
     try {
       const response = await fetch('http://localhost:5000/api/productos/agregar', {
         method: 'POST',
         body: formData,
       });
+  
       if (response.ok) {
-        alert('Producto agregado correctamente');
-        
-        // Limpiar campos después de una solicitud exitosa
+        toast.success('Producto agregado con éxito');
+  
         setNombreProducto('');
         setDescripcion('');
         setPrecio('');
         setImagen(null);
         setNombreImagen('');
       } else {
-        alert('Error al agregar el producto');
+        toast.error('Error al agregar el producto');  
       }
     } catch (error) {
       console.error(error);
-      alert('Error de conexión');
+      toast.error('Error de conexión'); 
     }
   };
 
@@ -82,6 +84,14 @@ function FormularioProducto() {
         {nombreImagen && <p>Imagen seleccionada: {nombreImagen}</p>}
         <button type="submit">Agregar Producto</button>
       </form>
+     <ToastContainer
+                     closeButtonStyle={{
+                         fontSize: '12px', 
+                         padding: '4px'    
+                         }}
+              style={{ width: '400px' }} 
+              autoClose={2000}
+        />
     </div>
   );
 }

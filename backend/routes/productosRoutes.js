@@ -49,4 +49,23 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Ruta para elimina productos
+router.delete('/eliminar/:id', async (req, res) => {
+  const { id } = req.params;
+
+    try {
+        const result = await pool.query(
+            'DELETE FROM productos WHERE id = $1 RETURNING *', [id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'Producto no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Producto eliminado', producto: result.rows[0] });
+    } catch (err) {
+        console.error('Error al eliminar el producto:', err);
+        res.status(500).json({ message: 'Error al eliminar el producto' });
+    }
+});
 module.exports = router;

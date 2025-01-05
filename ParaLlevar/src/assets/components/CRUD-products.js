@@ -12,36 +12,43 @@ import { ToastContainer, toast } from 'react-toastify';
 function CRUDProducts() {
     const [productos, setProductos] = useState([]);
 
-    // Obtiene los productos de la API
+    const obtenerProducto = async () => {
+        try {
+            const response = await axios.get('http://localhost:5000/api/productos');
+            console.log('Respuesta completa de la API:', response);
+            setProductos(response.data); 
+        } catch (error) {
+            console.error('Error al obtener productos:', error);
+        }
+    };
     useEffect(() => {
-        const obtenerProducto = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/productos');
-                console.log('Respuesta completa de la API:', response);
-                setProductos(response.data); 
-            } catch (error) {
-                console.error('Error al obtener productos:', error);
-            }
-        };
-    
         obtenerProducto();
     }, []);
     
-    
+    const recargarProductos = async () => {
+        await obtenerProducto();
+    };
 
     const eliminarProducto = async (id_producto) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/productos/${id_producto}`);
-            console.log('Producto eliminado:', response.data);
-            const nuevosProductos = productos.filter((cat) => cat.id !== id_producto); 
-            setProductos(nuevosProductos); 
-            toast.success('Producto eliminado');
+            const response = await axios.delete(`http://localhost:5000/api/productos/eliminar/${id_producto}`);
+            
+            if (response.data && response.data.message === 'Producto eliminado') {
+                console.log('Producto eliminado:', response.data);
+                
+                const nuevosProductos = productos.filter((producto) => producto.id !== id_producto); 
+                setProductos(nuevosProductos); 
+                
+                toast.success('Producto eliminado correctamente');
+            } else {
+                toast.error('No se pudo eliminar el producto.');
+            }
         } catch (error) {
             toast.error('Error al eliminar el producto.');
             console.error('Error al eliminar producto:', error);
-            throw error; 
         }
     };
+    
 
     const columns = [
         {
@@ -159,8 +166,9 @@ function CRUDProducts() {
                 closeButtonStyle={{
                     fontSize: '12px', 
                     padding: '4px'    
-                }}
+                    }}
                 style={{ width: '400px' }} 
+                autoClose={2000}
             />
             <div className="waves-background2-prod"></div>
         </body>
