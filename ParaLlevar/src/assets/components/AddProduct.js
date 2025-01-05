@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';  // Importamos el hook useNavigate
 
 function FormularioProducto() {
   const [nombreProducto, setNombreProducto] = useState('');
@@ -8,7 +9,7 @@ function FormularioProducto() {
   const [precio, setPrecio] = useState('');
   const [imagenArchivo, setImagen] = useState(null);
   const [nombreImagen, setNombreImagen] = useState('');
-
+  const navigate = useNavigate(); 
   const handleImageChange = (e) => {
     setImagen(e.target.files[0]);
     setNombreImagen(e.target.files[0].name);
@@ -32,7 +33,9 @@ function FormularioProducto() {
   
       if (response.ok) {
         toast.success('Producto agregado con éxito');
-  
+        setTimeout(() => {
+          navigate('/registroProductos');
+        }, 2000);
         setNombreProducto('');
         setDescripcion('');
         setPrecio('');
@@ -85,12 +88,9 @@ function FormularioProducto() {
         <button type="submit">Agregar Producto</button>
       </form>
      <ToastContainer
-                     closeButtonStyle={{
-                         fontSize: '12px', 
-                         padding: '4px'    
-                         }}
               style={{ width: '400px' }} 
               autoClose={2000}
+              closeButton={false}
         />
     </div>
   );

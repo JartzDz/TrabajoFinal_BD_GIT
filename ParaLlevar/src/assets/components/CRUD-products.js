@@ -163,12 +163,9 @@ function CRUDProducts() {
                 </div>
             </footer>
             <ToastContainer
-                closeButtonStyle={{
-                    fontSize: '12px', 
-                    padding: '4px'    
-                    }}
                 style={{ width: '400px' }} 
                 autoClose={2000}
+                closeButton={false}
             />
             <div className="waves-background2-prod"></div>
         </body>
