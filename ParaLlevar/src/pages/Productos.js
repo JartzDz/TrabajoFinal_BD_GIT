@@ -21,7 +21,6 @@ const CrudProducto = () => {
                 <Header page={'RegistroProductos'}/>
                 <DynamicBreadcrumb/>
                 <CrudProductos/>
-                <Chatbot/>
             </div>
         </div>
     );

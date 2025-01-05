@@ -5,6 +5,8 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const testUserRoutes = require('./routes/testUserRoutes');
 const productosRoutes = require('./routes/productosRoutes'); 
+const userRoutes = require('./routes/userRoutes');
+
 dotenv.config();
 
 const app = express();
@@ -18,7 +20,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/test', testUserRoutes);
 app.use('/api/productos', productosRoutes);
 app.use('/uploads', express.static('uploads'));
-
+app.use('/api/users', userRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000;

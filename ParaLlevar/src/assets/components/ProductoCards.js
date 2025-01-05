@@ -9,24 +9,24 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
   useEffect(() => {
     const updateVisibleSlides = () => {
       if (window.innerWidth <= 820) {
-        setVisibleSlides(1); // 1 slide visible en pantallas pequeñas
+        setVisibleSlides(1);
       } else if (window.innerWidth <= 1024) {
-        setVisibleSlides(2); // 2 slides visibles en pantallas medianas
+        setVisibleSlides(2);
       } else {
-        setVisibleSlides(3); // 3 slides visibles en pantallas grandes
+        setVisibleSlides(3); 
       }
     };
 
     window.addEventListener('resize', updateVisibleSlides);
-    updateVisibleSlides(); // Asegurarse de que se ajuste correctamente en carga
+    updateVisibleSlides();
 
     return () => window.removeEventListener('resize', updateVisibleSlides);
   }, []);
 
   const mapFields = (producto) => {
     return {
-      imagen: producto.imagen_oferta || producto.imagen, // Imagen de oferta o imagen del producto
-      nombre: producto.nombre_oferta || producto.nombre_producto, // Nombre de oferta o nombre de producto
+      imagen: producto.imagen_oferta || producto.imagen, 
+      nombre: producto.nombre_oferta || producto.nombre_producto, 
     };
   };
 
@@ -39,7 +39,7 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
         visibleSlides={visibleSlides}
         step={1}
         infinite
-        orientation={window.innerWidth <= 820 ? 'vertical' : 'horizontal'} // Carrusel vertical en pantallas pequeñas
+        orientation={window.innerWidth <= 820 ? 'vertical' : 'horizontal'} 
         className='carousel-container'
         id={carruselId}
       >
@@ -49,10 +49,12 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
             return (
               <Slide index={index} key={index}>
                 <div className='card' style={cardStyle}>
-                  <h3>${producto.precio}</h3>
                   <div className='contenidoCard'>
+                    <div className='contenedorImagen'>
                     <img src={`http://localhost:5000/${imagen}`} alt={`${nombre} Logo`} className='producto-imagen' />
+                    </div>
                     <h3>{nombre}</h3>
+                    <h3>${producto.precio}</h3>
                     <p>{producto.descripcion}</p>
                     <button onClick={() => onBuyClick(producto)}>{nombreBoton}</button>
                   </div>
