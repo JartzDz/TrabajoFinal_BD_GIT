@@ -28,7 +28,6 @@ const BienvenidaPage = () => {
         <Header page={'Informativa'}/>
         <DynamicBreadcrumb/>
         <Home />
-        <Chatbot></Chatbot>
       </div>
     </div>
   );

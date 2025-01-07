@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';  // Importamos el hook useNavigate
+import '../styles/addProduct.css'
 
 function FormularioProducto() {
   const [nombreProducto, setNombreProducto] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState('');
+  const [categoria, setCategoria] = useState('');
   const [imagenArchivo, setImagen] = useState(null);
   const [nombreImagen, setNombreImagen] = useState('');
   const navigate = useNavigate(); 
@@ -22,6 +24,7 @@ function FormularioProducto() {
     formData.append('nombreProducto', nombreProducto);
     formData.append('descripcion', descripcion);
     formData.append('precio', precio);
+    formData.append('categoria', categoria);
     formData.append('imagen', imagenArchivo);
     formData.append('esOferta', false);
   
@@ -39,6 +42,7 @@ function FormularioProducto() {
         setNombreProducto('');
         setDescripcion('');
         setPrecio('');
+        setCategoria('');
         setImagen(null);
         setNombreImagen('');
       } else {
@@ -50,6 +54,7 @@ function FormularioProducto() {
     }
   };
 
+  
   return (
     <div className="contenedorAgregarProducto">
       <form onSubmit={handleSubmit}>
@@ -74,6 +79,16 @@ function FormularioProducto() {
           onChange={(e) => setPrecio(e.target.value)}
           required
         />
+        <select
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+          required
+        >
+          <option value="" disabled>Selecciona una categoría</option>
+          <option value="entrada">Entrada</option>
+          <option value="postre">Postre</option>
+          <option value="plato fuerte">Plato Fuerte</option>
+        </select>
         <input
           type="file"
           id="file-upload"
