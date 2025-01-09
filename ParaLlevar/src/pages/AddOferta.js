@@ -3,7 +3,6 @@ import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import AddOfertas from '../assets/components/AddOferta';
-import ChatBot from '../assets/components/Chatbot';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 const AddOferta = () => {
@@ -19,7 +18,7 @@ const AddOferta = () => {
                 <Header page={'AgregarProducto'}/>
                 <DynamicBreadcrumb/>
                 <AddOfertas/>
-                <ChatBot/>
+                
             </div>
         </div>
     );

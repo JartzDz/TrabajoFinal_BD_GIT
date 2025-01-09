@@ -4,7 +4,6 @@ import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import HomeRestaurante from '../assets/components/HomeRestaurante';
 import '../assets/styles/cliente.css'
-import Chatbot from '../assets/components/Chatbot';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -33,7 +32,6 @@ const RestaurantePage = () => {
         <Header cartCount={cartCount}/>
         <DynamicBreadcrumb/>
         <HomeRestaurante onBuyClick={handleBuyClick}/>
-        <Chatbot/>
       </div>
     </div>
   );

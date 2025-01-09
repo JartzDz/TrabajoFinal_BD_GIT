@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import EditOfertas from '../assets/components/EditOferta';
-import ChatBot from '../assets/components/Chatbot';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 const EditOferta = () => {
@@ -18,7 +17,6 @@ const EditOferta = () => {
             <Header page={'EditarProducto'}/>
             <DynamicBreadcrumb/>
             <EditOfertas/>
-            <ChatBot/>
         </div>
         </div>
     );

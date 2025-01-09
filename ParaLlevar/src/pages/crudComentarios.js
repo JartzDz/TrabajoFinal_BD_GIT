@@ -2,8 +2,7 @@ import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import Comments from '../assets/components/CRUD-comentarios';
-import Chatbot from '../assets/components/Chatbot';
-import { Navigate, Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 
 const CrudComentario = () => {
@@ -20,7 +19,6 @@ const CrudComentario = () => {
                 <Header page={'RegistroComentarios'}/>
                 <DynamicBreadcrumb/>
                 <Comments/>
-                <Chatbot/>
             </div>
         </div>
     );

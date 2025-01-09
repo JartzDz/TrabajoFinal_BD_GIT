@@ -3,7 +3,6 @@ import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import HomeNegocio from '../assets/components/HomeNegocio';
-import Chatbot from '../assets/components/Chatbot';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 const NegocioPage = () => {
@@ -20,7 +19,6 @@ const NegocioPage = () => {
         <Header />
         <DynamicBreadcrumb/>
         <HomeNegocio/>
-        <Chatbot/>
       </div>
     </div>
   );

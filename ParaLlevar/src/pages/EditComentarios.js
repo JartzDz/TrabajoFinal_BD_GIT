@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import EditComments from '../assets/components/EditComments';
-import Chatbot from '../assets/components/Chatbot';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
@@ -61,9 +60,7 @@ const EditarComentarios = () => {
                         setComments={setComments}
                     />
                 </div>
-                 
-                            
-                <Chatbot/>
+                   
             </div>
             
         </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import Historial from '../assets/components/Historial-Reserva';
-import Chatbot from '../assets/components/Chatbot';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -20,7 +19,6 @@ const HistorialReserva = () => {
                 <Header page={'HistorialReserva'}/>
                 <DynamicBreadcrumb/>
                 <Historial/>
-                <Chatbot/>
             </div>
         </div>
     );

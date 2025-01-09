@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
-import Chatbot from '../assets/components/Chatbot';
 import Cards_Reservas from '../assets/components/Reserva/Cards_Reservas';
 import { getReservasEnCola } from '../assets/components/Reserva/reservaEnCola';
 import { Navigate, Link } from "react-router-dom";
@@ -114,7 +113,6 @@ function ReservacionesListas() {
               ))
             )}
         </div>
-        <Chatbot />
         <ToastContainer
             closeButtonStyle={{
                 fontSize: '10px', // Tamaño de fuente del botón de cerrar

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import '../assets/styles/registro.css'
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
-import Chatbot from '../assets/components/Chatbot';
 function Register() {
   const [currentSlide, setCurrentSlide] = useState('cliente');
 
@@ -36,7 +35,6 @@ function Register() {
               </div>
             </div>
         </div>
-        <Chatbot></Chatbot>
       </>
     );
   }

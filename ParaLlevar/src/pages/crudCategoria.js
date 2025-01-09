@@ -3,7 +3,6 @@ import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import CrudCategorias from '../assets/components/CRUD-categoria';
-import Chatbot from '../assets/components/Chatbot';
 import { Navigate, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 
@@ -21,7 +20,6 @@ const CrudCategoria = () => {
                 <Header page={'RegistroCategoria'}/>
                 <DynamicBreadcrumb/>
                 <CrudCategorias/>
-                <Chatbot/>
             </div>
         </div>
     );
