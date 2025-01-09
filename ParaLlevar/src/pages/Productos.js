@@ -4,15 +4,26 @@ import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
 import CrudProductos from '../assets/components/CRUD-products';
 import '../assets/styles/crud-product.css';
-import { Navigate, Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
+
 const CrudProducto = () => {
     const authToken = Cookies.get('authToken');
   
-    // Si la cookie no está presente, redirigir al usuario a la página de login
     if (!authToken) {
         return <Navigate to="/" />;
     }
+
+    const decodedToken = jwtDecode(authToken);
+    const userRole = decodedToken.role; 
+    
+    console.log('Rol del usuario:', userRole);
+        
+    if (userRole !== 'admin') {
+        return <Navigate to="/" />; 
+    }
+    
 
     return (
         <div>

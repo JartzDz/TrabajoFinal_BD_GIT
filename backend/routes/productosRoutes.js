@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../config/db');
 const multer = require('multer');
 const path = require('path');
+const verifyToken = require('../middleware/authMiddleware');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -15,8 +16,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// productosRoutes.js
-router.post('/agregar', upload.single('imagen'), async (req, res) => {
+// Ruta para agregar productos (solo admin)
+router.post('/agregar', verifyToken('admin'), upload.single('imagen'), async (req, res) => {
   const { nombreProducto, descripcion, precio, esOferta } = req.body;
   const imagen = req.file ? req.file.path : '';
   
@@ -38,34 +39,40 @@ router.post('/agregar', upload.single('imagen'), async (req, res) => {
 
 
 
-// Ruta para obtener productos
-router.get('/', async (req, res) => {
+// Ruta para obtener productos (accesible para todos)
+router.get('/', verifyToken(), async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM productos'); 
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron productos.' });
+    }
+
     res.json(result.rows); 
   } catch (err) {
-    console.error('Error al obtener los productos:', err);
-    res.status(500).send('Error del servidor');
+    console.error('Error al obtener los productos:', err.message); 
+    res.status(500).json({ error: 'Error del servidor', detalles: err.message }); 
   }
 });
 
-// Ruta para elimina productos
-router.delete('/eliminar/:id', async (req, res) => {
+// Ruta para eliminar productos (solo admin)
+router.delete('/eliminar/:id', verifyToken('admin'), async (req, res) => {
   const { id } = req.params;
 
-    try {
-        const result = await pool.query(
-            'DELETE FROM productos WHERE id = $1 RETURNING *', [id]
-        );
+  try {
+    const result = await pool.query(
+      'DELETE FROM productos WHERE id = $1 RETURNING *', [id]
+    );
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({ message: 'Producto no encontrado' });
-        }
-
-        res.status(200).json({ message: 'Producto eliminado', producto: result.rows[0] });
-    } catch (err) {
-        console.error('Error al eliminar el producto:', err);
-        res.status(500).json({ message: 'Error al eliminar el producto' });
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
     }
+
+    res.status(200).json({ message: 'Producto eliminado', producto: result.rows[0] });
+  } catch (err) {
+    console.error('Error al eliminar el producto:', err);
+    res.status(500).json({ message: 'Error al eliminar el producto' });
+  }
 });
+
 module.exports = router;

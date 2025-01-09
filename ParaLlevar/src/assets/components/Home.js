@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
 import '../styles/informativa.css'
-//import dunkin_logo from '../images/dunkin_donuts_logo.jpeg'
-import bolsa from '../images/we-are-open.png'
 import bolsa2 from '../images/bolsa2.jpg'
 import bolsa3 from '../images/bolsa3.jpg'
 import bolsa4 from '../images/bolsa4.jpg'
 import cliente from '../images/cliente.jpg'
 import negocio from '../images/negocio.jpg'
-import perfil from '../images/perfilMujer.jpg'
 import Cookies from 'js-cookie';
 function Home() {
   const [currentSlide, setCurrentSlide] = useState('cliente');
@@ -20,20 +17,7 @@ function Home() {
     return () => clearInterval(interval);
   }, [currentSlide]);
 
-  const ofertasData = [
-    {
-      name: 'Clientes',
-      descript: 'Acceso a ofertas exclusivas. Apoyo a la sostenibilidad. Variedad de opciones. Ahorro de dinero.',
-      image: cliente,
-      link: 'Registro-Cliente'
-    },
-    {
-      name: 'Negocios',
-      descript: 'Reducción de desperdicio de alimentos. Conexión con la comunidad. Incremento de ingresos.',
-      image: negocio,
-      link: 'Registro-Negocio'
-    },
-];
+  
     return (
         <div className="HomeContainer">
             <div className='textoImagen'>

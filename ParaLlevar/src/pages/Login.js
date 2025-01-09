@@ -30,7 +30,7 @@ export default class Login extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { username, password } = this.state;
-    
+  
     if (!username || !password) {
       toast.error("Por favor, complete todos los campos.");
       return;
@@ -38,18 +38,24 @@ export default class Login extends Component {
   
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email: username, 
+        email: username,
         password: password
       });
   
       if (response.status === 200) {
-        Cookies.set('authToken', response.data.token);
-  
-        toast.success('Inicio de sesión exitoso');
-  
-        setTimeout(() => {
-          window.location.href = '/Inicio';
-        }, 1000); 
+        if (response.data.token && response.data.user && response.data.user.role) {
+          console.log('Respuesta del backend:', response.data);
+
+          Cookies.set('authToken', response.data.token);
+          Cookies.set('role', response.data.user.role);
+          toast.success('Inicio de sesión exitoso');
+          
+          setTimeout(() => {
+            window.location.href = '/Inicio'; 
+          }, 1000);
+        } else {
+          toast.error("Datos incompletos en la respuesta del servidor");
+        }
       } else {
         toast.error("Credenciales Incorrectas");
       }
