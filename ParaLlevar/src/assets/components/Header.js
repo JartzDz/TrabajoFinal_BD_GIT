@@ -3,10 +3,10 @@ import { MdOutlineFoodBank } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
 import { FaBars } from "react-icons/fa";
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import '../styles/header.css';
 
-const Header = ({ cartCount }) => {
+const Header = ({ cartCount, onCartClick }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const authToken = Cookies.get('authToken');
@@ -78,9 +78,9 @@ const Header = ({ cartCount }) => {
         </ul>
       </div>
       
-      {authToken && (
+      {authToken && userRole === 'cliente' && (
         <div className="cart-icon">
-          <a href='/Reserva' className='logo'>
+          <a href='#' className='logo' onClick={onCartClick}>
             <AiOutlineShopping className='iconOrders' />
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </a>

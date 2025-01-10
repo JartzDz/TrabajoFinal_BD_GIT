@@ -1,0 +1,106 @@
+.cart {
+    position: fixed;
+    right: 0;
+    top: 5rem;
+    width: 400px;
+    height: calc(100% - 5rem);
+    background-color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+    z-index: 1000;
+    padding: 20px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .cart.show {
+    transform: translateX(400px);
+  }
+  
+  .cart h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--color-primary);
+  }
+  
+  .cart h3 {
+   font-size: 18px;
+    color: var(--color-textos);
+  }
+  .cart .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.cart .cart-item .item-details {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.cart .cart-item .item-details img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px; 
+}
+
+.cart .cart-item .nameProduct {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+}
+
+.cart .cart-item .item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart .cart-item .item-quantity button {
+    background-color: #86553a;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 3px;
+    height: 40px;
+}
+
+.cart .cart-item .item-quantity button:hover {
+    background-color: var(--color-fondoLogin);
+    color: var(--color-textos);
+   
+}
+
+.cart .cart-item .remove-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin-left: 20px; 
+}
+
+.cart .cart-item .remove-button:hover {
+    background-color: var(--color-primary);
+    color: white;
+   
+}
+
+
+.cart .cart-item .remove-button .icon {
+    font-size: 18px;
+}

@@ -20,6 +20,7 @@ function Register() {
         <div className="RegisterContainer">
             <div className='textoImagen'>
               <h1 className='textoToGo'>La misma calidad pero en casa </h1>
+  
               <h1 className='textoTooGood'>Regístrate</h1>
               <div className='textoInformativo'>
                   <p className='subtexto'>Únete para disfrutar de lo mejor, lo mejor lo encuentras aquí</p>

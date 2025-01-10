@@ -51,12 +51,12 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
                 <div className='card' style={cardStyle}>
                   <div className='contenidoCard'>
                     <div className='contenedorImagen'>
-                    <img src={`http://localhost:5000/${imagen}`} alt={`${nombre} Logo`} className='producto-imagen' />
+                      <img src={`http://localhost:5000/${imagen}`} alt={`${nombre} Logo`} className='producto-imagen' />
                     </div>
                     <h3>{nombre}</h3>
                     <h3>${producto.precio}</h3>
                     <p>{producto.descripcion}</p>
-                    <button onClick={() => onBuyClick(producto)}>{nombreBoton}</button>
+                    <button className='add-to-cart-button' onClick={() => onBuyClick(producto)}>{nombreBoton}</button>
                   </div>
                 </div>
               </Slide>

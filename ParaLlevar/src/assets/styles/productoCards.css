@@ -59,24 +59,9 @@
   transition: opacity 0.3s ease; /* Añadido para animación de opacidad */
 }
 
-.contenidoCard button {
-  display: none;
-  width: 100%;
-  cursor: pointer;
-  background: #e9cd8b;
-  color: #86553a;
-  text-transform: uppercase;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 0;
-  transition: background-color 0.3s ease;
-}
 
 .card:hover {
   background-color: #e9cd8b;
-  cursor: pointer;
 }
 
 .card:hover .contenidoCard p,
@@ -84,10 +69,6 @@
   opacity: 0; 
 }
 
-.card:hover .contenidoCard button {
-  display: block;
-  margin-top: -35px;
-}
 
 .card:hover .contenidoCard {
   justify-content: center;
@@ -99,7 +80,8 @@
 }
 
 .card .contenidoCard button {
-  display: none;
+  cursor: pointer;
+  display: none; 
   width: 100%;
   background-color: #86553a;
   text-transform: uppercase;
@@ -109,8 +91,18 @@
   color: #fff;
   border-radius: 5px;
   padding: 10px 0;
-  transition: background-color 0.3s ease, margin-top 0.3s ease;
+  transition: background-color 0.3s ease, margin-top 0.3s ease, opacity 0.3s ease; 
 }
+
+.card:hover .contenidoCard button {
+  display: block;
+  margin-top: -35px;
+}
+
+button {
+  cursor: pointer;
+}
+
 .card img {
   width: 150px;
   height: 150px;

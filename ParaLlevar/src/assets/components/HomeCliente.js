@@ -4,9 +4,15 @@ import axios from 'axios';
 import MapComponent from './MapComponent'; 
 import '../styles/cliente.css';
 import ProductosCards from "./ProductoCards";
+import Header from './Header';
+import Cart from './Cart';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function HomeCliente() {
-  const [productos, setProductos] = useState([]); //Aqui se almacenan los productos
+  const [productos, setProductos] = useState([]); 
+  const [cartItems, setCartItems] = useState([]);
+  const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -21,8 +27,41 @@ function HomeCliente() {
     obtenerProductos();
   }, []);
 
+  const handleAddToCart = (producto) => {
+    setCartItems(prevCartItems => {
+      const isProductInCart = prevCartItems.some(item => item.id === producto.id);
+      if (isProductInCart) {
+        toast.info(`${producto.nombre_producto} ya está en el carrito.`);
+        return prevCartItems;
+      } else {
+        const updatedCartItems = [...prevCartItems, { ...producto, cantidad: 1 }];
+        toast.success(`${producto.nombre_producto} se ha agregado al carrito`);
+        return updatedCartItems;
+      }
+    });
+  };
+
+  const handleIncreaseQuantity = (id) => {
+    setCartItems(prevCartItems => prevCartItems.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item));
+  };
+
+  const handleDecreaseQuantity = (id) => {
+    setCartItems(prevCartItems => prevCartItems.map(item => item.id === id ? { ...item, cantidad: item.cantidad > 1 ? item.cantidad - 1 : 1 } : item));
+  };
+
+  const handleRemoveItem = (id) => {
+    setCartItems(prevCartItems => prevCartItems.filter(item => item.id !== id));
+    toast.success("Producto eliminado del carrito");
+  };
+
+  const handleCheckout = () => {
+    // Aquí puedes añadir la lógica para proceder al pago
+    console.log("Proceder al pago con los siguientes productos:", cartItems);
+  };
+
   return (
     <div className='ClienteContainer'>
+      <Header cartCount={cartItems.length} onCartClick={() => setShowCart(!showCart)} />
       <div className='textoImagen'>
         <h1 className='texto1'>Disfruta </h1>
         <h1 className='texto2'>la mejor comida está aquí</h1>
@@ -36,19 +75,19 @@ function HomeCliente() {
       <div className="contenedorBlanco">
         <h1>OFERTAS</h1>
         <div className="linea"></div>
-        {/* Asegúrate de pasar los productos a ProductosCards */}
         <ProductosCards 
           productos={productos} 
           nombreBoton={'AÑADIR AL CARRITO'} 
           carruselId={`carrusel-productos-ofertas`}
+          onBuyClick={handleAddToCart}
         />
         
         <h1>MENÚ</h1>
-        {/* Pasa los productos también al menú */}
         <ProductosCards 
           productos={productos} 
           nombreBoton={'AÑADIR AL CARRITO'} 
           carruselId={`carrusel-productos`}
+          onBuyClick={handleAddToCart}
         />
         
         <h1>NUESTRA UBICACIÓN</h1>
@@ -59,6 +98,25 @@ function HomeCliente() {
           Copyright © 2024 Para Llevar. All Rights Reserved.
         </div>
       </div>
+      {showCart && (
+        <Cart
+          cartItems={cartItems}
+          onIncreaseQuantity={handleIncreaseQuantity}
+          onDecreaseQuantity={handleDecreaseQuantity}
+          onRemoveItem={handleRemoveItem}
+          onCheckout={handleCheckout}
+          onClose={() => setShowCart(false)}
+        />
+      )}
+      <ToastContainer 
+        position="top-right" 
+        autoClose={2000} 
+        hideProgressBar={false} 
+        closeButton={false}  
+        style={{ width: '400px' }}
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 }
