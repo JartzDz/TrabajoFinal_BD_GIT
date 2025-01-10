@@ -3,6 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';  // Importamos el hook useNavigate
 import '../styles/addProduct.css'
+import Cookies from 'js-cookie';
 
 function FormularioProducto() {
   const [nombreProducto, setNombreProducto] = useState('');
@@ -11,6 +12,8 @@ function FormularioProducto() {
   const [categoria, setCategoria] = useState('');
   const [imagenArchivo, setImagen] = useState(null);
   const [nombreImagen, setNombreImagen] = useState('');
+  const [esOferta, setEsOferta] = useState(false); 
+
   const navigate = useNavigate(); 
   const handleImageChange = (e) => {
     setImagen(e.target.files[0]);
@@ -26,13 +29,17 @@ function FormularioProducto() {
     formData.append('precio', precio);
     formData.append('categoria', categoria);
     formData.append('imagen', imagenArchivo);
-    formData.append('esOferta', false);
-  
+    formData.append('esOferta', esOferta);
+
     try {
       const response = await fetch('http://localhost:5000/api/productos/agregar', {
         method: 'POST',
         body: formData,
+        headers: {
+          'Authorization': `Bearer ${Cookies.get('authToken')}`, 
+        },
       });
+      
   
       if (response.ok) {
         toast.success('Producto agregado con éxito');
@@ -45,6 +52,7 @@ function FormularioProducto() {
         setCategoria('');
         setImagen(null);
         setNombreImagen('');
+        setEsOferta(false);
       } else {
         toast.error('Error al agregar el producto');  
       }
@@ -89,6 +97,15 @@ function FormularioProducto() {
           <option value="postre">Postre</option>
           <option value="plato fuerte">Plato Fuerte</option>
         </select>
+        <div className="offerSwitch">
+          <label htmlFor="esOferta">¿Está en oferta?</label>
+          <input
+            type="checkbox"
+            id="esOferta"
+            checked={esOferta}
+            onChange={(e) => setEsOferta(e.target.checked)}
+          />
+        </div>
         <input
           type="file"
           id="file-upload"

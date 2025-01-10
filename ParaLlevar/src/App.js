@@ -37,7 +37,6 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/Inicio" element={<Cliente />} />  //COLOCADO autenticación
-          <Route path="/Inicio-Negocio" element={<NegocioPage />} /> //COLOCADO autenticación
           <Route path="/Negocio" element={<Negocio />} /> //COLOCADO autenticación
           <Route path="/Registro" element={<Register />} />
           <Route path="/Registro-Cliente" element={<RegistroCliente />} />

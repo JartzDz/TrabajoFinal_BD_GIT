@@ -4,9 +4,9 @@
   margin-left: -40px;
   position: relative;
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
-  gap: 10px; /* Espacio entre los elementos */
-  flex-direction: column;/* Espacio entre los elementos, puedes ajustar este valor */
+  flex-wrap: wrap;
+  gap: 10px; 
+  flex-direction: column;
 }
   
   .contenedorStatisticDashboard .card {

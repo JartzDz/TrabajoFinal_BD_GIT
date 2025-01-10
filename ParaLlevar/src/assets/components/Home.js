@@ -3,8 +3,6 @@ import '../styles/informativa.css'
 import bolsa2 from '../images/bolsa2.jpg'
 import bolsa3 from '../images/bolsa3.jpg'
 import bolsa4 from '../images/bolsa4.jpg'
-import cliente from '../images/cliente.jpg'
-import negocio from '../images/negocio.jpg'
 import Cookies from 'js-cookie';
 function Home() {
   const [currentSlide, setCurrentSlide] = useState('cliente');

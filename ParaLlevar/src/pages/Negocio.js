@@ -21,7 +21,6 @@ const Negocio = () => {
                 <Header page={'RegistroCategoria'}/>
                 <DynamicBreadcrumb/>
                 <AddNegocio/>
-              
             </div>
         </div>
     );

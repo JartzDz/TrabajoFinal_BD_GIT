@@ -3,9 +3,10 @@
 :root {
   --color-primary: #f46c3c  ;
   --color-secundary: #d4322a ;
-  --color-button: #B01818;
+  --color-button: #d4322a;
   --color-fondoLogin:#e9cd8b;
   --color-textos:#86553a ;
+  --color-gris:#e9e9e9 ;
 }
 *{
   font-family: 'Poppins', sans-serif;

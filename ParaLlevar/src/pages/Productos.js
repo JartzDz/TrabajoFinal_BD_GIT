@@ -1,4 +1,3 @@
-//CRUD_producto.js
 import React from 'react';
 import Header from '../assets/components/Header';
 import DynamicBreadcrumb from '../assets/components/Bredcrumb';
@@ -21,7 +20,7 @@ const CrudProducto = () => {
     console.log('Rol del usuario:', userRole);
         
     if (userRole !== 'admin') {
-        return <Navigate to="/" />; 
+        return <Navigate to="/Inicio" />; 
     }
     
 

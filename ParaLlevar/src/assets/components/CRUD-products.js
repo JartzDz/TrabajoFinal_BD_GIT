@@ -8,6 +8,7 @@ import { FiEdit } from "react-icons/fi";
 import { Table } from "antd"; 
 import axios from 'axios'; // Importa Axios
 import { ToastContainer, toast } from 'react-toastify';
+import Cookies from 'js-cookie';
 
 function CRUDProducts() {
     const [productos, setProductos] = useState([]);
@@ -25,13 +26,14 @@ function CRUDProducts() {
         obtenerProducto();
     }, []);
     
-    const recargarProductos = async () => {
-        await obtenerProducto();
-    };
 
     const eliminarProducto = async (id_producto) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/productos/eliminar/${id_producto}`);
+            const response = await axios.delete(`http://localhost:5000/api/productos/eliminar/${id_producto}`,{
+                headers: {
+                         'Authorization': `Bearer ${Cookies.get('authToken')}`, 
+                },
+            }); 
             
             if (response.data && response.data.message === 'Producto eliminado') {
                 console.log('Producto eliminado:', response.data);

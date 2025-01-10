@@ -28,7 +28,7 @@ body{
     left: 0;
     width: 100%;
     height: 100%; 
-    background-color: var(--color-secundary);
+    background-color: var(--color-gris);
     color: var(--color-button);
     padding: 20px 20px 40px 20px;
     text-align: left; 
@@ -192,17 +192,17 @@ body{
     margin-top: 30px;
   }
   .HomeContainer .contenedorFooter {
-    margin-top: 10%; 
-    margin-bottom: 0; 
-    position: relative;
-    width: 100%;
+    position: fixed; /* Fija el footer al fondo de la pantalla */
+    bottom: 0; /* Lo coloca al fondo */
+    left: 0; /* Alinea el footer a la izquierda */
+    width: 100%; /* Hace que el footer ocupe todo el ancho */
     background-color: var(--color-fondoLogin);
     color: var(--color-button);
     text-align: right;
     padding-right: 40px;
     border-radius: 60px 60px 0 0;
     z-index: 2;
-  }
+}
   
   .HomeContainer .textoFooter2 {
     display: flex;

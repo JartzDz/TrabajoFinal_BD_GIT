@@ -8,7 +8,6 @@ import '../assets/styles/informativa.css';
 
 const BienvenidaPage = () => {
   
-  // Función para eliminar todas las cookies
   const eliminarTodasLasCookies = () => {
     const cookies = Cookies.get();
     for (let cookie in cookies) {
@@ -16,7 +15,6 @@ const BienvenidaPage = () => {
     }
   };
 
-  // Llamar a la función al cargar el componente
   useEffect(() => {
     eliminarTodasLasCookies();
   }, []);

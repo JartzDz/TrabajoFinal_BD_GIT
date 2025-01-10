@@ -3,23 +3,20 @@ import { MdOutlineFoodBank } from "react-icons/md";
 import { AiOutlineShopping } from "react-icons/ai";
 import { FaBars } from "react-icons/fa";
 import Cookies from 'js-cookie';
-import '../styles/header.css';
 import { jwtDecode } from 'jwt-decode';
-import { Navigate } from "react-router-dom";
+import '../styles/header.css';
 
-const Header = ({ page, cartCount }) => {
+const Header = ({ cartCount }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
   const authToken = Cookies.get('authToken');
-  
+
   let userRole = '';
   if (authToken) {
     const decodedToken = jwtDecode(authToken);
     userRole = decodedToken.role; 
   }
   
-  console.log('Rol del usuario:', userRole);
-
   const handleToggleMenu = () => setShowMenu(!showMenu);
   const handleToggleSubMenu = () => setShowSubMenu(!showSubMenu);
 
@@ -42,23 +39,20 @@ const Header = ({ page, cartCount }) => {
       </label>
       <div className={`menu ${showMenu ? 'show' : ''}`}>
         <ul>
-          {userRole === 'cliente' && (
+          {authToken && userRole === 'cliente' && (
             <>
               <li><a href="/Inicio">Inicio</a></li>
-              <li><a href="/RegistroComentarios">Mis Pedidos</a></li>
-              <li><a href="/HistorialReservas">Historial</a></li>
+              <li><a href="/HistorialReservas">Mis Pedidos</a></li>
               <li><a href="/MiPerfil">Mi Perfil</a></li>
               <li className="show-small"><a href="/Reserva">Bolsa de Compras</a></li>
               <li><button className='buttonIniciarSesion' onClick={handleLogOut}>Cerrar Sesión</button></li>
             </>
           )}
-          {userRole === 'admin' && (
+          {authToken && userRole === 'admin' && (
             <>
               <li><a href="/Inicio">Inicio</a></li>
-              <li><a href="/Negocio">Negocio</a></li>
               <li><a href="/RegistroCategoria">Categorías</a></li>
               <li><a href="/RegistroProductos">Productos</a></li>
-              <li><a href="/RegistroOfertas">Ofertas</a></li>
               <li className="reservas-menu">
                 <a onClick={handleToggleSubMenu}>Pedidos</a>
                 {showSubMenu && (
@@ -75,7 +69,7 @@ const Header = ({ page, cartCount }) => {
               <li><button className='buttonIniciarSesion' onClick={handleLogOut}>Cerrar Sesión</button></li>
             </>
           )}
-          {page === 'Informativa' && (
+          {!authToken && (
             <>
               <li><a href="/Registro" className="no-underline"><button className='buttonRegistrarse'>Registrarse</button></a></li>
               <li><a href="/Login" className="no-underline"><button className='buttonIniciarSesion'>Iniciar Sesión</button></a></li>
@@ -84,7 +78,7 @@ const Header = ({ page, cartCount }) => {
         </ul>
       </div>
       
-      {page !== 'RegistroProductos' && page !== 'Informativa' && (
+      {authToken && (
         <div className="cart-icon">
           <a href='/Reserva' className='logo'>
             <AiOutlineShopping className='iconOrders' />
