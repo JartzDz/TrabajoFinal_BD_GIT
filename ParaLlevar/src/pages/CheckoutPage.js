@@ -1,9 +1,13 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
+import React, { useContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import '../assets/styles/checkout.css';
 import HeaderReturn from '../assets/components/HeaderReturn';
-import { FaEdit } from 'react-icons/fa'; // Importar el icono de editar
-import { CartContext } from '../assets/components/CartContext'; // Importar el contexto del carrito
+import { FaEdit } from 'react-icons/fa';
+import { CartContext } from '../assets/components/CartContext'; 
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CheckoutPage = () => {
   const navigate = useNavigate(); 
@@ -11,21 +15,100 @@ const CheckoutPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [direccion, setDireccion] = useState('');
   const [ciudad, setCiudad] = useState('');
-  const [codigoPostal, setCodigoPostal] = useState('');
+  const [codigo_postal, setCodigoPostal] = useState('');
   const [telefono, setTelefono] = useState('');
+  const [pais, setPais] = useState('');
+  const [provincia, setProvincia] = useState('');
+  const [tipo_direccion, setTipoDireccion] = useState('Casa');
   const [address, setAddress] = useState(null);
+  const [userId, setUserId] = useState(null);
+  
+  const token = Cookies.get('authToken'); 
 
-  const handleDireccionSubmit = () => {
-    setAddress({ direccion, ciudad, codigoPostal, telefono });
-    setIsModalOpen(false); // Cierra el modal una vez se ingrese la dirección
+  useEffect(() => {
+    if (!token) {
+      navigate('/login'); 
+    }
+  }, [token, navigate]);
+
+  useEffect(() => {
+    try {
+      const decodedToken = JSON.parse(atob(token.split('.')[1])); 
+      const userId = decodedToken.id; 
+      
+      if (userId) {
+        setUserId(userId);
+      } else {
+        console.error('No se encontró el id en el token');
+      }
+    } catch (error) {
+      console.error('Error al decodificar el token o al extraer el id:', error);
+    }
+  }, [token]);
+  
+  const handleDireccionSubmit = async () => {
+    if (!direccion || !ciudad || !codigo_postal || !telefono || !provincia || !pais) {
+      toast.error("Por favor, complete todos los campos.");
+      return;
+    }
+
+    if (!/^\d+$/.test(codigo_postal) || codigo_postal.length !== 5) {
+      toast.error("El código postal debe ser un número de 5 dígitos.");
+      return;
+    }
+
+    if (!/^\d+$/.test(telefono) || telefono.length !== 10) {
+      toast.error("El número de teléfono debe ser un número de 10 dígitos.");
+      return;
+    }
+
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:5000/api/direcciones/guardar-direccion', {
+        direccion,
+        ciudad,
+        codigo_postal,
+        telefono,
+        provincia,
+        pais,
+        tipo_direccion: tipo_direccion,
+        usuario_id: userId 
+      }, config);
+    
+      if (response.status === 201) {
+        setAddress({
+          direccion,
+          ciudad,
+          codigo_postal,
+          telefono,
+          provincia,
+          pais,
+          tipo_direccion
+        });
+        setIsModalOpen(false);
+        toast.success("Dirección guardada con éxito.");
+      } else {
+        toast.error('Error al guardar la dirección');
+      }
+    } catch (error) {
+      toast.error('Error en la solicitud de dirección: ' + error.message);
+    }
   };
-
+  
   const handleEditDireccion = () => {
-    setDireccion(address.direccion);
-    setCiudad(address.ciudad);
-    setCodigoPostal(address.codigoPostal);
-    setTelefono(address.telefono);
-    setIsModalOpen(true); // Abre el modal para editar la dirección
+    if (address) {
+      setDireccion(address.direccion);
+      setCiudad(address.ciudad);
+      setCodigoPostal(address.codigo_postal);
+      setTelefono(address.telefono);
+      setProvincia(address.provincia);
+      setPais(address.pais);
+      setTipoDireccion(address.tipo_direccion);
+      setIsModalOpen(true);
+    }
   };
 
   const calculateSubtotal = () => {
@@ -43,6 +126,10 @@ const CheckoutPage = () => {
       <HeaderReturn />
       <div className="waves-background"></div>
       <h1 style={{ marginTop: '2rem' }}>CHECKOUT</h1>
+      <ToastContainer 
+        closeButtonStyle={{ fontSize: '12px', padding: '4px' }} 
+        style={{ width: '400px', marginTop: '4rem' }} 
+      />
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
@@ -64,10 +151,26 @@ const CheckoutPage = () => {
               />
             </label>
             <label>
+              Provincia:
+              <input
+                type="text"
+                value={provincia}
+                onChange={(e) => setProvincia(e.target.value)}
+              />
+            </label>
+            <label>
+              País:
+              <input
+                type="text"
+                value={pais}
+                onChange={(e) => setPais(e.target.value)}
+              />
+            </label>
+            <label>
               Código Postal:
               <input
                 type="text"
-                value={codigoPostal}
+                value={codigo_postal}
                 onChange={(e) => setCodigoPostal(e.target.value)}
               />
             </label>
@@ -78,6 +181,17 @@ const CheckoutPage = () => {
                 value={telefono}
                 onChange={(e) => setTelefono(e.target.value)}
               />
+            </label>
+            <label>
+              Tipo de Dirección:
+              <select
+                value={tipo_direccion}
+                onChange={(e) => setTipoDireccion(e.target.value)}
+              >
+                <option value="Casa">Casa</option>
+                <option value="Trabajo">Trabajo</option>
+                <option value="Otra">Otra</option>
+              </select>
             </label>
             <div className="button-container">
               <button onClick={handleDireccionSubmit}>Guardar</button>
@@ -101,8 +215,8 @@ const CheckoutPage = () => {
               ))}
             </ul>
             <div className='totales'>
-            <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
-            <p>Impuestos: ${(calculateSubtotal() * 0.12).toFixed(2)}</p>
+              <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
+              <p>Impuestos: ${(calculateSubtotal() * 0.12).toFixed(2)}</p>
             </div>
             <h3>Total: ${calculateTotal().toFixed(2)}</h3>
           </div>
@@ -113,8 +227,11 @@ const CheckoutPage = () => {
           {address ? (
             <div className="address-info">
               <h3>Dirección de Entrega</h3>
-              <p>{address.direccion}, {address.ciudad}, {address.codigoPostal}</p>
+              <p>{address.direccion}, {address.ciudad}, {address.codigo_postal}</p>
               <p>Teléfono: {address.telefono}</p>
+              <p>Provincia: {address.provincia}</p>
+              <p>País: {address.pais}</p>
+              <p>Tipo de Dirección: {address.tipo_direccion}</p>
               <button onClick={handleEditDireccion}>
                 <FaEdit /> Editar Dirección
               </button>
@@ -143,7 +260,6 @@ const CheckoutPage = () => {
         </div>
       </div>
     </div>
-
   );
 };
 

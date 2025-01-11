@@ -19,7 +19,7 @@ function MiPerfil() {
 
     useEffect(() => {
         const fetchUserProfile = async () => {
-            const authToken = Cookies.get('authToken'); // Primero obtenemos el authToken
+            const authToken = Cookies.get('authToken'); 
             if (!authToken) {
                 console.error('No se encontró el authToken');
                 return;

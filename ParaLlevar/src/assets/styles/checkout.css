@@ -181,7 +181,7 @@
   color: var(--color-secundary);
 }
 
-.modal-content input {
+.modal-content input,select {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -247,4 +247,16 @@
 .cart-summary .totales p {
   margin: 5px 0; 
   text-align: right;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  box-sizing: border-box;
+  max-height: 600px; 
+  overflow-y: auto; 
 }
