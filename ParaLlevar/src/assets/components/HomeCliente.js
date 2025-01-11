@@ -1,63 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import pizza from '../images/pizza.png';
 import axios from 'axios';
-import MapComponent from './MapComponent'; 
+import MapComponent from './MapComponent';
 import '../styles/cliente.css';
 import ProductosCards from "./ProductoCards";
 import Header from './Header';
 import Cart from './Cart';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CartContext } from './CartContext'; // Importar el contexto
 
 function HomeCliente() {
-  const [productos, setProductos] = useState([]); 
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext); // Usar el contexto
+  const [productos, setProductos] = useState([]);
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
     const obtenerProductos = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/productos');
-        console.log(response.data);
         setProductos(response.data);
       } catch (error) {
         console.error('Error al obtener los productos: ', error);
       }
-    };    
+    };
     obtenerProductos();
   }, []);
-
-  const handleAddToCart = (producto) => {
-    setCartItems(prevCartItems => {
-      const existingProduct = prevCartItems.find(item => item.id_producto === producto.id_producto);
-      
-      if (existingProduct) {
-        return prevCartItems.map(item => 
-          item.id_producto === producto.id_producto ? { ...item, cantidad: item.cantidad + 1 } : item,
-          toast.success(`${producto.nombre} se ha agregado al carrito`)
-        );
-      } else {
-        toast.success(`${producto.nombre} se ha agregado al carrito`);
-        return [...prevCartItems, { ...producto, cantidad: 1 }];
-      }
-    });
-  };
-  
-
-  const handleIncreaseQuantity = (id) => {
-    setCartItems(prevCartItems => prevCartItems.map(item => item.id_producto === id ? { ...item, cantidad: item.cantidad + 1 } : item));
-  };
-
-  const handleDecreaseQuantity = (id) => {
-    setCartItems(prevCartItems => prevCartItems.map(item => item.id_producto === id ? { ...item, cantidad: item.cantidad > 1 ? item.cantidad - 1 : 1 } : item));
-  };
-
-  const handleRemoveItem = (id) => {
-    setCartItems(prevCartItems => prevCartItems.filter(item => item.id_producto !== id));
-    toast.success("Producto eliminado del carrito");
-  };
-
-
 
   return (
     <div className='ClienteContainer'>
@@ -79,7 +47,7 @@ function HomeCliente() {
           productos={productos} 
           nombreBoton={'AÑADIR AL CARRITO'} 
           carruselId={`carrusel-productos-ofertas`}
-          onBuyClick={handleAddToCart}
+          onBuyClick={addToCart} // Usar el método del contexto
         />
         
         <h1>MENÚ</h1>
@@ -87,7 +55,7 @@ function HomeCliente() {
           productos={productos} 
           nombreBoton={'AÑADIR AL CARRITO'} 
           carruselId={`carrusel-productos`}
-          onBuyClick={handleAddToCart}
+          onBuyClick={addToCart} // Usar el método del contexto
         />
         
         <h1>NUESTRA UBICACIÓN</h1>
@@ -101,9 +69,9 @@ function HomeCliente() {
       {showCart && (
         <Cart
           cartItems={cartItems}
-          onIncreaseQuantity={handleIncreaseQuantity}
-          onDecreaseQuantity={handleDecreaseQuantity}
-          onRemoveItem={handleRemoveItem}
+          onIncreaseQuantity={increaseQuantity}
+          onDecreaseQuantity={decreaseQuantity}
+          onRemoveItem={removeFromCart}
           onClose={() => setShowCart(false)}
         />
       )}

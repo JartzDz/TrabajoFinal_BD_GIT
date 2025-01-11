@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import '../assets/styles/checkout.css';
-import HeaderReturn from '../assets/components/HeaderReturn'
+import HeaderReturn from '../assets/components/HeaderReturn';
+import { FaEdit } from 'react-icons/fa'; // Importar el icono de editar
+import { CartContext } from '../assets/components/CartContext'; // Importar el contexto del carrito
 
 const CheckoutPage = () => {
-  const navigate = useNavigate(); // Definir la función de navegación
+  const navigate = useNavigate(); 
+  const { cartItems } = useContext(CartContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [direccion, setDireccion] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [codigoPostal, setCodigoPostal] = useState('');
   const [telefono, setTelefono] = useState('');
-  const [address, setAddress] = useState(null); // Guardará la dirección una vez ingresada
-  const [cartItems, setCartItems] = useState([ /* Aquí irían los productos del carrito */ ]);
+  const [address, setAddress] = useState(null);
 
   const handleDireccionSubmit = () => {
     setAddress({ direccion, ciudad, codigoPostal, telefono });
     setIsModalOpen(false); // Cierra el modal una vez se ingrese la dirección
+  };
+
+  const handleEditDireccion = () => {
+    setDireccion(address.direccion);
+    setCiudad(address.ciudad);
+    setCodigoPostal(address.codigoPostal);
+    setTelefono(address.telefono);
+    setIsModalOpen(true); // Abre el modal para editar la dirección
   };
 
   const calculateSubtotal = () => {
@@ -30,10 +40,9 @@ const CheckoutPage = () => {
 
   return (
     <div className="checkout-container">
-    <HeaderReturn/>
-    <div className="waves-background"></div>
-      <h1>CHECKOUT</h1>
-      
+      <HeaderReturn />
+      <div className="waves-background"></div>
+      <h1 style={{ marginTop: '2rem' }}>CHECKOUT</h1>
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
@@ -70,42 +79,50 @@ const CheckoutPage = () => {
                 onChange={(e) => setTelefono(e.target.value)}
               />
             </label>
-            <button onClick={handleDireccionSubmit}>Guardar Dirección</button>
-            <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
+            <div className="button-container">
+              <button onClick={handleDireccionSubmit}>Guardar</button>
+              <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
+            </div>
           </div>
         </div>
       )}
-      
+
       <div className="order-summary-container">
         <div className="order-summary-left">
-          <h2>Resumen del Pedido</h2>
+          <h2 style={{ fontSize: '28px' }}>Resumen del Pedido</h2>
           <div className="cart-summary">
             <h3>Productos</h3>
             <ul>
               {cartItems.map((item) => (
-                <li key={item.id}>
-                  {item.nombre_producto} x {item.cantidad} - ${item.precio * item.cantidad}
+                <li key={item.id_producto}>
+                  <span>{item.nombre} x {item.cantidad}</span>
+                  <span>${(item.precio * item.cantidad).toFixed(2)}</span>
                 </li>
               ))}
             </ul>
-            <p>Subtotal: ${calculateSubtotal()}</p>
+            <div className='totales'>
+            <p>Subtotal: ${calculateSubtotal().toFixed(2)}</p>
             <p>Impuestos: ${(calculateSubtotal() * 0.12).toFixed(2)}</p>
+            </div>
             <h3>Total: ${calculateTotal().toFixed(2)}</h3>
           </div>
         </div>
-        
+
         <div className="order-summary-right">
-          <h2>Dirección y Método de Pago</h2>
+          <h2 style={{ fontSize: '28px' }}>Dirección y Método de Pago</h2>
           {address ? (
             <div className="address-info">
               <h3>Dirección de Entrega</h3>
               <p>{address.direccion}, {address.ciudad}, {address.codigoPostal}</p>
               <p>Teléfono: {address.telefono}</p>
+              <button onClick={handleEditDireccion}>
+                <FaEdit /> Editar Dirección
+              </button>
             </div>
           ) : (
             <button onClick={() => setIsModalOpen(true)}>Agregar Dirección</button>
           )}
-          
+
           <div className="payment-method">
             <h3>Selecciona el Método de Pago</h3>
             <label>
@@ -126,6 +143,7 @@ const CheckoutPage = () => {
         </div>
       </div>
     </div>
+
   );
 };
 

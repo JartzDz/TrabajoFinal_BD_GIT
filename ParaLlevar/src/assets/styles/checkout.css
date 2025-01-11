@@ -144,4 +144,107 @@
     background-image: url('../images/waves.png');
     z-index: -1;
   }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 1000; 
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: var(--color-primary);
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: var(--color-secundary);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.modal-content .button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px; 
+  margin-top: 20px;
+}
+
+.modal-content button {
+  padding: 10px 20px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 48%; 
+ 
+}
+
+.modal-content button:hover {
+  background-color: #009f18; 
+}
+
+.modal-content button:last-child {
+  background-color: #f44336;
+}
+
+.modal-content button:last-child:hover {
+  background-color: #d32f2f;
+}
+
+.cart-summary ul {
+  list-style-type: none;
+  padding: 10px;
+}
+
+.cart-summary li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.cart-summary li span {
+  text-align: right;
+}
+
+.cart-summary .totales {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 10px;
   
+}
+
+.cart-summary .totales p {
+  margin: 5px 0; 
+  text-align: right;
+}
