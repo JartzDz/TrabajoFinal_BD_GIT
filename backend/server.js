@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const testUserRoutes = require('./routes/testUserRoutes');
 const productosRoutes = require('./routes/productosRoutes'); 
 const userRoutes = require('./routes/userRoutes');
+const ofertasRoutes = require('./routes/ofertasRoutes');
 const direccionesRoutes = require('./routes/direccionesRoutes');
 const cookieParser = require('cookie-parser');
 
@@ -17,6 +18,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.json()); 
 
 // Rutas
 app.use('/api/auth', authRoutes);
@@ -25,6 +27,7 @@ app.use('/api/productos', productosRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRoutes);
 app.use('/api/direcciones', direccionesRoutes);
+app.use('/api/ofertas',ofertasRoutes)
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000;

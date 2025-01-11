@@ -50,6 +50,7 @@ const Header = ({ onCartClick }) => {
               <li><a href="/Inicio">Inicio</a></li>
               <li><a href="/RegistroCategoria">Categorías</a></li>
               <li><a href="/RegistroProductos">Productos</a></li>
+              <li><a href="/RegistroOfertas">Ofertas</a></li>
               <li><button className='buttonIniciarSesion' onClick={handleLogOut}>Cerrar Sesión</button></li>
             </>
           )}

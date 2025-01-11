@@ -23,9 +23,10 @@ router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res
   
   try {
     const result = await pool.query(
-      'INSERT INTO productos (nombre, descripcion, precio, imagen_url, en_oferta) VALUES ($1, $2, $3, $4, $5) RETURNING *',  // Cambié imagen a imagen_url y nombre_producto a nombre
-      [nombre, descripcion, precio, imagen_url, esOferta === 'true']
+      'INSERT INTO productos (nombre, descripcion, precio, imagen_url) VALUES ($1, $2, $3, $4) RETURNING *',
+      [nombre, descripcion, precio, imagen_url]
     );
+    
     
     res.status(201).json({
       message: 'Producto agregado correctamente',
@@ -95,8 +96,8 @@ router.get('/:id', verifyToken(), async (req, res) => {
 // Ruta para actualizar productos (solo admin)
 router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, precio, en_oferta } = req.body; // Cambié nombreProducto a nombre
-  let imagen_url = req.file ? req.file.path : null;  // Cambié imagen a imagen_url
+  const { nombre, descripcion, precio, en_oferta } = req.body; 
+  let imagen_url = req.file ? req.file.path : null; 
 
   if (!nombre || nombre.trim() === '') {
     return res.status(400).json({ message: 'El nombre del producto es obligatorio' });
@@ -113,9 +114,10 @@ router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (re
     }
 
     const result = await pool.query(
-      'UPDATE productos SET nombre = $1, descripcion = $2, precio = $3, imagen_url = $4, en_oferta = $5 WHERE id_producto = $6 RETURNING *',  
-      [nombre.trim(), descripcion, precio, imagen_url, en_oferta === 'true', id]
+      'UPDATE productos SET nombre = $1, descripcion = $2, precio = $3, imagen_url = $4 WHERE id_producto = $5 RETURNING *',  
+      [nombre.trim(), descripcion, precio, imagen_url, id]
     );
+    
     
     
 

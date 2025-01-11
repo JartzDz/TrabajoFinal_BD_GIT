@@ -12,7 +12,6 @@ function FormularioProducto() {
   const [categoria, setCategoria] = useState('');
   const [imagenArchivo, setImagen] = useState(null);
   const [nombreImagen, setNombreImagen] = useState('');
-  const [esOferta, setEsOferta] = useState(false); 
 
   const navigate = useNavigate(); 
   const handleImageChange = (e) => {
@@ -29,7 +28,6 @@ function FormularioProducto() {
     formData.append('precio', precio);
     formData.append('categoria', categoria);
     formData.append('imagen', imagenArchivo);
-    formData.append('esOferta', esOferta);
 
     try {
       const response = await fetch('http://localhost:5000/api/productos/agregar', {
@@ -52,7 +50,7 @@ function FormularioProducto() {
         setCategoria('');
         setImagen(null);
         setNombreImagen('');
-        setEsOferta(false);
+      
       } else {
         toast.error('Error al agregar el producto');  
       }
@@ -97,15 +95,6 @@ function FormularioProducto() {
           <option value="postre">Postre</option>
           <option value="plato fuerte">Plato Fuerte</option>
         </select>
-        <div className="offerSwitch">
-          <label htmlFor="esOferta">¿Está en oferta?</label>
-          <input
-            type="checkbox"
-            id="esOferta"
-            checked={esOferta}
-            onChange={(e) => setEsOferta(e.target.checked)}
-          />
-        </div>
         <input
           type="file"
           id="file-upload"
