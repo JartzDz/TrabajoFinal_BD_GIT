@@ -26,21 +26,34 @@ router.get('/', verifyToken(), async (req, res) => {
 });
 
 
-// Obtener todos los tipos de oferta
-router.get('/tipos', verifyToken(), async (req, res) => {
+// Obtener tipos de oferta con opción de filtrar por ID
+router.get('/tipos/:id_tipo_oferta?', verifyToken(), async (req, res) => {
+  const { id_tipo_oferta } = req.params;  // Obtén el id_tipo_oferta (puede ser undefined)
+
   try {
-    const result = await pool.query('SELECT * FROM tipos_oferta');
+    let query = 'SELECT * FROM tipos_oferta';
+    let params = [];
+
+    if (id_tipo_oferta) {
+      query += ' WHERE id_tipo_oferta = $1';  
+      params = [id_tipo_oferta];
+    }
+
+    const result = await pool.query(query, params);
     
     if (result.rows.length === 0) {
-      return res.status(404).json({ mensaje: 'No se encontraron tipos de oferta.' });
+      return res.status(404).json({ mensaje: id_tipo_oferta ? 'Tipo de oferta no encontrado.' : 'No se encontraron tipos de oferta.' });
     }
 
     res.json(result.rows);
   } catch (err) {
-    console.error('Error al obtener los tipos de oferta:', err.message);
+    console.error('Error al obtener tipos de oferta:', err.message);
     res.status(500).json({ error: 'Error del servidor', detalles: err.message });
   }
 });
+
+
+
 
 // Agregar una nueva oferta
 router.post('/agregar', verifyToken(2), async (req, res) => {
@@ -104,7 +117,6 @@ router.post('/agregar', verifyToken(2), async (req, res) => {
     }
   });
   
-  // Eliminar una oferta
   // Eliminar una oferta, considerando su asociación con productos
 router.delete('/eliminar', verifyToken(2), async (req, res) => {
     const { id_oferta } = req.body;
@@ -136,6 +148,32 @@ router.delete('/eliminar', verifyToken(2), async (req, res) => {
     }
 });
 
-  
+// Obtener oferta por id
+router.get('/:id_oferta', verifyToken(), async (req, res) => {
+  const { id_oferta } = req.params;
+
+  try {
+      const result = await pool.query(`
+        SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo,
+              t.id_tipo_oferta, t.descripcion AS tipo_oferta,
+              p.id_producto, p.nombre
+        FROM ofertas o
+        JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
+        LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
+        LEFT JOIN productos p ON po.id_producto = p.id_producto
+        WHERE o.id_oferta = $1;
+      `, [id_oferta]);
+
+      if (result.rows.length === 0) {
+          return res.status(404).json({ message: 'Oferta no encontrada.' });
+      }
+
+      res.json(result.rows[0]);
+  } catch (err) {
+      console.error('Error al obtener la oferta:', err.message);
+      res.status(500).json({ message: 'Error del servidor', detalles: err.message });
+  }
+});
+
 
 module.exports = router;

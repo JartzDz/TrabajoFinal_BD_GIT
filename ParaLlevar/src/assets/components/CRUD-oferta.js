@@ -35,8 +35,7 @@ function CRUDOferta() {
         obtenerOfertas();
     }, []);  
     const editar_oferta = (id_oferta) => {
-        // Aquí podrías implementar la lógica para redirigir a la página de edición
-        console.log("Editar oferta con ID: ", id_oferta);
+        sessionStorage.setItem('id_oferta', id_oferta);
     };
 
     const eliminarOferta = async (id_oferta) => {

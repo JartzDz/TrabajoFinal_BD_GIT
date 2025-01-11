@@ -1,167 +1,239 @@
-import React, { useState, useEffect } from "react";
-import "../styles/addProduct.css";
-import Cookies from 'js-cookie';
-import axios from 'axios'; // Importa Axios
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Cookies from 'js-cookie';
 
-function EditOfertas() {
-  const [imageSrc, setImageSrc] = useState(null);
-  const [oferta, setOferta] = useState([]);
+function EditOferta() {
   const id_oferta = sessionStorage.getItem("id_oferta");
-  const idNegocio = Cookies.get('id');
-  const [nombreOferta, setNombreOferta] = useState('');
-  const [descripcion, setDescripcion] = useState('');
-  const [subirImagen, setSubirImagen] = useState(null);
-  const [precioEntero, setPrecioEntero] = useState('');
-  const [precioDecimal, setPrecioDecimal] = useState('');
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setSubirImagen(file);
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setImageSrc(e.target.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleEnteroChange = (event) => {
-    setPrecioEntero(event.target.value);
-  };
-
-  const handleDecimalChange = (event) => {
-    setPrecioDecimal(event.target.value);
-  };
-
-  function separarParteEnteraDecimal(precio) {
-    const [entera, decimal] = precio.toString().split('.');
-    return {
-        entera: parseInt(entera, 10),
-        decimal: decimal ? parseInt(decimal.padEnd(2, '0').substring(0, 2), 10) : 0
-    };
-  }
+  console.log(id_oferta);
+  const [productos, setProductos] = useState([]);
+  const [tiposOferta, setTiposOferta] = useState([]);
+  const [valor, setValor] = useState('');
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const [productoSeleccionado, setProductoSeleccionado] = useState('');
+  const [tipoOfertaSeleccionado, setTipoOfertaSeleccionado] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const obtenerOferta = async () => {
-        try {
-            const response = await axios.get(`http://localhost:8000/api/oferta/${id_oferta}`);
-            setOferta(response.data.oferta);
-            if(response.data.oferta){
-              setNombreOferta(response.data.oferta.nombre_oferta);
-              setDescripcion(response.data.oferta.descripcion);
-              const partes = separarParteEnteraDecimal(response.data.oferta.precio);
-              setPrecioDecimal(partes.decimal);
-              setPrecioEntero(partes.entera);
-            }
-            if(response.data.oferta.imagen_oferta!=null){
-              setImageSrc(response.data.oferta.imagen_oferta);
-            }
-        } catch (error) {
-            console.error('Error al obtener oferta:', error);
+    const fetchProductos = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/productos');
+        const data = await response.json();
+        setProductos(data);
+      } catch (error) {
+        console.error('Error al cargar productos:', error);
+      }
+    };
+  
+    const fetchTiposOferta = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/ofertas/tipos'); // Cargar todos los tipos de oferta
+        if (!response.ok) {
+          throw new Error('No se pudo cargar los tipos de oferta');
         }
+  
+        const data = await response.json();
+        setTiposOferta(data); // Establecer todos los tipos de oferta
+        console.log('Tipos de oferta:', data); 
+      } catch (error) {
+        console.error('Error al cargar tipos de oferta:', error);
+      }
+    };
+  
+    const fetchOferta = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/ofertas/${id_oferta}`);
+        const data = await response.json();
+        console.log("Datos recibidos:", data);
+        
+        if (data) {
+          setProductoSeleccionado(data.id_producto);
+          setTipoOfertaSeleccionado(data.id_tipo_oferta); // Aquí se establece el tipo de oferta para que esté seleccionado
+          setValor(data.valor);
+          
+          if (data.fecha_inicio) {
+            const fechaInicio = new Date(data.fecha_inicio).toISOString().split('T')[0];
+            setFechaInicio(fechaInicio);
+          }
+          
+          if (data.fecha_fin) {
+            const fechaFin = new Date(data.fecha_fin).toISOString().split('T')[0];
+            setFechaFin(fechaFin);
+          }
+        }
+      } catch (error) {
+        console.error('Error al cargar la oferta:', error);
+        toast.error('Error al cargar la oferta');
+      }
+    };
+  
+    // Llamar a las funciones
+    fetchProductos();
+    fetchTiposOferta(); // Cargar todos los tipos de oferta
+    if (id_oferta) {
+      fetchOferta(); // Cargar la oferta específica
+    }
+  }, [id_oferta]); // Esto solo se ejecutará cuando el id_oferta cambie
+  
+
+  const validarFechas = () => {
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+    const hoy = new Date();
+
+    hoy.setHours(0, 0, 0, 0);
+    inicio.setHours(0, 0, 0, 0);
+    fin.setHours(0, 0, 0, 0);
+
+    if (inicio < hoy) {
+      toast.error('La fecha de inicio no puede ser anterior a hoy');
+      return false;
+    }
+
+    if (fin <= inicio) {
+      toast.error('La fecha de fin debe ser posterior a la fecha de inicio');
+      return false;
+    }
+
+    return true;
+  };
+
+  const validarValor = () => {
+    if (parseFloat(valor) <= 0 || isNaN(valor)) {
+      toast.error('El valor de la oferta debe ser un número positivo.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!tipoOfertaSeleccionado) {
+      toast.error('Por favor, selecciona un tipo de oferta');
+      return;
+    }
+
+    if (!validarValor() || !validarFechas()) {
+      return;
+    }
+
+    const ofertaData = {
+      id_producto: parseInt(productoSeleccionado, 10),
+      id_tipo_oferta: parseInt(tipoOfertaSeleccionado, 10),
+      valor: parseFloat(valor),
+      fecha_inicio: new Date(fechaInicio).toISOString(),
+      fecha_fin: new Date(fechaFin).toISOString(),
     };
 
-    obtenerOferta();
-}, [idNegocio]);
-
-  const handleUpdateOferta = async (e) => {
+    console.log(ofertaData);
     try {
-      e.preventDefault();
-      const precio = parseFloat(precioEntero + '.' + precioDecimal);
-      const formData = new FormData();
-      formData.append('nombre_oferta', nombreOferta);
-      formData.append('descripcion', descripcion);
-      formData.append('precio', precio);
-      if(subirImagen != null) formData.append('imagen_oferta', subirImagen);
-      const response = await axios.post(`http://localhost:8000/api/ofertas/${id_oferta}`, formData, {
+      const response = await fetch(`http://localhost:5000/api/ofertas/${id_oferta}`, {
+        method: 'PUT', 
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${Cookies.get('authToken')}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(ofertaData),
       });
 
-      toast.success('Guardado');
-      console.log('Oferta actualizada:', response.data);
-      // Aquí podrías manejar la respuesta como necesites (actualizar estado, mostrar mensaje de éxito, etc.)
+      const data = await response.json();
+
+      if (response.ok) {
+        toast.success('Oferta actualizada exitosamente!');
+        setProductoSeleccionado('');
+        setTipoOfertaSeleccionado('');
+        setValor('');
+        setFechaInicio('');
+        setFechaFin('');
+      } else {
+        toast.error(data.message || 'Error al actualizar la oferta');
+      }
     } catch (error) {
-      toast.error('Error al editar.');
-      console.error('Error al actualizar oferta:', error);
-      // Aquí podrías manejar el error como necesites (mostrar mensaje de error, rollback de cambios, etc.)
+      console.error('Error al actualizar la oferta:', error);
+      toast.error('Error al conectar con el servidor');
     }
   };
 
-  const handleInputNombre = (e) => {
-    setNombreOferta(e.target.value); // Actualizar la opción seleccionada
-  };
-
-  const handleInputDescripcion = (e) => {
-    setDescripcion(e.target.value); // Actualizar la opción seleccionada
-  };
-
   return (
-    <div className="main-container-product-add">
-      <main className="contenido">
-        <div className="contenedor-addProduct">
-          <div className="formulario-addProduct">
-            <form>
-              <div className="nombre">
-                <label>Nombre de la Oferta</label>
-                <input type="text" className="nombreIngresado" onChange={handleInputNombre} value={nombreOferta ? nombreOferta : ''} />
-              </div>
-              <div className="descripcion">
-                <label>Descripción</label>
-                <textarea className="descripcionIngresada" onChange={handleInputDescripcion} value={descripcion ? descripcion : ''}></textarea>
-              </div>
-              <div className="precio-oferta">
-                <label>Precio</label>
-                <div className="precio-inputs">
-                  <input type="number" className="enteros" value={precioEntero ? precioEntero : 0} onChange={handleEnteroChange}/>
-                  <span className="decimal-point">,</span>
-                  <input type="number" className="decimales" value={precioDecimal ? precioDecimal : 0} onChange={handleDecimalChange}/>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className="imagen-addProduct">
-            <div className="imagen">
-              <label>Imagen de la Oferta</label>
-              <div className="image-preview-container">
-                {imageSrc ? (
-                  <img src={imageSrc} alt="Oferta" className="producto-imagen" />
-                ) : (
-                  <div className="image-placeholder">Vista previa de la imagen</div>
-                )}
-              </div>
-              <div className="image-upload-container">
-                <input
-                  type="file"
-                  id="file-input"
-                  className="imagenIngresada"
-                  onChange={handleImageChange}
-                />
-                <label htmlFor="file-input" className="btn_subirImagen">
-                  Subir Imagen
-                </label>
-              </div>
-              <button className="btn_agregarProducto" onClick={handleUpdateOferta}>Actualizar Oferta</button>
-            </div>
-          </div>
-        </div>
-      </main>
-      <div className="waves-background2-add-product"></div>
-      <footer className="contenedorFooter-add-producto">
-        <div className="textoFooter2">
-           Copyright © 2024 Too Good To Go International. All Rights Reserved.
-        </div>
-      </footer>
-      <ToastContainer
-          closeButtonStyle={{
-            fontSize: '12px', // Tamaño de fuente del botón de cerrar
-            padding: '4px'    // Espaciado interno del botón de cerrar
-          }}
-          style={{ width: '400px' }} // Ancho deseado para ToastContainer
+    <div className="contenedorAgregarProducto">
+      <form onSubmit={handleSubmit}>
+        <h1>EDITAR OFERTA</h1>
+        <select
+          id="producto"
+          name="id_producto"
+          value={productoSeleccionado}
+          onChange={(e) => setProductoSeleccionado(e.target.value)}
+          required
+        >
+          <option value="" disabled>Selecciona un producto</option>
+          {productos.map((producto) => (
+            <option key={producto.id_producto} value={producto.id_producto}>
+              {producto.nombre}
+            </option>
+          ))}
+        </select>
+
+        <select
+          id="tipoOferta"
+          name="id_tipo_oferta"
+          value={tipoOfertaSeleccionado}
+          onChange={(e) => setTipoOfertaSeleccionado(e.target.value)}
+          required
+        >
+          <option value="" disabled>Selecciona una oferta</option>
+          {tiposOferta.map((tipo) => (
+            <option key={tipo.id_tipo_oferta} value={tipo.id_tipo_oferta}>
+              {tipo.descripcion}
+            </option>
+          ))}
+        </select>
+
+        <input
+          type="number"
+          id="valor"
+          name="valor"
+          step="0.01"
+          placeholder="Valor de la Oferta"
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+          required
         />
+
+        <input
+          type="date"
+          id="fechaInicio"
+          name="fecha_inicio"
+          min={new Date().toISOString().split('T')[0]}
+          placeholder="Fecha de Inicio"
+          value={fechaInicio}
+          onChange={(e) => setFechaInicio(e.target.value)}
+          required
+        />
+
+        <input
+          type="date"
+          id="fechaFin"
+          name="fecha_fin"
+          min={fechaInicio || new Date().toISOString().split('T')[0]}
+          placeholder="Fecha de Fin"
+          value={fechaFin}
+          onChange={(e) => setFechaFin(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Guardando...' : 'Actualizar Oferta'}
+        </button>
+      </form>
+
+      <ToastContainer
+        style={{ width: '400px' }}
+        autoClose={2000}
+        closeButton={false}
+      />
     </div>
   );
 }
 
-export default EditOfertas;
+export default EditOferta;
