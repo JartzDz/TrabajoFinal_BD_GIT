@@ -80,7 +80,7 @@ const Header = ({ cartCount, onCartClick }) => {
       
       {authToken && userRole === 'cliente' && (
         <div className="cart-icon">
-          <a href='#' className='logo' onClick={onCartClick}>
+          <a className='logo' onClick={onCartClick}>
             <AiOutlineShopping className='iconOrders' />
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </a>

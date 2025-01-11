@@ -52,6 +52,7 @@ nav .logo {
   color: white;
   margin-left: -20px;
   font-weight: bold;
+  cursor: pointer;
 }
 nav .iconOrders{
  

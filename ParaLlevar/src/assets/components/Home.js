@@ -50,7 +50,7 @@ function Home() {
             </div>
             <div className="contenedorFooter">
               <div className="textoFooter2">
-                Copyright © 2024 Too Good To Go International. All Rights Reserved.
+                Copyright © 2024 Para Llevar. All Rights Reserved.
               </div>
             </div>
         </div>

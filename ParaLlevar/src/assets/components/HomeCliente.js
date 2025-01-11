@@ -29,17 +29,20 @@ function HomeCliente() {
 
   const handleAddToCart = (producto) => {
     setCartItems(prevCartItems => {
-      const isProductInCart = prevCartItems.some(item => item.id === producto.id);
-      if (isProductInCart) {
-        toast.info(`${producto.nombre_producto} ya está en el carrito.`);
-        return prevCartItems;
+      const existingProduct = prevCartItems.find(item => item.id === producto.id);
+      
+      if (existingProduct) {
+        return prevCartItems.map(item => 
+          item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item,
+          toast.success(`${producto.nombre_producto} se ha agregado al carrito`)
+        );
       } else {
-        const updatedCartItems = [...prevCartItems, { ...producto, cantidad: 1 }];
         toast.success(`${producto.nombre_producto} se ha agregado al carrito`);
-        return updatedCartItems;
+        return [...prevCartItems, { ...producto, cantidad: 1 }];
       }
     });
   };
+  
 
   const handleIncreaseQuantity = (id) => {
     setCartItems(prevCartItems => prevCartItems.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item));
@@ -54,10 +57,7 @@ function HomeCliente() {
     toast.success("Producto eliminado del carrito");
   };
 
-  const handleCheckout = () => {
-    // Aquí puedes añadir la lógica para proceder al pago
-    console.log("Proceder al pago con los siguientes productos:", cartItems);
-  };
+
 
   return (
     <div className='ClienteContainer'>
@@ -104,7 +104,6 @@ function HomeCliente() {
           onIncreaseQuantity={handleIncreaseQuantity}
           onDecreaseQuantity={handleDecreaseQuantity}
           onRemoveItem={handleRemoveItem}
-          onCheckout={handleCheckout}
           onClose={() => setShowCart(false)}
         />
       )}
@@ -113,7 +112,7 @@ function HomeCliente() {
         autoClose={2000} 
         hideProgressBar={false} 
         closeButton={false}  
-        style={{ width: '400px' }}
+        style={{ width: '400px', top:'5rem'}}
         draggable
         pauseOnHover
       />

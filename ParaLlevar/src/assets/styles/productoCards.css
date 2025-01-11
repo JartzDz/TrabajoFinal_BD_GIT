@@ -92,11 +92,13 @@
   border-radius: 5px;
   padding: 10px 0;
   transition: background-color 0.3s ease, margin-top 0.3s ease, opacity 0.3s ease; 
+  z-index: 10;
 }
 
 .card:hover .contenidoCard button {
   display: block;
   margin-top: -35px;
+  z-index: 10; 
 }
 
 button {

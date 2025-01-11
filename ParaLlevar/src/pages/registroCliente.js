@@ -7,7 +7,7 @@ import { MdAlternateEmail } from "react-icons/md";
 import { FaPhone } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate } from "react-router-dom"; 
 
 const RegistroCliente = () => {
   const [name, setName] = useState("");
@@ -15,9 +15,8 @@ const RegistroCliente = () => {
   const [telefono, setTelefono] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const navigate = useNavigate(); // Inicializa el hook useNavigate
+  const navigate = useNavigate(); 
 
-  // Maneja el cambio en los campos de entrada
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (name === "name") setName(value);
@@ -27,22 +26,21 @@ const RegistroCliente = () => {
     if (name === "passwordConfirm") setPasswordConfirm(value);
   };
 
-  // Maneja la sumisión del formulario
   const handleSubmit = async (event) => {
-    event.preventDefault(); // Previene que el formulario se envíe de manera predeterminada
+    event.preventDefault(); 
 
     // Validación simple para contraseñas
     if (password !== passwordConfirm) {
       toast.error("Las contraseñas no coinciden");
       return;
     }
-    
+
     try {
-      // Hacer solicitud al backend para registrar al usuario
       const response = await axios.post('http://localhost:5000/api/auth/register', {
-        username: name,
-        email: email,
-        password: password
+        nombre: name, 
+        correo: email,
+        telefono: telefono,
+        contrasena: password
       });
 
       // Limpiar los campos
@@ -63,7 +61,18 @@ const RegistroCliente = () => {
     } catch (error) {
       // Manejar errores
       if (error.response && error.response.data) {
-        toast.error(error.response.data.error);
+        const errorMessage = error.response.data.error;
+        
+        // Mostrar el mensaje de error específico
+        if (errorMessage.includes("correo electrónico")) {
+          toast.error("Correo electrónico no válido.");
+        } else if (errorMessage.includes("teléfono")) {
+          toast.error("Número de teléfono no válido.");
+        } else if (errorMessage.includes("contraseña")) {
+          toast.error("La contraseña es incorrecta.");
+        } else {
+          toast.error("Error al registrar usuario");
+        }
       } else {
         toast.error("Error al registrar usuario");
       }
@@ -82,7 +91,7 @@ const RegistroCliente = () => {
               placeholder="Nombre Completo"
               required
               name="name"
-              value={name}  // Establece el valor de cada campo
+              value={name}  
               onChange={handleInputChange}
             />
             <FaCircleUser className="icon" />

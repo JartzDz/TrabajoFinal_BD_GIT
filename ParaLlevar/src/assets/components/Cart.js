@@ -1,8 +1,13 @@
 import React from 'react';
 import '../styles/cart.css';
 import { MdDelete } from "react-icons/md";
+import { useNavigate } from 'react-router-dom'; 
 
-const Cart = ({ cartItems, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem, onCheckout, onClose }) => {
+const Cart = ({ cartItems, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem }) => {
+  const navigate = useNavigate();
+  const handleCheckout = () => {
+    navigate('/checkout'); 
+  };
   return (
     <div className="cart">
       <h2>Carrito de Compras</h2>
@@ -29,7 +34,7 @@ const Cart = ({ cartItems, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem,
           ))}
         </ul>
       )}
-      <button onClick={onCheckout} className="checkout-button">Ir a Pagar</button>
+      <button onClick={handleCheckout} className="checkout-button">Ir a Pagar</button>
     </div>
   );
 };

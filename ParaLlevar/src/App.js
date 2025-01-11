@@ -9,18 +9,14 @@ import CrudOferta from "./pages/crudOferta";
 import AddProduct from "./pages/AddProduct";
 import Register from "./pages/Register";
 import RegistroCliente from "./pages/registroCliente";
-import RegistroNegocio from "./pages/registroNegocio";
-import NegocioPage from "./pages/InicioNegocio";
+import CheckoutPage from "./pages/CheckoutPage";
 import RegistroCategoria from "./pages/crudCategoria";
 import AddCategoria from "./pages/AddCategoria";
 import EditProduct from "./pages/EditProduct";
 import EditCategoria from "./pages/EditCategoria";
 import AddOferta from "./pages/AddOferta";
 import EditOferta from "./pages/EditOferta";
-import Negocio from "./pages/Negocio";
-import PaginaDeReserva from "./pages/PaginaPedidos";
 import MiPerfil from "./pages/MiPerfil";
-import RegistroComentarios from "./pages/crudComentarios";
 import ReservacionesRecibidas from "./pages/ReservacionesRecibidas";
 import EditComentarios from "./pages/EditComentarios";
 import AddComentario from "./pages/AddComentario";
@@ -29,6 +25,7 @@ import HistorialReserva from "./pages/HistorialReservas";
 import ReservacionesEnProceso from "./pages/ReservacionesEnProceso";
 import ReservacionesListas from "./pages/ReservacionesListas";
 import ReservacionesHistorial from "./pages/ReservacionesHistorial";
+
 function App() {
   return (
     <div className="App">
@@ -37,11 +34,11 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/Inicio" element={<Cliente />} /> 
-          <Route path="/Negocio" element={<Negocio />} /> 
           <Route path="/Registro" element={<Register />} />
           <Route path="/Registro-Cliente" element={<RegistroCliente />} />
           <Route path="/Restaurante" element={<Restaurante />} /> 
           <Route path="/" element={<Bienvenida />} />
+          <Route path="/checkout" element={<CheckoutPage />}/>
           <Route path="/RegistroOfertas" element={<CrudOferta />} /> 
           <Route path="/RegistroOfertas/AgregarOferta" element={<AddOferta />} /> 
           <Route path="/RegistroOfertas/EditarOferta" element={<EditOferta />} />
@@ -51,9 +48,7 @@ function App() {
           <Route path="/RegistroCategoria/AgregarCategoria" element={<AddCategoria />} /> 
           <Route path="/RegistroProductos/EditarProducto" element={<EditProduct />} /> 
           <Route path="/RegistroCategoria/EditarCategoria" element={<EditCategoria />} /> 
-          <Route path="/MiCarrito" element={<PaginaDeReserva />} /> 
           <Route path="/MiPerfil" element={<MiPerfil />} />
-          <Route path="/RegistroComentarios" element={<RegistroComentarios />} /> 
           <Route path="/ReservasRecibidas" element={<ReservacionesRecibidas />} />
           <Route path="/ReservasEnProceso" element={<ReservacionesEnProceso />} /> 
           <Route path="/ReservasListas" element={<ReservacionesListas />} /> 

@@ -192,10 +192,10 @@ body{
     margin-top: 30px;
   }
   .HomeContainer .contenedorFooter {
-    position: fixed; /* Fija el footer al fondo de la pantalla */
-    bottom: 0; /* Lo coloca al fondo */
-    left: 0; /* Alinea el footer a la izquierda */
-    width: 100%; /* Hace que el footer ocupe todo el ancho */
+    position: fixed; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
     background-color: var(--color-fondoLogin);
     color: var(--color-button);
     text-align: right;
