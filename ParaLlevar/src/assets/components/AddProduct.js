@@ -6,7 +6,7 @@ import '../styles/addProduct.css'
 import Cookies from 'js-cookie';
 
 function FormularioProducto() {
-  const [nombreProducto, setNombreProducto] = useState('');
+  const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [precio, setPrecio] = useState('');
   const [categoria, setCategoria] = useState('');
@@ -24,7 +24,7 @@ function FormularioProducto() {
     e.preventDefault();
   
     const formData = new FormData();
-    formData.append('nombreProducto', nombreProducto);
+    formData.append('nombre', nombre);
     formData.append('descripcion', descripcion);
     formData.append('precio', precio);
     formData.append('categoria', categoria);
@@ -46,7 +46,7 @@ function FormularioProducto() {
         setTimeout(() => {
           navigate('/registroProductos');
         }, 2000);
-        setNombreProducto('');
+        setNombre('');
         setDescripcion('');
         setPrecio('');
         setCategoria('');
@@ -70,8 +70,8 @@ function FormularioProducto() {
         <input
           type="text"
           placeholder="Nombre del Producto"
-          value={nombreProducto}
-          onChange={(e) => setNombreProducto(e.target.value)}
+          value={nombre}
+          onChange={(e) => setNombre(e.target.value)}
           required
         />
         <textarea
