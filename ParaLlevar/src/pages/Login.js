@@ -11,8 +11,8 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
+      correo: '', 
+      contrasena: '', 
     };
   }
 
@@ -29,25 +29,25 @@ export default class Login extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, password } = this.state;
-  
-    if (!username || !password) {
+    const { correo, contrasena } = this.state;
+
+    if (!correo || !contrasena) {
       toast.error("Por favor, complete todos los campos.");
       return;
     }
-  
+
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email: username,
-        password: password
+        correo: correo,
+        contrasena: contrasena,
       });
-  
+
       if (response.status === 200) {
-        if (response.data.token && response.data.user && response.data.user.role) {
+        if (response.data.token && response.data.user && response.data.user.id_tipo_usuario) {
           console.log('Respuesta del backend:', response.data);
 
           Cookies.set('authToken', response.data.token);
-          Cookies.set('role', response.data.user.role);
+          Cookies.set('role', response.data.user.id_tipo_usuario);
           toast.success('Inicio de sesión exitoso');
           
           setTimeout(() => {
@@ -65,7 +65,6 @@ export default class Login extends Component {
     }
   };
   
-  
   render() {
     return (
       <div className="containerLogin">
@@ -80,7 +79,7 @@ export default class Login extends Component {
                 type="email"
                 placeholder="Correo Electrónico"
                 required
-                name="username"
+                name="correo"  
                 onChange={this.handleInputChange}
               />
               <FaCircleUser className="icon" />
@@ -90,7 +89,7 @@ export default class Login extends Component {
                 type="password"
                 placeholder="Contraseña"
                 required
-                name="password"
+                name="contrasena"  // Renombrado aquí
                 onChange={this.handleInputChange}
                 onKeyDown={this.handleEnterPress}
               />

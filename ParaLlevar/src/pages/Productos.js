@@ -19,7 +19,7 @@ const CrudProducto = () => {
     
     console.log('Rol del usuario:', userRole);
         
-    if (userRole !== 'admin') {
+    if (userRole !== 2) {
         return <Navigate to="/Inicio" />; 
     }
     

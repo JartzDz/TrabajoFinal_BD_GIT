@@ -25,8 +25,8 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
 
   const mapFields = (producto) => {
     return {
-      imagen: producto.imagen_oferta || producto.imagen, 
-      nombre: producto.nombre_oferta || producto.nombre_producto, 
+      imagen: producto.imagen_url || producto.imagen,
+      nombre: producto.nombre,
     };
   };
 

@@ -73,18 +73,34 @@ const loginUser = async (req, res) => {
 
     const user = result.rows[0];
 
+    // Comparar la contraseña
     const isMatch = await bcrypt.compare(contrasena, user.contrasena);
     if (!isMatch) {
       return res.status(400).json({ error: 'Contraseña incorrecta' });
     }
 
+    // Crear el token JWT
     const token = jwt.sign({ id: user.id_usuario, role: user.id_tipo_usuario }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
 
+    // Establecer la cookie de sesión
+    res.cookie('id', user.id_usuario, {
+      httpOnly: true, 
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict', 
+      maxAge: 3600000, 
+    });
+
     res.json({
       message: 'Inicio de sesión exitoso',
-      user: { id: user.id_usuario, nombre: user.nombre, correo: user.correo, telefono: user.telefono, id_tipo_usuario: user.id_tipo_usuario },
+      user: {
+        id: user.id_usuario,
+        nombre: user.nombre,
+        correo: user.correo,
+        telefono: user.telefono,
+        id_tipo_usuario: user.id_tipo_usuario,
+      },
       token,
     });
     

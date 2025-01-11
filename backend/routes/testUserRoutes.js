@@ -1,25 +1,33 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const pool = require('../config/db'); 
+const pool = require('../config/db');
 const router = express.Router();
 
-// Endpoint para crear un usuario de prueba
-router.post('/createTestUser', async (req, res) => {
-  const username = 'testuser';
-  const email = 'testuser@prueba.com';
-  const password = '123456';
+// Endpoint para crear un usuario admin
+router.post('/createAdminUser', async (req, res) => {
+  const nombre = 'Admin User';
+  const correo = 'admin@prueba.com';
+  const contrasena = 'admin123'; 
+  const telefono = '1234567890';
+  const idTipoUsuario = 2; 
 
   try {
-    const hashPassword = await bcrypt.hash(password, 10);
+    // Encriptamos la contraseña
+    const hashContrasena = await bcrypt.hash(contrasena, 10);
+
+    // Insertamos el nuevo usuario con tipo admin
     const result = await pool.query(
-      'INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email',
-      [username, email, hashPassword]
+      'INSERT INTO usuarios (nombre, correo, contrasena, telefono, id_tipo_usuario) VALUES ($1, $2, $3, $4, $5) RETURNING id_usuario, nombre, correo, id_tipo_usuario',
+      [nombre, correo, hashContrasena, telefono, idTipoUsuario]
     );
 
-    res.status(201).json({ message: 'Usuario de prueba creado con éxito' });
+    res.status(201).json({
+      message: 'Usuario admin creado con éxito',
+      usuario: result.rows[0], 
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error al crear el usuario de prueba' });
+    console.error('Error al crear el usuario admin:', err);
+    res.status(500).json({ error: 'Error al crear el usuario admin' });
   }
 });
 

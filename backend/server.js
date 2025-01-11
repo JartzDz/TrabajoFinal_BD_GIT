@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const testUserRoutes = require('./routes/testUserRoutes');
 const productosRoutes = require('./routes/productosRoutes'); 
 const userRoutes = require('./routes/userRoutes');
+const cookieParser = require('cookie-parser');
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Rutas
 app.use('/api/auth', authRoutes);

@@ -10,7 +10,6 @@ function AddProduct() {
   const [imageSrc, setImageSrc] = useState(null);
   const [nombreProducto, setNombreProducto] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [categoria, setCategoria] = useState('');
   const [precio, setPrecio] = useState('');
   const [esOferta, setEsOferta] = useState(false);
 
@@ -36,19 +35,18 @@ function AddProduct() {
             'Authorization': `Bearer ${Cookies.get('authToken')}`,
           },
         });
-
+        
         const productoData = response.data;
         console.log('Datos recibidos del producto:', productoData);
         
         if (productoData) {
-          setNombreProducto(productoData.nombre_producto || '');
+          setNombreProducto(productoData.nombre || '');  
           setDescripcion(productoData.descripcion || '');
-          setCategoria(productoData.id_categoria || '');
           setPrecio(productoData.precio || '');
-          setEsOferta(productoData.es_oferta || false);
+          setEsOferta(productoData.en_oferta || false);  
 
-          if (productoData.imagen) {
-            setImageSrc(`http://localhost:5000/${productoData.imagen.split('\\').join('/')}`);
+          if (productoData.imagen_url) {  
+            setImageSrc(`http://localhost:5000/${productoData.imagen_url.split('\\').join('/')}`);
           }
         }
       } catch (error) {
@@ -66,28 +64,23 @@ function AddProduct() {
       toast.error('El nombre del producto es obligatorio');
       return;
     }
-
+  
     try {
       const formData = new FormData();
-      formData.append('nombreProducto', nombreProducto.trim());
+      formData.append('nombre', nombreProducto.trim());  
       formData.append('descripcion', descripcion?.trim() || '');
       formData.append('precio', precio || '0');
-      formData.append('esOferta', esOferta);
-
-      if (categoria) {
-        formData.append('id_categoria', categoria);
-      }
-
-      // Solo anexamos una nueva imagen si se seleccionó una nueva
+      formData.append('en_oferta', esOferta);  
+  
       if (subirImagen) {
-        formData.append('imagen', subirImagen);
+        formData.append('imagen', subirImagen); 
       }
-
+  
       console.log('--- Contenido del FormData ---');
       for (let pair of formData.entries()) {
         console.log(pair[0] + ': ' + pair[1]);
       }
-
+  
       const response = await axios.put(
         `http://localhost:5000/api/productos/actualizar/${id_producto}`,
         formData,
@@ -97,15 +90,24 @@ function AddProduct() {
           }
         }
       );
-
+  
       console.log('Respuesta del servidor:', response.data);
       toast.success('Producto actualizado exitosamente');
+  
+      setNombreProducto('');
+      setDescripcion('');
+      setPrecio('');
+      setEsOferta(false);
+      setSubirImagen(null);
+      setImageSrc(null); 
+  
     } catch (error) {
       console.error('Error completo:', error);
       console.error('Respuesta del servidor:', error.response?.data);
       toast.error('Error al actualizar el producto');
     }
   };
+  
 
   return (
     <div className="contenedorAgregarProducto">
@@ -115,10 +117,7 @@ function AddProduct() {
           type="text"
           placeholder="Nombre del Producto"
           value={nombreProducto}
-          onChange={(e) => {
-            console.log('Nuevo valor del nombre:', e.target.value);
-            setNombreProducto(e.target.value);
-          }}
+          onChange={(e) => setNombreProducto(e.target.value)}
         />
         <textarea
           placeholder="Descripción"
@@ -131,15 +130,6 @@ function AddProduct() {
           value={precio}
           onChange={(e) => setPrecio(e.target.value)}
         />
-        <select
-          value={categoria}
-          onChange={(e) => setCategoria(e.target.value)}
-        >
-          <option value="">Selecciona una categoría</option>
-          <option value="entrada">Entrada</option>
-          <option value="postre">Postre</option>
-          <option value="plato fuerte">Plato Fuerte</option>
-        </select>
         
         <div className="offerSwitch">
           <label htmlFor="esOferta">¿Está en oferta?</label>

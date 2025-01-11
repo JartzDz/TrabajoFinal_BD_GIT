@@ -29,15 +29,15 @@ function HomeCliente() {
 
   const handleAddToCart = (producto) => {
     setCartItems(prevCartItems => {
-      const existingProduct = prevCartItems.find(item => item.id === producto.id);
+      const existingProduct = prevCartItems.find(item => item.id_producto === producto.id_producto);
       
       if (existingProduct) {
         return prevCartItems.map(item => 
-          item.id === producto.id ? { ...item, cantidad: item.cantidad + 1 } : item,
-          toast.success(`${producto.nombre_producto} se ha agregado al carrito`)
+          item.id_producto === producto.id_producto ? { ...item, cantidad: item.cantidad + 1 } : item,
+          toast.success(`${producto.nombre} se ha agregado al carrito`)
         );
       } else {
-        toast.success(`${producto.nombre_producto} se ha agregado al carrito`);
+        toast.success(`${producto.nombre} se ha agregado al carrito`);
         return [...prevCartItems, { ...producto, cantidad: 1 }];
       }
     });
@@ -45,15 +45,15 @@ function HomeCliente() {
   
 
   const handleIncreaseQuantity = (id) => {
-    setCartItems(prevCartItems => prevCartItems.map(item => item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item));
+    setCartItems(prevCartItems => prevCartItems.map(item => item.id_producto === id ? { ...item, cantidad: item.cantidad + 1 } : item));
   };
 
   const handleDecreaseQuantity = (id) => {
-    setCartItems(prevCartItems => prevCartItems.map(item => item.id === id ? { ...item, cantidad: item.cantidad > 1 ? item.cantidad - 1 : 1 } : item));
+    setCartItems(prevCartItems => prevCartItems.map(item => item.id_producto === id ? { ...item, cantidad: item.cantidad > 1 ? item.cantidad - 1 : 1 } : item));
   };
 
   const handleRemoveItem = (id) => {
-    setCartItems(prevCartItems => prevCartItems.filter(item => item.id !== id));
+    setCartItems(prevCartItems => prevCartItems.filter(item => item.id_producto !== id));
     toast.success("Producto eliminado del carrito");
   };
 

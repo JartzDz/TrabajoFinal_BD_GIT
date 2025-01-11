@@ -8,6 +8,7 @@ const Cart = ({ cartItems, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem 
   const handleCheckout = () => {
     navigate('/checkout'); 
   };
+
   return (
     <div className="cart">
       <h2>Carrito de Compras</h2>
@@ -16,20 +17,24 @@ const Cart = ({ cartItems, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem 
       ) : (
         <ul>
           {cartItems.map((item) => (
-            <li key={item.id} className="cart-item">
+            <li key={item.id_producto} className="cart-item">  
               <div className="item-details">
-                <img src={`http://localhost:5000/${item.imagen}`} alt={item.nombre_producto} className="item-image" />
+                <img 
+                  src={`http://localhost:5000/${item.imagen_url}`} 
+                  alt={item.nombre} 
+                  className="item-image" 
+                />
                 <div className='nameProduct'>
-                  <h3>{item.nombre_producto}</h3>
-                  <p>${item.precio}</p>
+                  <h3>{item.nombre}</h3>  
+                  <p>${item.precio}</p> 
                 </div>
               </div>
               <div className="item-quantity">
-                <button onClick={() => onDecreaseQuantity(item.id)}>-</button>
+                <button onClick={() => onDecreaseQuantity(item.id_producto)}>-</button> 
                 <span>{item.cantidad}</span>
-                <button onClick={() => onIncreaseQuantity(item.id)}>+</button>
+                <button onClick={() => onIncreaseQuantity(item.id_producto)}>+</button>  
               </div>
-              <button className="remove-button" onClick={() => onRemoveItem(item.id)}><MdDelete className='icon'/></button>
+              <button className="remove-button" onClick={() => onRemoveItem(item.id_producto)}><MdDelete className='icon'/></button>  
             </li>
           ))}
         </ul>

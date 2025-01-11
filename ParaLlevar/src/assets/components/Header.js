@@ -30,7 +30,7 @@ const Header = ({ cartCount, onCartClick }) => {
 
   return (
     <nav>
-      <a href={userRole === 'cliente' ? '/Inicio' : userRole === 'admin' ? '/Inicio' : '/'} className='logo'>
+      <a href={userRole === 1 ? '/Inicio' : userRole === 2 ? '/Inicio' : '/'} className='logo'>
         <MdOutlineFoodBank className='iconLogo' />Para Llevar
       </a>
       <input type="checkbox" id="menuToggle" checked={showMenu} onChange={handleToggleMenu} />
@@ -39,7 +39,7 @@ const Header = ({ cartCount, onCartClick }) => {
       </label>
       <div className={`menu ${showMenu ? 'show' : ''}`}>
         <ul>
-          {authToken && userRole === 'cliente' && (
+          {authToken && userRole === 1 && (
             <>
               <li><a href="/Inicio">Inicio</a></li>
               <li><a href="/HistorialReservas">Mis Pedidos</a></li>
@@ -48,7 +48,7 @@ const Header = ({ cartCount, onCartClick }) => {
               <li><button className='buttonIniciarSesion' onClick={handleLogOut}>Cerrar Sesión</button></li>
             </>
           )}
-          {authToken && userRole === 'admin' && (
+          {authToken && userRole === 2 && (
             <>
               <li><a href="/Inicio">Inicio</a></li>
               <li><a href="/RegistroCategoria">Categorías</a></li>
@@ -78,7 +78,7 @@ const Header = ({ cartCount, onCartClick }) => {
         </ul>
       </div>
       
-      {authToken && userRole === 'cliente' && (
+      {authToken && userRole === 1 && (
         <div className="cart-icon">
           <a className='logo' onClick={onCartClick}>
             <AiOutlineShopping className='iconOrders' />

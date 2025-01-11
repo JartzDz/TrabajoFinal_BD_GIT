@@ -17,14 +17,14 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Ruta para agregar productos (solo admin)
-router.post('/agregar', verifyToken('admin'), upload.single('imagen'), async (req, res) => {
-  const { nombreProducto, descripcion, precio, esOferta } = req.body;
-  const imagen = req.file ? req.file.path : '';
+router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res) => {
+  const { nombre, descripcion, precio, esOferta } = req.body;  // Cambié nombreProducto a nombre
+  const imagen_url = req.file ? req.file.path : '';  // Cambié imagen a imagen_url
   
   try {
     const result = await pool.query(
-      'INSERT INTO productos (nombre_producto, descripcion, precio, imagen, es_oferta) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [nombreProducto, descripcion, precio, imagen, esOferta === 'true']
+      'INSERT INTO productos (nombre, descripcion, precio, imagen_url, en_oferta) VALUES ($1, $2, $3, $4, $5) RETURNING *',  // Cambié imagen a imagen_url y nombre_producto a nombre
+      [nombre, descripcion, precio, imagen_url, esOferta === 'true']
     );
     
     res.status(201).json({
@@ -36,8 +36,6 @@ router.post('/agregar', verifyToken('admin'), upload.single('imagen'), async (re
     res.status(500).json({ message: 'Error al agregar el producto' });
   }
 });
-
-
 
 // Ruta para obtener productos (accesible para todos)
 router.get('/', verifyToken(), async (req, res) => {
@@ -55,15 +53,15 @@ router.get('/', verifyToken(), async (req, res) => {
   }
 });
 
-
 // Ruta para eliminar productos (solo admin)
-router.delete('/eliminar/:id', verifyToken('admin'), async (req, res) => {
+router.delete('/eliminar/:id', verifyToken(2), async (req, res) => {
   const { id } = req.params;
 
   try {
     const result = await pool.query(
-      'DELETE FROM productos WHERE id = $1 RETURNING *', [id]
+      'DELETE FROM productos WHERE id_producto = $1 RETURNING *', [id]
     );
+    
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Producto no encontrado' });
@@ -81,7 +79,7 @@ router.get('/:id', verifyToken(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query('SELECT * FROM productos WHERE id = $1', [id]);
+    const result = await pool.query('SELECT * FROM productos WHERE id_producto = $1', [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ mensaje: 'Producto no encontrado.' });
@@ -95,29 +93,31 @@ router.get('/:id', verifyToken(), async (req, res) => {
 });
 
 // Ruta para actualizar productos (solo admin)
-router.put('/actualizar/:id', verifyToken('admin'), upload.single('imagen'), async (req, res) => {
+router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (req, res) => {
   const { id } = req.params;
-  const { nombreProducto, descripcion, precio, es_oferta } = req.body;
-  let imagen = req.file ? req.file.path : null;
+  const { nombre, descripcion, precio, en_oferta } = req.body; // Cambié nombreProducto a nombre
+  let imagen_url = req.file ? req.file.path : null;  // Cambié imagen a imagen_url
 
-  if (!nombreProducto || nombreProducto.trim() === '') {
+  if (!nombre || nombre.trim() === '') {
     return res.status(400).json({ message: 'El nombre del producto es obligatorio' });
   }
 
   try {
-    if (!imagen) {
+    if (!imagen_url) {
       // Obtener la imagen existente de la base de datos si no hay nueva imagen
-      const productoExistente = await pool.query('SELECT imagen FROM productos WHERE id = $1', [id]);
+      const productoExistente = await pool.query('SELECT imagen_url FROM productos WHERE id_producto = $1', [id]); 
       if (productoExistente.rows.length === 0) {
         return res.status(404).json({ message: 'Producto no encontrado' });
       }
-      imagen = productoExistente.rows[0].imagen;
+      imagen_url = productoExistente.rows[0].imagen_url;
     }
 
     const result = await pool.query(
-      'UPDATE productos SET nombre_producto = $1, descripcion = $2, precio = $3, imagen = $4, es_oferta = $5 WHERE id = $6 RETURNING *',
-      [nombreProducto.trim(), descripcion, precio, imagen, esOferta === 'true', id]
+      'UPDATE productos SET nombre = $1, descripcion = $2, precio = $3, imagen_url = $4, en_oferta = $5 WHERE id_producto = $6 RETURNING *',  
+      [nombre.trim(), descripcion, precio, imagen_url, en_oferta === 'true', id]
     );
+    
+    
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Producto no encontrado' });
@@ -132,7 +132,5 @@ router.put('/actualizar/:id', verifyToken('admin'), upload.single('imagen'), asy
     res.status(500).json({ message: 'Error al actualizar el producto' });
   }
 });
-
-
 
 module.exports = router;

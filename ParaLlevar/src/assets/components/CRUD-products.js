@@ -22,6 +22,7 @@ function CRUDProducts() {
             console.error('Error al obtener productos:', error);
         }
     };
+
     useEffect(() => {
         obtenerProducto();
     }, []);
@@ -38,7 +39,7 @@ function CRUDProducts() {
             if (response.data && response.data.message === 'Producto eliminado') {
                 console.log('Producto eliminado:', response.data);
                 
-                const nuevosProductos = productos.filter((producto) => producto.id !== id_producto); 
+                const nuevosProductos = productos.filter((producto) => producto.id_producto !== id_producto); 
                 setProductos(nuevosProductos); 
                 
                 toast.success('Producto eliminado correctamente');
@@ -55,15 +56,15 @@ function CRUDProducts() {
     const columns = [
         {
             title: 'ID',
-            dataIndex: 'id', 
-            key: 'id',
-            sorter: (a, b) => a.id - b.id,
+            dataIndex: 'id_producto', 
+            key: 'id_producto',
+            sorter: (a, b) => a.id_producto - b.id_producto,
         },
         {
             title: 'Nombre Producto',
-            dataIndex: 'nombre_producto',
-            key: 'nombre_producto',
-            sorter: (a, b) => a.nombre_producto.localeCompare(b.nombre_producto),
+            dataIndex: 'nombre',
+            key: 'nombre',
+            sorter: (a, b) => a.nombre.localeCompare(b.nombre),
         },
         {
             title: 'Descripción',
@@ -79,20 +80,33 @@ function CRUDProducts() {
         },
         {
             title: 'Imagen',
-            dataIndex: 'imagen',
-            key: 'imagen',
-            render: imagen => {
-                const imageUrl = `http://localhost:5000/${imagen}`;
+            dataIndex: 'imagen_url',
+            key: 'imagen_url',
+            render: imagen_url => {
+                const imageUrl = `http://localhost:5000/${imagen_url}`;
                 console.log(imageUrl);
                 return <img src={imageUrl} alt="Imagen del producto" className="producto-imagen" />;
-              },
+            },
         },
         {
             title: 'Oferta',
-            dataIndex: 'es_oferta',
-            key: 'es_oferta',
-            render: es_oferta => es_oferta ? 'Sí' : 'No',
-            sorter: (a, b) => a.es_oferta - b.es_oferta,
+            dataIndex: 'en_oferta',
+            key: 'en_oferta',
+            render: en_oferta => en_oferta ? 'Sí' : 'No',
+            sorter: (a, b) => a.en_oferta - b.en_oferta,
+        },
+        {
+            title: 'Disponible',
+            dataIndex: 'disponible',
+            key: 'disponible',
+            render: disponible => disponible ? 'Sí' : 'No',
+            sorter: (a, b) => a.disponible - b.disponible,
+        },
+        {
+            title: 'Pedidos',
+            dataIndex: 'total_pedidos',
+            key: 'total_pedidos',
+            sorter: (a, b) => a.total_pedidos - b.total_pedidos,
         },
         {
             title: '',
@@ -100,7 +114,7 @@ function CRUDProducts() {
             render: (_, registro) => (
                 <div className="botonesCrudCategoria">
                     <React.Fragment>   
-                        <Link to={`/registroProductos/editarProducto/`} onClick={() => editar_producto(registro.id)}>
+                        <Link to={`/registroProductos/editarProducto/`} onClick={() => editar_producto(registro.id_producto)}>
                             <button className="EditarProd" title="Editar Producto">
                                 <FiEdit size={25}/>
                             </button>
@@ -115,7 +129,7 @@ function CRUDProducts() {
             key: 'eliminar',
             render: (_, registro) => (
                 <div className="botonesCrudCategoria">
-                    <button className="EliminarProd" title="Eliminar Producto" onClick={() => eliminarProducto(registro.id)}>
+                    <button className="EliminarProd" title="Eliminar Producto" onClick={() => eliminarProducto(registro.id_producto)}>
                         <BsTrash size={25}/>
                     </button>
                 </div>
@@ -127,7 +141,7 @@ function CRUDProducts() {
     const [searchTerm, setSearchTerm] = useState("");
 
     const filteredData = productos && productos.length > 0 ? productos.filter(producto =>
-        producto.nombre_producto.toLowerCase().includes(searchTerm.toLowerCase())
+        producto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
     ) : [];
 
     const editar_producto = (id) => {
