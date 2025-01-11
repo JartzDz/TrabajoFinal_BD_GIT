@@ -1,344 +1,122 @@
-.main-container-categoria-add {
+.contenedorAgregarProducto {
+    background-color: #cccccc ;
+    width: 500px;
+    padding: 30px;
+    margin: auto;
+    margin-top: 3rem;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 20px;
+    margin-bottom: 3rem;
+}
+
+.contenedorAgregarProducto form {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    min-width: 100vw;
+    flex-direction: column; 
 }
 
-.contenedorFooter-add-categoria {
-    margin-top: auto;
-    margin-bottom: 0; 
-    width: 100%;
-    background-color: var(--color-fondoLogin);
-    color: var(--color-button);
-    text-align: right;
-    padding-right: 40px;
-    border-radius: 60px 60px 0 0;
-    z-index: 2;
+.contenedorAgregarProducto h1 {
+    margin-bottom: 15px;
+    color: #f46c3c;
 }
 
-.contenedorFooter-add-categoria .textoFooter2 {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 100%;
-    padding-right: 40px;
-    text-align: right;
-}
-
-.main-container-categoria-add .contenedor-addCategoria {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 170px;
-    padding-left: 70px;
-    padding-right: 70px;
-}
-
-.main-container-categoria-add .formulario-addCategoria {
-    flex: 1;
-    display: flex;
-
-}
-
-.main-container-categoria-add .icono-addCategoria {
-    flex: 1;
-    align-items: center;
-}
-
-.main-container-categoria-add .nombreCategoria{
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 30px;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-
-}
-
-.main-container-categoria-add .nombreIngresadoCategoria{
-    width: 100%;
-    margin-left: 50px;
-    margin-right: 10px;
-    border-radius: 0%;
-    border: 3px solid rgb(245, 243, 243);
-}
-
-.main-container-categoria-add .descripcionCategoria{
-    margin-top: 100px;
-    margin-bottom: 10px;
-    margin-left: 30px;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-
-}
-
-.main-container-categoria-add .descripcionIngresadaCategoria{
-    width: 65%;
-    height: 200px;
-    margin-left: 73px;
-    margin-right: 10px;
-    border-radius: 0%;
-    border: 3px solid rgb(245, 243, 243);
-    resize: none;
-}
-
-.main-container-categoria-add .estadoCategoria{
-    margin-top: 100px;
-    margin-left: 35px;
-    margin-bottom: 10px;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-}
-
-.main-container-categoria-add .comboOpcionesCategoria{
-    width: 60%;
-    height: 50px;
-    margin-left: 85px;
-    margin-right: 10px;
-    border-radius: 0%;
-    border: 3px solid rgb(245, 243, 243);
-
-}
-
-.main-container-categoria-add .fechaCreacionCategoria{
-    margin-top: 20px;
-    margin-left: 35px;
-    margin-bottom: 10px;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-}
-
-.main-container-categoria-add .fechaIngresadaCategoria{
-    width: 60%;
-    margin-left: 40px;
-    margin-right: 10px;
-    border-radius: 0%;
-    border: 3px solid rgb(245, 243, 243);
-}
-
-.main-container-categoria-add .icono-Categoria {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 50px;
-    filter: none;
-}
-
-.main-container-categoria-add .iconoIngresadaCategoria {
-    display: none;
-}
-
-.main-container-categoria-add .btn_subirIconoCategoria {
-    background-color: var(--color-button); 
-    color: white;
-    border: none;
-    margin-top: 20px;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    text-transform: uppercase;
+.contenedorAgregarProducto input,
+.contenedorAgregarProducto textarea,
+.contenedorAgregarProducto button,
+.contenedorAgregarProducto select {
+    width: 100%; 
+    padding: 10px;
+    margin-bottom: 10px; 
+    box-sizing: border-box; 
     font-size: 16px;
-    font-weight: bold;
-}
-
-.main-container-categoria-add .image-upload-container-categoria {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.main-container-categoria-add .image-preview-container-categoria {
-    margin-top: 20px;
-    height: 200px;
-    border: 2px dashed #ccc;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.main-container-categoria-add .categoria-icono {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.main-container-categoria-add .image-placeholder {
-    text-align: center;
-    color: #aaa;
-    background-color: rgb(245, 243, 243);
-    height: 200px;
-    border: 2px dashed #ccc;
-}
-
-.main-container-categoria-add .btn_agregarCategoria, .main-container-categoria-add .btn_actualizarCategoria {
-    background-color: var(--color-button); 
-    color: white;
+    border-radius: 5px;
     border: none;
-    margin-top: 50px;
+}
+
+.contenedorAgregarProducto input::placeholder,
+.contenedorAgregarProducto textarea::placeholder,
+.contenedorAgregarProducto button::placeholder {
+    color: #d4322a;
+}
+
+
+.contenedorAgregarProducto button {
+    background-color: #d4322a;
+    color: white;
+    cursor: pointer;
+}
+
+.contenedorAgregarProducto button:hover {
+    background-color: #f46c3c;
+    color: white;
+    cursor: pointer;
+}
+
+.file-upload-label {
+    background-color: #86553a;
+    color: white;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  
+  .file-upload-label:hover {
+    background-color: #b17a5c;
+  }
 
-}
+  .contenedorAgregarProducto p {
+    font-size: 14px;
+    color: #333;
+    margin-top: 10px;
+  }
 
-.waves-background2-add-categoria {
-    position: fixed;
-    top: 5%;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 150%;
-    background-image: url('../images/waves.png');
-    z-index: -1;
-}
-
-@media screen and (min-width: 540px) and (max-width: 1250px) {
-    .main-container-categoria-add {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
+  .contenedorAgregarProducto select {
+    color: #d4322a;
+  }
+  
+  .offerSwitch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    label {
+        color: #c0241c;
     }
-
-    .main-container-categoria-add .contenedor-addCategoria {
-        flex-direction: column;
-        align-items: center;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .main-container-categoria-add .nombreCategoria,
-    .main-container-categoria-add .descripcionCategoria,
-    .main-container-categoria-add .estadoCategoria,
-    .main-container-categoria-add .fechaCreacionCategoria {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: 0;
-    }
-
-    .main-container-categoria-add .descripcionCategoria {
-        margin-top: 60px;
-        height: 160px;
-    }
-
-    .main-container-categoria-add .estadoCategoria {
-        margin-top: 40px;
-    }
-
-    .main-container-cateogria-add .estadoCategoria, 
-    .main-container-categoria-add .fechaCreacionCategoria {
-        margin-top: 30px;
-    }
-
-    .main-container-categoria-add .nombreIngresadoCategoria,
-    .main-container-categoria-add .descripcionIngresadaCategoria,
-    .main-container-categoria-add .comboOpcionesCategoria,
-    .main-container-categoria-add .fechaIngresadaCategoria {
-        width: 100%;
-        min-width: 500px;
-        margin-left: 0;
-        margin-right: 0;
-        padding: 0;
-    }
-
-    .main-container-categoria-add .comboOpcionesCategoria {
-        height: 50px;
-        border: none;
-    }
-
-    .main-container-categoria-add .icono-Categoria {
-        margin-top: 50px;
-    }
-
-    .contenedorFooter-add-categoria {
-        margin-top: 100%;
-        width: 100%;
-    }
-
-    .contenedorFooter-add-categoria .textoFooter2 {
-        font-size: 12px;
-    }
-
-    .main-container-categoria-add .btn_agregarCategoria, .main-container-categoria-add .btn_actualizarCategoria {
-        width: 250px;
-    }
-}
-
-
-@media screen and (max-width: 539px) {
-    .main-container-categoria-add {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    
-    .main-container-categoria-add .contenedor-addCategoria {
-        flex-direction: column;
-        align-items: center;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-
-    .main-container-categoria-add .nombreCategoria,
-    .main-container-categoria-add .descripcionCategoria,
-    .main-container-categoria-add .estadoCategoria,
-    .main-container-categoria-add .fechaCreacionCategoria {
-        flex-direction: column;
-        align-items: flex-start;
-        margin-left: 0;
-    }
-
-    .main-container-categoria-add .descripcionCategoria {
-        margin-top: 60px;
-        height: 160px;
-    }
-
-    .main-container-categoria-add .estadoCategoria {
-        margin-top: 40px;
-    }
-
-    .main-container-cateogria-add .estadoCategoria, 
-    .main-container-categoria-add .fechaCreacionCategoria {
-        margin-top: 30px;
-    }
-
-    .main-container-categoria-add .nombreIngresadoCategoria,
-    .main-container-categoria-add .descripcionIngresadaCategoria,
-    .main-container-categoria-add .comboOpcionesCategoria,
-    .main-container-categoria-add .fechaIngresadaCategoria {
-        width: 100%;
-        min-width: 300px;
-        margin-left: 0;
-        margin-right: 0;
-        padding: 0;
-    }
-
-    .main-container-categoria-add .comboOpcionesCategoria {
-        height: 50px;
-        border: none;
-    }
-
-    .main-container-categoria-add .icono-Categoria {
-        margin-top: 50px;
-    }
-
-    .contenedorFooter-add-categoria {
-        margin-top: 100%;
-        width: 100%;
-    }
-
-    .contenedorFooter-add-categoria .textoFooter2 {
-        font-size: 12px;
-    }
-
-    .main-container-categoria-add .btn_agregarCategoria, .main-container-categoria-add .btn_actualizarCategoria {
-        width: 250px;
-    }
-}
+  }
+  
+  .offerSwitch input[type="checkbox"] {
+    position: relative;
+    width: 40px;
+    margin-top: 2.5%;
+    margin-left: 2%;
+    height: 20px;
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: #d4322a;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .offerSwitch input[type="checkbox"]:checked {
+    background-color: #f46c3c;
+  }
+  
+  .offerSwitch input[type="checkbox"]:before {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: white;
+    top: 1px;
+    left: 1px;
+    transition: transform 0.3s;
+  }
+  
+  .offerSwitch input[type="checkbox"]:checked:before {
+    transform: translateX(20px);
+  }
+  
