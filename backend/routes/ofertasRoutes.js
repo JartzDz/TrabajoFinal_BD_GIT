@@ -3,6 +3,29 @@ const router = express.Router();
 const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
 
+// Obtener todas las ofertas con sus tipos y productos asociados
+router.get('/', verifyToken(), async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo, 
+                   t.descripcion AS tipo_oferta,
+                   p.id_producto, p.nombre
+            FROM ofertas o
+            JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
+            LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
+            LEFT JOIN productos p ON po.id_producto = p.id_producto
+        `);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ mensaje: 'No se encontraron ofertas.' });
+        }
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error al obtener las ofertas:', err.message);
+        res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+    }
+});
+
+
 // Obtener todos los tipos de oferta
 router.get('/tipos', verifyToken(), async (req, res) => {
   try {
@@ -82,28 +105,37 @@ router.post('/agregar', verifyToken(2), async (req, res) => {
   });
   
   // Eliminar una oferta
-  router.delete('/eliminar', verifyToken(2), async (req, res) => {
-    const { id_producto, id_oferta } = req.body;
-  
+  // Eliminar una oferta, considerando su asociación con productos
+router.delete('/eliminar', verifyToken(2), async (req, res) => {
+    const { id_oferta } = req.body;
+
     try {
-      const result = await pool.query(
-        'DELETE FROM productos_ofertas WHERE id_producto = $1 AND id_oferta = $2 RETURNING *',
-        [id_producto, id_oferta]
-      );
-  
-      if (result.rowCount === 0) {
-        return res.status(404).json({ message: 'No se encontró la oferta para eliminar.' });
-      }
-  
-      res.status(200).json({
-        message: 'Oferta eliminada correctamente del producto',
-        ofertaEliminada: result.rows[0],
-      });
+        // Eliminar la relación en productos_ofertas primero
+        await pool.query(
+            'DELETE FROM productos_ofertas WHERE id_oferta = $1',
+            [id_oferta]
+        );
+
+        // Ahora eliminar la oferta de la tabla ofertas
+        const result = await pool.query(
+            'DELETE FROM ofertas WHERE id_oferta = $1 RETURNING *',
+            [id_oferta]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'No se encontró la oferta para eliminar.' });
+        }
+
+        res.status(200).json({
+            message: 'Oferta eliminada correctamente',
+            ofertaEliminada: result.rows[0],
+        });
     } catch (err) {
-      console.error('Error al eliminar la oferta:', err);
-      res.status(500).json({ message: 'Error al eliminar la oferta' });
+        console.error('Error al eliminar la oferta:', err);
+        res.status(500).json({ message: 'Error al eliminar la oferta' });
     }
-  });
+});
+
   
 
 module.exports = router;

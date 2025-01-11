@@ -173,11 +173,7 @@ function CRUDProducts() {
                     />
                 </div>
             </main>
-            <footer className="contenedorFooter-prod">
-                <div className="textoFooter2">
-                    Copyright © 2024 Para Llevar. All Rights Reserved.
-                </div>
-            </footer>
+           
             <ToastContainer
                 style={{ width: '400px' }} 
                 autoClose={2000}
