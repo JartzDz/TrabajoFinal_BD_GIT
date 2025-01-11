@@ -7,13 +7,13 @@ const verifyToken = require('../middlewares/authMiddleware');
 router.get('/', verifyToken(), async (req, res) => {
     try {
         const result = await pool.query(`
-            SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo, 
-                   t.descripcion AS tipo_oferta,
-                   p.id_producto, p.nombre
+           SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo,
+             t.descripcion AS tipo_oferta,
+             p.id_producto, p.nombre
             FROM ofertas o
             JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
             LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
-            LEFT JOIN productos p ON po.id_producto = p.id_producto
+            LEFT JOIN productos p ON po.id_producto = p.id_producto;
         `);
         if (result.rows.length === 0) {
             return res.status(404).json({ mensaje: 'No se encontraron ofertas.' });

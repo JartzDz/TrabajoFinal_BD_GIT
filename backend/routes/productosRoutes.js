@@ -135,4 +135,56 @@ router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (re
   }
 });
 
+// Ruta para obtener ofertas con productos asociados
+router.get('/productos/ofertas', verifyToken(), async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT 
+        p.id_producto, 
+        p.nombre, 
+        p.descripcion, 
+        p.imagen_url, 
+        p.precio,
+        o.id_oferta, 
+        o.valor AS oferta_valor, 
+        o.fecha_inicio, 
+        o.fecha_fin
+      FROM productos p
+      JOIN productos_ofertas po ON p.id_producto = po.id_producto
+      JOIN ofertas o ON po.id_oferta = o.id_oferta
+      WHERE o.activo = TRUE
+    `);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron productos con ofertas.' });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener productos con ofertas:', err.message);
+    res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  }
+});
+
+
+// Ruta para obtener productos sin ofertas
+router.get('/productos/sin-ofertas', verifyToken(), async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM productos
+      WHERE id_producto NOT IN (
+        SELECT id_producto FROM productos_ofertas
+      )
+    `);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron productos sin ofertas.' });
+    }
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener productos sin ofertas:', err.message);
+    res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  }
+});
+
+
 module.exports = router;

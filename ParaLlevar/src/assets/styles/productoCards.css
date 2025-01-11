@@ -3,13 +3,14 @@
   display: flex;
   flex-direction: row;
   overflow-x: hidden;
-  align-items: center;
+  align-items: stretch;
   padding: 10px;
   justify-content: center;
   margin-bottom: -20%;
 }
 
-.contenedorCardProducto .card {
+.contenedorCardProducto .card,
+.contenedorCardProducto .card-more {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -18,13 +19,15 @@
   align-items: center;
   padding: 20px;
   width: 300px;
-  height: 350px;
   margin: 10px;
   overflow: hidden;
+  height: 420px;
   position: relative;
   transition: all 0.3s ease;
   justify-content: space-between;
+  flex-grow: 1; 
 }
+
 
 .carousel-controls .carousel-next-hidden {
   display: none;
@@ -129,18 +132,7 @@ button {
   display: none;
 }
 
-.contenedorCardProducto .card-more {
-  background-color: #f46c3c;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  width: 300px;
-  height: 350px;
-  margin-top: -23%;
-}
+
 
 .contenedorCardProducto .card-more-prd {
   background-color: var(--color-button);
@@ -153,7 +145,10 @@ button {
   width: 300px;
   height: 500px;
 }
-
+.contenedorCardProducto .card-more {
+  background-color: #f46c3c;
+ 
+}
 .card-more button,
 .card-more-prd button {
   margin: auto auto;
@@ -241,4 +236,29 @@ li {
     margin: 10px 0;
     height: 100%;
   }
+}
+.precio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.precio-original {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+.precio-descuento {
+  color: #d9534f;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 5px; 
+}
+
+.oferta-valor {
+  display: block;
+  color: #28a745;
+  font-size: 1rem;
+  margin-top: 5px;
 }

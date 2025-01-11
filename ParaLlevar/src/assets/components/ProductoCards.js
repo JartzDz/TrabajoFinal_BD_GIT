@@ -24,9 +24,20 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
   }, []);
 
   const mapFields = (producto) => {
+    const precioOriginal = parseFloat(producto.precio);
+    // Usar precioConDescuento si existe (viene de una oferta) o usar el precio original
+    const precioConDescuento = producto.precioConDescuento 
+      ? parseFloat(producto.precioConDescuento) 
+      : precioOriginal;
+
     return {
       imagen: producto.imagen_url || producto.imagen,
       nombre: producto.nombre,
+      precio: precioOriginal,
+      precioConDescuento: precioConDescuento,
+      tipoOferta: producto.descripcionOferta || null,
+      descripcion: producto.descripcion,
+      esOferta: producto.tipo === 'oferta'
     };
   };
 
@@ -45,18 +56,54 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
       >
         <Slider>
           {productos.map((producto, index) => {
-            const { imagen, nombre } = mapFields(producto);
+            const { 
+              imagen, 
+              nombre, 
+              precio, 
+              precioConDescuento, 
+              tipoOferta, 
+              descripcion,
+              esOferta 
+            } = mapFields(producto);
+
             return (
               <Slide index={index} key={index}>
                 <div className='card' style={cardStyle}>
                   <div className='contenidoCard'>
-                    <div className='contenedorImagen'>
-                      <img src={`http://localhost:5000/${imagen}`} alt={`${nombre} Logo`} className='producto-imagen' />
-                    </div>
+                    {imagen && (
+                      <div className='contenedorImagen'>
+                        <img 
+                          src={`http://localhost:5000/${imagen}`} 
+                          alt={`${nombre} Logo`} 
+                          className='producto-imagen' 
+                        />
+                      </div>
+                    )}
+
                     <h3>{nombre}</h3>
-                    <h3>${producto.precio}</h3>
-                    <p>{producto.descripcion}</p>
-                    <button className='add-to-cart-button' onClick={() => onBuyClick(producto)}>{nombreBoton}</button>
+
+                    <h3>
+                      {esOferta ? (
+                        <>
+                          <div className="precio-container">
+                            <span className="precio-original">${precio.toFixed(2)}</span>
+                            <span className="precio-descuento">${precioConDescuento.toFixed(2)}</span>
+                          </div>
+                          {tipoOferta && <span className="oferta-valor">{tipoOferta}</span>}
+                        </>
+                      ) : (
+                        <span>${precio.toFixed(2)}</span>
+                      )}
+                    </h3>
+
+                    {descripcion && <p>{descripcion}</p>}
+
+                    <button 
+                      className='add-to-cart-button' 
+                      onClick={() => onBuyClick(producto)}
+                    >
+                      {nombreBoton}
+                    </button>
                   </div>
                 </div>
               </Slide>
@@ -64,11 +111,15 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
           })}
         </Slider>
         <div className='carousel-controls'>
-          <ButtonNext className={`carousel-next-${carruselId} carousel-next-hidden`}>Next</ButtonNext>
+          <ButtonNext className={`carousel-next-${carruselId} carousel-next-hidden`}>
+            Next
+          </ButtonNext>
         </div>
       </CarouselProvider>
       <div className='card-more'>
-        <button onClick={() => document.querySelector(`.carousel-next-${carruselId}`).click()}>VER MÁS</button>
+        <button onClick={() => document.querySelector(`.carousel-next-${carruselId}`).click()}>
+          VER MÁS
+        </button>
       </div>
     </div>
   );

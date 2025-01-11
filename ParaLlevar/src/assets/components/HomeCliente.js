@@ -8,24 +8,78 @@ import Header from './Header';
 import Cart from './Cart';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CartContext } from './CartContext'; // Importar el contexto
+import { CartContext } from './CartContext';
 
 function HomeCliente() {
-  const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext); // Usar el contexto
-  const [productos, setProductos] = useState([]);
+  const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
+  const [productosSinOfertas, setProductosSinOfertas] = useState([]);
+  const [productosConOfertas, setProductosConOfertas] = useState([]);
   const [showCart, setShowCart] = useState(false);
 
   useEffect(() => {
-    const obtenerProductos = async () => {
+    const obtenerProductosConOfertas = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/productos');
-        setProductos(response.data);
+        const response = await axios.get('http://localhost:5000/api/ofertas');
+        setProductosConOfertas(response.data);
       } catch (error) {
-        console.error('Error al obtener los productos: ', error);
+        console.error('Error al obtener productos con ofertas: ', error);
+        toast.error('No se pudo cargar las ofertas.');
       }
     };
-    obtenerProductos();
+  
+    const obtenerProductosSinOfertas = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/productos/');
+        setProductosSinOfertas(response.data);
+      } catch (error) {
+        console.error('Error al obtener productos sin ofertas: ', error);
+        toast.error('No se pudo cargar el menú.');
+      }
+    };
+  
+    obtenerProductosConOfertas();
+    obtenerProductosSinOfertas();
   }, []);
+
+  // Función para obtener el producto correspondiente de las ofertas
+  const getProductoFromOferta = (idProducto) => {
+    return productosSinOfertas.find(producto => producto.id_producto === idProducto);
+  };
+
+  // Procesar productos con ofertas
+  const productosConOferta = productosConOfertas.map(oferta => {
+    const producto = getProductoFromOferta(oferta.id_producto);
+    
+    if (!producto || !producto.precio) {
+      console.error(`Producto sin precio encontrado: ${producto}`);
+      return null;
+    }
+    
+    return {
+      ...producto,
+      tipo: 'oferta',
+      precioConDescuento: oferta.valor, 
+    };
+  }).filter(producto => producto !== null);
+
+  // Obtener IDs de productos que tienen ofertas
+  const productosConOfertaIds = productosConOferta.map(producto => producto.id_producto);
+  
+  // Filtrar productos para el menú (excluyendo los que tienen ofertas)
+  const productosParaMenu = productosSinOfertas
+    .filter(producto => !productosConOfertaIds.includes(producto.id_producto))
+    .map(producto => {
+      if (!producto || !producto.precio) {
+        console.error(`Producto sin precio encontrado: ${producto}`);
+        return null;
+      }
+      return {
+        ...producto,
+        tipo: 'sin oferta',
+        precioConDescuento: producto.precio,
+      };
+    })
+    .filter(producto => producto !== null);
 
   return (
     <div className='ClienteContainer'>
@@ -44,22 +98,23 @@ function HomeCliente() {
         <h1>OFERTAS</h1>
         <div className="linea"></div>
         <ProductosCards 
-          productos={productos} 
+          productos={productosConOferta} 
           nombreBoton={'AÑADIR AL CARRITO'} 
-          carruselId={`carrusel-productos-ofertas`}
-          onBuyClick={addToCart} // Usar el método del contexto
+          carruselId={`carrusel-ofertas`}
+          onBuyClick={addToCart}
+          mostrarPrecio={true} 
         />
-        
+
         <h1>MENÚ</h1>
         <ProductosCards 
-          productos={productos} 
+          productos={productosParaMenu}
           nombreBoton={'AÑADIR AL CARRITO'} 
           carruselId={`carrusel-productos`}
-          onBuyClick={addToCart} // Usar el método del contexto
+          onBuyClick={addToCart}
         />
         
         <h1>NUESTRA UBICACIÓN</h1>
-        <MapComponent/>
+        <MapComponent />
       </div>
       <div className="contenedorFooter">
         <div className="textoFooter2">

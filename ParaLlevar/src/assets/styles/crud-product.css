@@ -250,8 +250,11 @@ main.crud-producto-container {
         border-radius: 8px; 
         object-fit: cover;  
     }
+   
 }
-
+#fechaInicio, #fechaFin {
+    color: var(--color-secundary);
+}
 /*responsive para tablets*/
 @media screen and (min-width: 768px) and (max-width: 1024px) {
     .crud-producto-container .crud-producto {

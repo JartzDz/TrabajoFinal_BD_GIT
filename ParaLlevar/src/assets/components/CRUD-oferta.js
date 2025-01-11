@@ -43,7 +43,7 @@ function CRUDOferta() {
         try {
             const response = await axios.delete('http://localhost:5000/api/ofertas/eliminar', {
                 headers: {
-                    Authorization: `Bearer ${Cookies.get('token')}`
+                    Authorization: `Bearer ${Cookies.get('authToken')}`
                 },
                 data: { id_oferta }
             });

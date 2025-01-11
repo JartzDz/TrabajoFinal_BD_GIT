@@ -145,9 +145,17 @@ body{
   .ClienteContainer .card{
     margin: 10px;
   }
-  .ClienteContainer .card-more{
-    margin-bottom: auto;
-    margin-top: 10px;
+  .ClienteContainer .card-more {
+    background-color: #f46c3c;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    width: 300px;
+    margin-top: -23%;
+    flex-grow: 1; 
   }
   .ClienteContainer .contenedorFooter{
     margin-top: 30%; 
