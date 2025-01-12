@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate } from 'react-router-dom';  // Importamos el hook useNavigate
-import '../styles/addProduct.css'
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import '../styles/addProduct.css';
 
 function FormularioProducto() {
   const [nombre, setNombre] = useState('');
@@ -12,8 +12,35 @@ function FormularioProducto() {
   const [categoria, setCategoria] = useState('');
   const [imagenArchivo, setImagen] = useState(null);
   const [nombreImagen, setNombreImagen] = useState('');
+  const [categorias, setCategorias] = useState([]);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+
+  // Función para cargar las categorías
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/categorias', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${Cookies.get('authToken')}`,  // Asegúrate de incluir el token de autenticación
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setCategorias(data);  // Almacenar las categorías en el estado
+        } else {
+          toast.error('Error al obtener categorías');
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error('Error de conexión al cargar categorías');
+      }
+    };
+
+    fetchCategorias();
+  }, []);  // El arreglo vacío [] asegura que solo se ejecute una vez al cargar el componente
+
   const handleImageChange = (e) => {
     setImagen(e.target.files[0]);
     setNombreImagen(e.target.files[0].name);
@@ -21,7 +48,7 @@ function FormularioProducto() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('nombre', nombre);
     formData.append('descripcion', descripcion);
@@ -37,8 +64,7 @@ function FormularioProducto() {
           'Authorization': `Bearer ${Cookies.get('authToken')}`, 
         },
       });
-      
-  
+
       if (response.ok) {
         toast.success('Producto agregado con éxito');
         setTimeout(() => {
@@ -50,17 +76,15 @@ function FormularioProducto() {
         setCategoria('');
         setImagen(null);
         setNombreImagen('');
-      
       } else {
-        toast.error('Error al agregar el producto');  
+        toast.error('Error al agregar el producto');
       }
     } catch (error) {
       console.error(error);
-      toast.error('Error de conexión'); 
+      toast.error('Error de conexión');
     }
   };
 
-  
   return (
     <div className="contenedorAgregarProducto">
       <form onSubmit={handleSubmit}>
@@ -91,9 +115,11 @@ function FormularioProducto() {
           required
         >
           <option value="" disabled>Selecciona una categoría</option>
-          <option value="entrada">Entrada</option>
-          <option value="postre">Postre</option>
-          <option value="plato fuerte">Plato Fuerte</option>
+          {categorias.map(categoria => (
+            <option key={categoria.id_categoria} value={categoria.id_categoria}>
+              {categoria.nombre}
+            </option>
+          ))}
         </select>
         <input
           type="file"
@@ -108,11 +134,11 @@ function FormularioProducto() {
         {nombreImagen && <p>Imagen seleccionada: {nombreImagen}</p>}
         <button type="submit">Agregar Producto</button>
       </form>
-     <ToastContainer
-              style={{ width: '400px' }} 
-              autoClose={2000}
-              closeButton={false}
-        />
+      <ToastContainer
+        style={{ width: '400px' }} 
+        autoClose={2000}
+        closeButton={false}
+      />
     </div>
   );
 }

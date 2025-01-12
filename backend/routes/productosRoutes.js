@@ -18,16 +18,24 @@ const upload = multer({ storage });
 
 // Ruta para agregar productos (solo admin)
 router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res) => {
-  const { nombre, descripcion, precio, esOferta } = req.body;  // Cambié nombreProducto a nombre
-  const imagen_url = req.file ? req.file.path : '';  // Cambié imagen a imagen_url
-  
+  const { nombre, descripcion, precio, esOferta, categoria } = req.body;  
+  const imagen_url = req.file ? req.file.path : '';
+
   try {
+    // Primero, insertar el producto en la tabla 'productos'
     const result = await pool.query(
-      'INSERT INTO productos (nombre, descripcion, precio, imagen_url) VALUES ($1, $2, $3, $4) RETURNING *',
+      'INSERT INTO productos (nombre, descripcion, precio, imagen_url) VALUES ($1, $2, $3, $4) RETURNING id_producto',
       [nombre, descripcion, precio, imagen_url]
     );
     
-    
+    const idProducto = result.rows[0].id_producto;  // Obtenemos el id del producto insertado
+
+    // Luego, insertar la relación en la tabla 'productos_categorias'
+    await pool.query(
+      'INSERT INTO productos_categorias (id_producto, id_categoria) VALUES ($1, $2)',
+      [idProducto, categoria]  // categoria es el id de la categoría seleccionada
+    );
+
     res.status(201).json({
       message: 'Producto agregado correctamente',
       producto: result.rows[0],
