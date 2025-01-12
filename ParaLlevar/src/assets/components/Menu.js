@@ -1,14 +1,17 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { CartContext } from './CartContext';
+import Cart from './Cart'; 
+import Header from './Header'; // Importamos el Header
 import '../styles/menu.css';
 
 const Menu = () => {
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addToCart } = useContext(CartContext);
+  const [cartVisible, setCartVisible] = useState(false);  
+  const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
 
   useEffect(() => {
     axios
@@ -27,11 +30,27 @@ const Menu = () => {
       });
   }, []);
 
+  const toggleCart = () => {
+    setCartVisible(!cartVisible);  // Alterna la visibilidad del carrito
+  };
+
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="menu">
+      {/* Pasamos la función toggleCart al Header */}
+      <Header onCartClick={toggleCart} />
+      
+      {cartVisible && (
+        <Cart
+          cartItems={cartItems}
+          onIncreaseQuantity={increaseQuantity}
+          onDecreaseQuantity={decreaseQuantity}
+          onRemoveItem={removeFromCart}
+        />
+      )}
+
       {categorias.map((categoria) => (
         <div key={categoria.id_categoria} className="categoria">
           <h2 className="categoria-titulo">{categoria.nombre}</h2>
