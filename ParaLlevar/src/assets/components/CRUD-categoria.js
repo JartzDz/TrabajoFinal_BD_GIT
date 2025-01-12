@@ -1,46 +1,17 @@
-import React, {useState, useEffect} from "react";
-import { BrowserRouter as Router, Route, Routes, Link  } from 'react-router-dom';
-import {Table} from "antd"; 
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { Table } from "antd";
 import "../styles/crud-categoria.css";
 import buscar from "../images/buscar.png";
 import { BsTrash } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
-import { Typography, Modal, Alert } from 'antd'; 
-import Cookies from 'js-cookie';
-import axios from 'axios'; // Importa Axios
 import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios'; // Importa Axios
+import Cookies from 'js-cookie'; 
 
 function CRUDCategoria() {
-    const idNegocio = Cookies.get('id');
-    const [categorias, setCategorias] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    useEffect(() => {
-        const obtenerCategoria = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8000/api/categorias/${idNegocio}`);
-                setCategorias(response.data.categorias);
-            } catch (error) {
-                console.error('Error al obtener negocio:', error);
-            }
-        };
-
-        obtenerCategoria();
-    }, [idNegocio]); 
-
-    const eliminarCategoria = async (idCategoria) => {
-        try {
-            const response = await axios.delete(`http://localhost:8000/api/categorias/${idCategoria}`);
-            console.log('Categoría eliminada:', response.data);
-            const nuevasCategorias = categorias.filter((cat) => cat.id_categoria !== idCategoria);
-            setCategorias(nuevasCategorias); 
-            toast.success('Eliminado');
-        } catch (error) {
-            toast.error('Error al eliminar.');
-            console.error('Error al eliminar categoría:', error);
-            throw error; // Maneja el error según tus necesidades
-        }
-    };
+    const [categorias, setCategorias] = useState([]); // Estado para las categorías
+    const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
     const columns = [
         {
@@ -51,9 +22,9 @@ function CRUDCategoria() {
         },
         {
             title: 'Categoría',
-            dataIndex: 'nombre_categoria',
-            key: 'nombre_categoria',
-            sorter: (a, b) => a.nombre_categoria.localeCompare(b.nombre_categoria),
+            dataIndex: 'nombre',
+            key: 'nombre', 
+            sorter: (a, b) => a.nombre.localeCompare(b.nombre), 
         },
         {
             title: 'Descripción',
@@ -62,23 +33,17 @@ function CRUDCategoria() {
             sorter: (a, b) => a.descripcion.localeCompare(b.descripcion),
         },
         {
-            title: 'Icono',
-            dataIndex: 'imagen_categoria',
-            key: 'imagen_categoria',
-            render: imagen_categoria =>  <img className="logoPremiumCrudProd" src={imagen_categoria} alt="Icono" />,
-        },
-        {
             title: 'Habilitado',
-            dataIndex: 'habilitado',
-            key: 'habilitado',
-            render: habilitado => (habilitado ? 'Activo' : 'Inactivo'),
-            sorter: (a, b) => a.descripcion.localeCompare(b.descripcion),
+            dataIndex: 'estado',
+            key: 'estado',
+            render: estado => (estado ? 'Activo' : 'Inactivo'),
+            sorter: (a, b) => a.estado - b.estado,
         },
         {
             title: 'Fecha de Creación',
-            dataIndex: 'fecha_creacion',
-            key: 'fecha_creacion',
-            sorter: (a, b) => new Date(a.fecha_creacion) - new Date(b.fecha_creacion),
+            dataIndex: 'creado_en',
+            key: 'creado_en',
+            sorter: (a, b) => new Date(a.creado_en) - new Date(b.creado_en),
         },
         {
             title: '',
@@ -86,84 +51,98 @@ function CRUDCategoria() {
             fixed: 'left',
             render: (_, registro) => (
                 <div className="botonesCrudCategoria">
-                    <React.Fragment>   
-                        <Link to={`/RegistroCategoria/editarCategoria/`} onClick={() => editar_categoria(registro.id_categoria)}>
-                            <button className="EditarProd" title="Editar Categoría">
-                                <FiEdit size={25}/>
-                            </button>
-                        </Link>
-                     </React.Fragment>
+                    <Link to={`/RegistroCategoria/editarCategoria/`} onClick={() => editar_categoria(registro.id_categoria)}>
+                        <button className="EditarProd" title="Editar Categoría">
+                            <FiEdit size={25} />
+                        </button>
+                    </Link>
                 </div>
             ),
-            width:10,
+            width: 10,
         },
-          {
+        {
             title: '',
             key: 'eliminar',
             fixed: 'left',
             render: (_, registro) => (
                 <div className="botonesCrudCategoria">
-                        <button className="EliminarProd" title="Eliminar Categoría" onClick={() => eliminarCategoria(registro.id_categoria)}>
-                            <BsTrash size={25}/>
-                        </button>
+                    <button className="EliminarProd" title="Eliminar Categoría" onClick={() => eliminarCategoria(registro.id_categoria)}>
+                        <BsTrash size={25} />
+                    </button>
                 </div>
             ),
-            width:10,
-         },
+            width: 10,
+        },
     ];
+    
+    const filteredData = categorias.filter(categoria =>
+        categoria.nombre && categoria.nombre.toLowerCase().includes(searchTerm.toLowerCase()) 
+    );
+    
 
-    const filteredData = categorias && categorias.length > 0 ? categorias.filter(producto =>
-        producto.nombre_categoria.toLowerCase().includes(searchTerm.toLowerCase())
-    ) : [];
+
+    useEffect(() => {
+        axios.get("http://localhost:5000/api/categorias", {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('authToken')}`,
+            }
+        })
+        .then(response => {
+            console.log(response.data); 
+            setCategorias(response.data);
+        })
+        .catch(error => {
+            console.error("Hubo un error al obtener las categorías:", error);
+            toast.error("Error al cargar las categorías.");
+        });
+        
+    }, []);
     
-    
+
+
     const editar_categoria = (id) => {
         sessionStorage.setItem('id_categoria', id);
     };
 
+    const eliminarCategoria = (id) => {
+        axios.delete(`http://localhost:5000/categorias/${id}`) 
+            .then(() => {
+                setCategorias(categorias.filter(categoria => categoria.id_categoria !== id)); 
+                toast.success("Categoría eliminada correctamente.");
+            })
+            .catch(error => {
+                console.error("Hubo un error al eliminar la categoría:", error);
+                toast.error("Error al eliminar la categoría.");
+            });
+    };
+
     return (
-        <body>
-            <div className="container-crud-categoria">
-                <main className="crud-categoria-container">
-                    <div className="crud-categoria">
-                        <div className="BusquedaCategoria">
-                            <img className="FotoBuscarCategoria" src={buscar} alt="Buscar" />
-                            <input
+        <div className="container-crud-categoria">
+            <main className="crud-categoria-container">
+                <div className="crud-categoria">
+                    <div className="BusquedaCategoria">
+                        <img className="FotoBuscarCategoria" src={buscar} alt="Buscar" />
+                        <input
                             type="text"
-                            className="TextoBusquedaProducto"
+                            className="TextoBusquedaCategoria"
                             placeholder="Buscar Categoría"
                             value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                        <React.Fragment>
-                            <Link to="/RegistroCategoria/AgregarCategoria">
-                                <button className='botonAgregarCategoria'>Agregar Categoría</button>
-                            </Link>
-                        </React.Fragment>
-                    </div>
-                    <div className="tabla-categoria-container">
-                        <Table
-                            columns={columns}
-                            dataSource={filteredData}
+                            onChange={(e) => setSearchTerm(e.target.value)} 
                         />
                     </div>
-                </main>
-                <footer className="contenedorFooter-categoria">
-                    <div className="textoFooter2">
-                        Copyright © 2024 Too Good To Go International. All Rights Reserved.
-                    </div>
-                </footer>
-                <div className="waves-background2-categoria"></div>
-            </div>
-            <ToastContainer
-            closeButtonStyle={{
-                fontSize: '12px', // Tamaño de fuente del botón de cerrar
-                padding: '4px'    // Espaciado interno del botón de cerrar
-            }}
-            style={{ width: '400px' }} // Ancho deseado para ToastContainer
-            />
-        </body>
+                    <Link to="/RegistroCategoria/AgregarCategoria">
+                        <button className='botonAgregarCategoria'>Agregar Categoría</button>
+                    </Link>
+                </div>
+                <div className="tabla-categoria-container">
+                    <Table
+                        columns={columns}
+                        dataSource={filteredData} // Datos filtrados
+                    />
+                </div>
+            </main>
+            <ToastContainer />
+        </div>
     );
 }
 

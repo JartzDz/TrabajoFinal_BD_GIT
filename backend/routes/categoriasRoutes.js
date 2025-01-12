@@ -4,7 +4,7 @@ const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
 
 // Ruta para crear una categoría (solo admin)
-router.post('/',verifyToken(2), async (req, res) => {
+router.post('/agregar',verifyToken(2), async (req, res) => {
     const { nombre, descripcion, estado } = req.body;
   
     try {
@@ -29,5 +29,20 @@ router.post('/',verifyToken(2), async (req, res) => {
       });
     }
   });
+// Ruta para obtener las categorías
 
+  router.get('/', verifyToken(), async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM categorias');
+        res.status(200).json(result.rows); 
+    } catch (error) {
+        console.error('Error al obtener categorías:', error);
+        res.status(500).json({
+            message: 'Error al obtener categorías',
+            error: error.message
+        });
+    }
+});
+
+  
   module.exports = router;

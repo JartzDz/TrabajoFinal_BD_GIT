@@ -8,7 +8,7 @@ const productosRoutes = require('./routes/productosRoutes');
 const userRoutes = require('./routes/userRoutes');
 const ofertasRoutes = require('./routes/ofertasRoutes');
 const direccionesRoutes = require('./routes/direccionesRoutes');
-const categoriaRoutes = require('./routes/categoriasRoutes');
+const categoriasRoutes = require('./routes/categoriasRoutes');
 const cookieParser = require('cookie-parser');
 
 dotenv.config();
@@ -29,7 +29,7 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRoutes);
 app.use('/api/direcciones', direccionesRoutes);
 app.use('/api/ofertas',ofertasRoutes)
-app.use('/api/categorias', categoriaRoutes);
+app.use('/api/categorias', categoriasRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000;

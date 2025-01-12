@@ -6,7 +6,7 @@ import axios from 'axios'; // Importa Axios
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function AddCategorias({ onAgregarCategoria }) {
+function AddCategorias() {
   const [nombre, setNombre] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [estado, setEstado] = useState(false);
@@ -24,7 +24,7 @@ function AddCategorias({ onAgregarCategoria }) {
     try {
       const token = Cookies.get('authToken');
 
-      const response = await axios.post('http://localhost:5000/api/categorias', {
+      const response = await axios.post('http://localhost:5000/api/categorias/agregar', {
           nombre,
           descripcion,
           estado
@@ -36,12 +36,11 @@ function AddCategorias({ onAgregarCategoria }) {
         }
       );
 
-      toast.success(response.data.message);  // Mostrar mensaje de éxito
-      onAgregarCategoria(response.data.categoria);  // Llamar a la función para agregar la categoría
-      navigate('/categorias');  // Redirigir a la lista de categorías
+      toast.success(response.data.message);
+      navigate('/RegistroCategoria');  
     } catch (error) {
       console.error('Error al agregar categoría', error);
-      toast.error('Error al agregar la categoría');  // Mostrar mensaje de error
+      toast.error('Error al agregar la categoría'); 
     }
   };
 
