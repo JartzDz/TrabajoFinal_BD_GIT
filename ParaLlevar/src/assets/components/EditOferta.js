@@ -68,13 +68,12 @@ function EditOferta() {
       }
     };
   
-    // Llamar a las funciones
     fetchProductos();
-    fetchTiposOferta(); // Cargar todos los tipos de oferta
+    fetchTiposOferta(); 
     if (id_oferta) {
-      fetchOferta(); // Cargar la oferta específica
+      fetchOferta(); 
     }
-  }, [id_oferta]); // Esto solo se ejecutará cuando el id_oferta cambie
+  }, [id_oferta]); 
   
 
   const validarFechas = () => {

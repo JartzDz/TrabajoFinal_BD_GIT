@@ -25,6 +25,54 @@ router.get('/', verifyToken(), async (req, res) => {
     }
 });
 
+// Actualizar una oferta
+router.put('/:id_oferta', verifyToken(2), async (req, res) => {
+  const { id_oferta } = req.params;
+  const { id_producto, id_tipo_oferta, valor, fecha_inicio, fecha_fin, activo } = req.body;
+
+  // Validación de fechas
+  if (new Date(fecha_inicio) > new Date(fecha_fin)) {
+    return res.status(400).json({ message: 'La fecha de inicio no puede ser posterior a la fecha de fin' });
+  }
+
+  try {
+    // Verificar si la oferta existe
+    const result = await pool.query(
+      'SELECT * FROM ofertas WHERE id_oferta = $1',
+      [id_oferta]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Oferta no encontrada' });
+    }
+
+    // Actualizar la oferta en la base de datos
+    const updateResult = await pool.query(
+      `UPDATE ofertas SET 
+        id_tipo_oferta = $1, 
+        valor = $2, 
+        fecha_inicio = $3, 
+        fecha_fin = $4, 
+        activo = $5 
+      WHERE id_oferta = $6 
+      RETURNING *`,
+      [id_tipo_oferta, valor, fecha_inicio, fecha_fin, activo, id_oferta]
+    );
+
+    // Si la oferta no se actualizó
+    if (updateResult.rows.length === 0) {
+      return res.status(500).json({ message: 'Error al actualizar la oferta' });
+    }
+
+    res.status(200).json({
+      message: 'Oferta actualizada correctamente',
+      oferta: updateResult.rows[0],
+    });
+  } catch (err) {
+    console.error('Error al actualizar la oferta:', err);
+    res.status(500).json({ message: 'Error del servidor', detalles: err.message });
+  }
+});
 
 // Obtener tipos de oferta con opción de filtrar por ID
 router.get('/tipos/:id_tipo_oferta?', verifyToken(), async (req, res) => {
