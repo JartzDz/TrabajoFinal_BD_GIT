@@ -29,11 +29,11 @@ export const CartProvider = ({ children }) => {
             ? { ...item, cantidad: item.cantidad + 1 }
             : item
         );
-        toast.success(`${product.nombre} ha sido agregado al carrito.`);
+        toast.success(`${product.nombre} ha sido agregado al carrito.`, { autoClose: 500 });
         return updatedItems;
       } else {
         const newItems = [...prevItems, { ...product, cantidad: 1 }];
-        toast.success(`${product.nombre} ha sido agregado al carrito.`); 
+        toast.success(`${product.nombre} ha sido agregado al carrito.`, { autoClose: 500 });
         return newItems;
       }
     });
@@ -60,7 +60,7 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = (id) => {
     setCartItems((prevItems) => {
       const newItems = prevItems.filter(item => item.id_producto !== id);
-      toast.error('Producto eliminado del carrito.'); // Toast de error al eliminar
+      toast.error('Producto eliminado del carrito.', { autoClose: 500 });
       return newItems;
     });
   };

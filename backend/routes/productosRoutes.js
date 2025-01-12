@@ -22,18 +22,16 @@ router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res
   const imagen_url = req.file ? req.file.path : '';
 
   try {
-    // Primero, insertar el producto en la tabla 'productos'
     const result = await pool.query(
       'INSERT INTO productos (nombre, descripcion, precio, imagen_url) VALUES ($1, $2, $3, $4) RETURNING id_producto',
       [nombre, descripcion, precio, imagen_url]
     );
     
-    const idProducto = result.rows[0].id_producto;  // Obtenemos el id del producto insertado
+    const idProducto = result.rows[0].id_producto;  
 
-    // Luego, insertar la relación en la tabla 'productos_categorias'
     await pool.query(
       'INSERT INTO productos_categorias (id_producto, id_categoria) VALUES ($1, $2)',
-      [idProducto, categoria]  // categoria es el id de la categoría seleccionada
+      [idProducto, categoria] 
     );
 
     res.status(201).json({
@@ -104,7 +102,7 @@ router.get('/:id', verifyToken(), async (req, res) => {
 // Ruta para actualizar productos (solo admin)
 router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (req, res) => {
   const { id } = req.params;
-  const { nombre, descripcion, precio, en_oferta } = req.body; 
+  const { nombre, descripcion, precio, categoria } = req.body; 
   let imagen_url = req.file ? req.file.path : null; 
 
   if (!nombre || nombre.trim() === '') {
@@ -112,12 +110,13 @@ router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (re
   }
 
   try {
+    // Verificar si existe el producto
+    const productoExistente = await pool.query('SELECT * FROM productos WHERE id_producto = $1', [id]); 
+    if (productoExistente.rows.length === 0) {
+      return res.status(404).json({ message: 'Producto no encontrado' });
+    }
+
     if (!imagen_url) {
-      // Obtener la imagen existente de la base de datos si no hay nueva imagen
-      const productoExistente = await pool.query('SELECT imagen_url FROM productos WHERE id_producto = $1', [id]); 
-      if (productoExistente.rows.length === 0) {
-        return res.status(404).json({ message: 'Producto no encontrado' });
-      }
       imagen_url = productoExistente.rows[0].imagen_url;
     }
 
@@ -125,12 +124,22 @@ router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (re
       'UPDATE productos SET nombre = $1, descripcion = $2, precio = $3, imagen_url = $4 WHERE id_producto = $5 RETURNING *',  
       [nombre.trim(), descripcion, precio, imagen_url, id]
     );
-    
-    
-    
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'Producto no encontrado' });
+      return res.status(404).json({ message: 'Producto no encontrado al intentar actualizar' });
+    }
+
+    const categoriaExistente = await pool.query(
+      'SELECT * FROM productos_categorias WHERE id_producto = $1 AND id_categoria = $2',
+      [id, categoria]
+    );
+
+    // Si la relación ya existe, no es necesario insertarla nuevamente
+    if (categoriaExistente.rows.length === 0) {
+      await pool.query(
+        'INSERT INTO productos_categorias (id_producto, id_categoria) VALUES ($1, $2)',
+        [id, categoria]
+      );
     }
 
     res.status(200).json({

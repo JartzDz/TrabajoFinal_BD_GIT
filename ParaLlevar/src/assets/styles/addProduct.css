@@ -1,122 +1,126 @@
 .contenedorAgregarProducto {
-    background-color: #cccccc ;
-    width: 500px;
-    padding: 30px;
-    margin: auto;
-    margin-top: 3rem;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    border-radius: 20px;
-    margin-bottom: 3rem;
+  background-color: #cccccc ;
+  width: 500px;
+  padding: 30px;
+  margin: auto;
+  margin-top: 3rem;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 20px;
+  margin-bottom: 3rem;
 }
 
 .contenedorAgregarProducto form {
-    display: flex;
-    flex-direction: column; 
+  display: flex;
+  flex-direction: column; 
 }
 
 .contenedorAgregarProducto h1 {
-    margin-bottom: 15px;
-    color: #f46c3c;
+  margin-bottom: 15px;
+  color: #f46c3c;
 }
 
 .contenedorAgregarProducto input,
 .contenedorAgregarProducto textarea,
 .contenedorAgregarProducto button,
 .contenedorAgregarProducto select {
-    width: 100%; 
-    padding: 10px;
-    margin-bottom: 10px; 
-    box-sizing: border-box; 
-    font-size: 16px;
-    border-radius: 5px;
-    border: none;
+  width: 100%; 
+  padding: 10px;
+  margin-bottom: 10px; 
+  box-sizing: border-box; 
+  font-size: 16px;
+  border-radius: 5px;
+  border: none;
 }
 
 .contenedorAgregarProducto input::placeholder,
 .contenedorAgregarProducto textarea::placeholder,
 .contenedorAgregarProducto button::placeholder {
-    color: #d4322a;
+  color: #d4322a;
 }
 
-
 .contenedorAgregarProducto button {
-    background-color: #d4322a;
-    color: white;
-    cursor: pointer;
+  background-color: #d4322a;
+  color: white;
+  cursor: pointer;
 }
 
 .contenedorAgregarProducto button:hover {
-    background-color: #f46c3c;
-    color: white;
-    cursor: pointer;
+  background-color: #f46c3c;
+  color: white;
 }
 
 .file-upload-label {
-    background-color: #86553a;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    display: inline-block;
-    margin-top: 10px;
-  }
-  
-  .file-upload-label:hover {
-    background-color: #b17a5c;
-  }
+  background-color: #86553a;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-block;
+  margin-top: 10px;
+}
 
-  .contenedorAgregarProducto p {
-    font-size: 14px;
-    color: #333;
-    margin-top: 10px;
-  }
+.file-upload-label:hover {
+  background-color: #b17a5c;
+}
 
-  .contenedorAgregarProducto select {
-    color: #d4322a;
-  }
-  
-  .offerSwitch {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.contenedorAgregarProducto p {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+}
 
-    label {
-        color: #c0241c;
-    }
+.contenedorAgregarProducto select {
+  color: #d4322a;
+}
+
+.offerSwitch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  label {
+    color: #c0241c;
   }
-  
-  .offerSwitch input[type="checkbox"] {
-    position: relative;
-    width: 40px;
-    margin-top: 2%;
-    height: 20px;
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: #d4322a;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .offerSwitch input[type="checkbox"]:checked {
-    background-color: #f46c3c;
-  }
-  
-  .offerSwitch input[type="checkbox"]:before {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background-color: white;
-    top: 1px;
-    left: 1px;
-    transition: transform 0.3s;
-  }
-  
-  .offerSwitch input[type="checkbox"]:checked:before {
-    transform: translateX(20px);
-  }
-  
+}
+
+.offerSwitch input[type="checkbox"] {
+  position: relative;
+  width: 40px;
+  margin-top: 2%;
+  height: 20px;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #d4322a;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.offerSwitch input[type="checkbox"]:checked {
+  background-color: #f46c3c;
+}
+
+.offerSwitch input[type="checkbox"]:before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: white;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.3s;
+}
+
+.offerSwitch input[type="checkbox"]:checked:before {
+  transform: translateX(20px);
+}
+
+.contenedorAgregarProducto .producto-imagen {
+  display: block;
+  margin: 20px auto; 
+  max-width: 100%;
+  height: auto; 
+}

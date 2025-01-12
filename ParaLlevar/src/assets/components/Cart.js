@@ -26,7 +26,7 @@ const Cart = ({ cartItems, onIncreaseQuantity, onDecreaseQuantity, onRemoveItem 
                 />
                 <div className='nameProduct'>
                   <h3>{item.nombre}</h3>  
-                  <p>${item.precio}</p> 
+                  <p>${item.precioConDescuento ? item.precioConDescuento : item.precio}</p> {/* Aquí se usa el precio con descuento si existe */}
                 </div>
               </div>
               <div className="item-quantity">
