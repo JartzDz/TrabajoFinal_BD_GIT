@@ -79,7 +79,21 @@ nav ul li a {
   color: white;
   transition: 0.1s ease;
 }
+.botonesInicioYRegistro {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; 
+  margin-top: 2rem;
+  margin-left: 750px;
+}
 
+.botonesInicioYRegistro li {
+  list-style: none;
+}
+
+.botonesInicioYRegistro li a {
+  margin: 0 10px; 
+}
 .cart-count {
   position: absolute;
   top: -5px;

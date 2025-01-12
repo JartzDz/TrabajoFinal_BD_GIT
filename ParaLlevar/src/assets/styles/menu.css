@@ -1,0 +1,117 @@
+.contenedorFooterRegistro {
+    margin-top: auto;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--color-fondoLogin);
+    color: white;
+    text-align: center;
+    height: 2rem;
+    border-radius: 60px 60px 0 0;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5)
+}
+
+  .contenedorFooterRegistro .textoFooter2 {
+    display: flex;
+    justify-content: right; 
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 5%;
+    color: var(--color-secundary);
+    padding-right: 40px;
+    text-align: right;
+    border-radius: 60px 60px 0 0;
+}
+
+.menu {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .categoria {
+    margin-bottom: 40px;
+  }
+  
+  .categoria-titulo {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .categoria-descripcion {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  .productos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .producto-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: calc(33.333% - 20px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .producto-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .producto-imagen {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+  
+  .producto-info {
+    padding: 15px;
+    text-align: center;
+  }
+  
+  .producto-nombre {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 10px 0;
+  }
+  
+  .producto-descripcion {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 10px 0;
+  }
+  
+  .producto-precio {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #28a745;
+    margin: 10px 0;
+  }
+  
+  .producto-no-disponible {
+    font-size: 0.9rem;
+    color: red;
+    font-weight: bold;
+  }
+  .btn-add-to-cart {
+    white-space: nowrap;  
+    overflow: hidden;    
+    text-overflow: ellipsis; 
+    width: 200px;
+  }
+  
+  

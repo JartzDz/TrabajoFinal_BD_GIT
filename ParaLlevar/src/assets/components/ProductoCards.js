@@ -25,7 +25,6 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
 
   const mapFields = (producto) => {
     const precioOriginal = parseFloat(producto.precio);
-    // Usar precioConDescuento si existe (viene de una oferta) o usar el precio original
     const precioConDescuento = producto.precioConDescuento 
       ? parseFloat(producto.precioConDescuento) 
       : precioOriginal;
@@ -50,7 +49,7 @@ const ProductosCards = ({ productos = [], nombreBoton, onBuyClick, cardStyle = {
         visibleSlides={visibleSlides}
         step={1}
         infinite
-        orientation={window.innerWidth <= 820 ? 'vertical' : 'horizontal'} 
+        orientation={window.innerWidth <= 820 ? 'vertical' : 'horizontal'}
         className='carousel-container'
         id={carruselId}
       >

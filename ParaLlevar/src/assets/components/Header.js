@@ -39,6 +39,7 @@ const Header = ({ onCartClick }) => {
           {authToken && userRole === 1 && (
             <>
               <li><a href="/Inicio">Inicio</a></li>
+              <li><a href="/Menu">Menú</a></li>
               <li><a href="/HistorialReservas">Mis Pedidos</a></li>
               <li><a href="/MiPerfil">Mi Perfil</a></li>
               <li className="show-small"><a href="/Reserva">Bolsa de Compras</a></li>
@@ -48,6 +49,7 @@ const Header = ({ onCartClick }) => {
           {authToken && userRole === 2 && (
             <>
               <li><a href="/Inicio">Inicio</a></li>
+              <li><a href="/Menu">Menú</a></li>
               <li><a href="/RegistroCategoria">Categorías</a></li>
               <li><a href="/RegistroProductos">Productos</a></li>
               <li><a href="/RegistroOfertas">Ofertas</a></li>
@@ -55,9 +57,10 @@ const Header = ({ onCartClick }) => {
             </>
           )}
           {!authToken && (
-            <>
+            <><div className='botonesInicioYRegistro'>
               <li><a href="/Registro" className="no-underline"><button className='buttonRegistrarse'>Registrarse</button></a></li>
               <li><a href="/Login" className="no-underline"><button className='buttonIniciarSesion'>Iniciar Sesión</button></a></li>
+              </div>
             </>
           )}
         </ul>

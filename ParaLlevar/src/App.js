@@ -25,7 +25,7 @@ import HistorialReserva from "./pages/HistorialReservas";
 import ReservacionesEnProceso from "./pages/ReservacionesEnProceso";
 import ReservacionesListas from "./pages/ReservacionesListas";
 import ReservacionesHistorial from "./pages/ReservacionesHistorial";
-
+import MenuPage from "./pages/MenuPage";
 function App() {
   return (
     <div className="App">
@@ -49,6 +49,8 @@ function App() {
           <Route path="/RegistroProductos/EditarProducto" element={<EditProduct />} /> 
           <Route path="/RegistroCategoria/EditarCategoria" element={<EditCategoria />} /> 
           <Route path="/MiPerfil" element={<MiPerfil />} />
+          <Route path="/Menu" element={<MenuPage/>}/>
+
           <Route path="/ReservasRecibidas" element={<ReservacionesRecibidas />} />
           <Route path="/ReservasEnProceso" element={<ReservacionesEnProceso />} /> 
           <Route path="/ReservasListas" element={<ReservacionesListas />} /> 

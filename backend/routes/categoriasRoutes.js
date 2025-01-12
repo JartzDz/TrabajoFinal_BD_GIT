@@ -29,6 +29,50 @@ router.post('/agregar',verifyToken(2), async (req, res) => {
       });
     }
   });
+
+  // Ruta para obtener las categorías con sus productos
+router.get('/con-productos', verifyToken(), async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT c.id_categoria, c.nombre AS categoria_nombre, c.descripcion AS categoria_descripcion,
+        p.id_producto, p.nombre AS producto_nombre, p.descripcion AS producto_descripcion,
+        p.precio, p.disponible, p.imagen_url
+      FROM categorias c
+      LEFT JOIN productos_categorias pc ON c.id_categoria = pc.id_categoria
+      LEFT JOIN productos p ON pc.id_producto = p.id_producto
+    `);
+
+    const categorias = {};
+    result.rows.forEach(row => {
+      if (!categorias[row.id_categoria]) {
+        categorias[row.id_categoria] = {
+          id_categoria: row.id_categoria,
+          nombre: row.categoria_nombre,
+          descripcion: row.categoria_descripcion,
+          productos: []
+        };
+      }
+      if (row.id_producto) {
+        categorias[row.id_categoria].productos.push({
+          id_producto: row.id_producto,
+          nombre: row.producto_nombre,
+          descripcion: row.producto_descripcion,
+          precio: row.precio,
+          disponible: row.disponible,
+          imagen_url: row.imagen_url
+        });
+      }
+    });
+
+    res.status(200).json(Object.values(categorias));
+  } catch (error) {
+    console.error('Error al obtener categorías con productos:', error);
+    res.status(500).json({
+      message: 'Error al obtener categorías con productos',
+      error: error.message
+    });
+  }
+});
 // Ruta para obtener las categorías
 
   router.get('/', verifyToken(), async (req, res) => {
@@ -128,5 +172,6 @@ router.put('/:id', verifyToken(2), async (req, res) => {
       });
     }
   });
+
 
  module.exports = router;
