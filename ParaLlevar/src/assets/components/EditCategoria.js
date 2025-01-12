@@ -81,68 +81,37 @@ function AddCategorias() {
 
 
   return (
-    <div className="main-container-categoria-add">
-      <main className="contenido-categoria">
-        <div className="contenedor-addCategoria">
-          <div className="formulario-addCategoria">
-            <form>
-              <div className="nombreCategoria">
-                <label>Nombre de la Categoria</label>
-                <input type="text" className="nombreIngresadoCategoria" onChange={handleInputNombre} value={nombreCategoria ? nombreCategoria : ''}/>
-              </div>
-              <div className="descripcionCategoria">
-                <label>Descripción</label>
-                <textarea className="descripcionIngresadaCategoria" onChange={handleInputDescripcion} value={descripcion ? descripcion : ''}></textarea>
-              </div>
-              <div className="estadoCategoria">
-                <label>Estado</label>
-                <select className="comboOpcionesCategoria" value={estado} onChange={(e) => setEstado(e.target.value)}>
-                  <option value="">Seleccionar...</option>
-                  <option value={true}>Activo</option>
-                  <option value={false}>Inactivo</option>
-                </select>
-              </div>
-            </form>
-          </div>
-          <div className="icono-addCategoria">
-            <div className="icono-Categoria">
-              <label>Icono de la Categoria</label>
-              <div className="image-preview-container-categoria">
-                {imageSrc ? (
-                  <img src={imageSrc} alt="Categoria" className="categoria-icono" />
-                ) : (
-                  <div className="image-placeholder">Vista previa del icono</div>
-                )}
-              </div>
-              <div className="image-upload-container-categoria">
-                <input
-                  type="file"
-                  id="file-input"
-                  className="iconoIngresadaCategoria"
-                  onChange={handleImageChange}
-                />
-                <label htmlFor="file-input" className="btn_subirIconoCategoria">
-                  Cambiar Icono
-                </label>
-              </div>
-              <button className="btn_actualizarCategoria" onClick={handleUpdateCategoria}>Actualizar Categoría</button>
-            </div>
-          </div>
-        </div>
-      </main>
-      <div className="waves-background2-add-categoria"></div>
-      <footer className="contenedorFooter-add-categoria">
-        <div className="textoFooter2">
-           Copyright © 2024 Too Good To Go International. All Rights Reserved.
-        </div>
-      </footer>
-      <ToastContainer
-          closeButtonStyle={{
-            fontSize: '12px', // Tamaño de fuente del botón de cerrar
-            padding: '4px'    // Espaciado interno del botón de cerrar
-          }}
-          style={{ width: '400px' }} // Ancho deseado para ToastContainer
+    <div className="contenedorAgregarProducto">
+      <form onSubmit={""}>
+        <h1>AGREGAR CATEGORÍA</h1>
+        <input
+          type="text"
+          placeholder="Nombre de la categoría"
+          value={""}
+          onChange={(e) => setNombre(e.target.value)}
+          required
         />
+        <textarea
+          placeholder="Descripción"
+          value={""}
+          onChange={(e) => setDescripcion(e.target.value)}
+          required
+        />
+        <div className="offerSwitch">
+          <label>{estado ? 'Activo' : 'Inactivo'}</label>
+          <input
+            type="checkbox"
+            checked={estado}
+            onChange={(e) => setEstado(e.target.checked)}
+          />
+        </div>
+        <button type="submit">Actualizar Categoría</button>
+      </form>
+      <ToastContainer
+        style={{ width: '400px' }} 
+        autoClose={2000}
+        closeButton={false}
+      />
     </div>
   );
 }

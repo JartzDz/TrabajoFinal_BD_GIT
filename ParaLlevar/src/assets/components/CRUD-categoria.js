@@ -105,16 +105,21 @@ function CRUDCategoria() {
     };
 
     const eliminarCategoria = (id) => {
-        axios.delete(`http://localhost:5000/categorias/${id}`) 
-            .then(() => {
-                setCategorias(categorias.filter(categoria => categoria.id_categoria !== id)); 
-                toast.success("Categoría eliminada correctamente.");
-            })
-            .catch(error => {
-                console.error("Hubo un error al eliminar la categoría:", error);
-                toast.error("Error al eliminar la categoría.");
-            });
+        axios.delete(`http://localhost:5000/api/categorias/${id}`, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('authToken')}`,
+            }
+        })
+        .then(() => {
+            setCategorias(categorias.filter(categoria => categoria.id_categoria !== id)); 
+            toast.success("Categoría eliminada correctamente.");
+        })
+        .catch(error => {
+            console.error("Hubo un error al eliminar la categoría:", error);
+            toast.error("Error al eliminar la categoría.");
+        });
     };
+    
 
     return (
         <div className="container-crud-categoria">
@@ -137,11 +142,15 @@ function CRUDCategoria() {
                 <div className="tabla-categoria-container">
                     <Table
                         columns={columns}
-                        dataSource={filteredData} // Datos filtrados
+                        dataSource={filteredData} 
                     />
                 </div>
             </main>
-            <ToastContainer />
+            <ToastContainer
+                style={{ width: '400px' }} 
+                autoClose={2000}
+                closeButton={false}
+            />
         </div>
     );
 }

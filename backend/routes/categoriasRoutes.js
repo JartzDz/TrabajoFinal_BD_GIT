@@ -44,5 +44,35 @@ router.post('/agregar',verifyToken(2), async (req, res) => {
     }
 });
 
-  
-  module.exports = router;
+// Ruta para eliminar una categoría (solo admin)
+router.delete('/:id', verifyToken(2), async (req, res) => {
+    const { id } = req.params;
+    console.log(`Intentando eliminar categoría con ID: ${id}`);
+
+    try {
+        const result = await pool.query(
+            'DELETE FROM categorias WHERE id_categoria = $1 RETURNING *',
+            [id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({
+                message: 'Categoría no encontrada'
+            });
+        }
+
+        res.status(200).json({
+            message: 'Categoría eliminada exitosamente',
+            categoria: result.rows[0]
+        });
+    } catch (error) {
+        console.error('Error al eliminar categoría', error);
+        res.status(500).json({
+            message: 'Error al eliminar categoría',
+            error: error.message
+        });
+    }
+});
+
+
+ module.exports = router;

@@ -150,11 +150,9 @@ function CRUDOferta() {
             
             <div className="waves-background2-prod"></div>
             <ToastContainer
-                closeButtonStyle={{
-                    fontSize: '10px',
-                    padding: '4px'  
-                }}
                 style={{ width: '400px' }} 
+                autoClose={2000}
+                closeButton={false}
             />
         </div>
     );

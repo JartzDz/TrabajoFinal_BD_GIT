@@ -37,7 +37,6 @@ function AddCategorias() {
       );
 
       toast.success(response.data.message);
-      navigate('/RegistroCategoria');  
     } catch (error) {
       console.error('Error al agregar categoría', error);
       toast.error('Error al agregar la categoría'); 
