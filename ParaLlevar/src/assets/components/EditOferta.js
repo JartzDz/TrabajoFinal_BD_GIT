@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 
 function EditOferta() {
   const id_oferta = sessionStorage.getItem("id_oferta");
-  console.log(id_oferta);
   const [productos, setProductos] = useState([]);
   const [tiposOferta, setTiposOferta] = useState([]);
   const [valor, setValor] = useState('');

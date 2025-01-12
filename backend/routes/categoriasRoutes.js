@@ -74,5 +74,59 @@ router.delete('/:id', verifyToken(2), async (req, res) => {
     }
 });
 
+// Ruta para obtener una categoría por ID
+router.get('/:id', verifyToken(), async (req, res) => {
+    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
+    try {
+      const result = await pool.query('SELECT * FROM categorias WHERE id_categoria = $1', [id]);
+  
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          message: 'Categoría no encontrada'
+        });
+      }
+  
+      res.status(200).json({
+        categoria: result.rows[0]  
+      });
+    } catch (error) {
+      console.error('Error al obtener la categoría:', error);
+      res.status(500).json({
+        message: 'Error al obtener la categoría',
+        error: error.message
+      });
+    }
+  });
+  
+  // Ruta para actualizar una categoría (solo admin)
+router.put('/:id', verifyToken(2), async (req, res) => {
+    const { id } = req.params;
+    const { nombre, descripcion, estado } = req.body;
+  
+    try {
+      const result = await pool.query('SELECT * FROM categorias WHERE id_categoria = $1', [id]);
+  
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          message: 'Categoría no encontrada'
+        });
+      }
+      const updateResult = await pool.query(
+        'UPDATE categorias SET nombre = $1, descripcion = $2, estado = $3 WHERE id_categoria = $4 RETURNING *',
+        [nombre, descripcion, estado, id]
+      );
+  
+      res.status(200).json({
+        message: 'Categoría actualizada exitosamente',
+        categoria: updateResult.rows[0]
+      });
+    } catch (error) {
+      console.error('Error al actualizar categoría:', error);
+      res.status(500).json({
+        message: 'Error al actualizar categoría',
+        error: error.message
+      });
+    }
+  });
 
  module.exports = router;
