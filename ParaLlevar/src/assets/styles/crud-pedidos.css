@@ -82,7 +82,7 @@ main.crud-pedidos-container {
 .crud-pedidos-container .tabla-pedidos-container {
     max-height: 400px;
     overflow-y: auto; 
-    margin-top: -45vh;
+    margin-top: -55vh;
     width:90%;
 }
 
