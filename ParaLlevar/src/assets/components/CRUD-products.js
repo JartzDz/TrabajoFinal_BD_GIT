@@ -30,19 +30,13 @@ function CRUDProducts() {
 
     const eliminarProducto = async (id_producto) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/api/productos/eliminar/${id_producto}`,{
-                headers: {
-                         'Authorization': `Bearer ${Cookies.get('authToken')}`, 
-                },
-            }); 
+            const response = await axios.delete(`http://localhost:5000/api/productos/eliminar/${id_producto}`, {
+                headers: { 'Authorization': `Bearer ${Cookies.get('authToken')}` }
+            });
             
             if (response.data && response.data.message === 'Producto eliminado') {
-                console.log('Producto eliminado:', response.data);
-                
-                const nuevosProductos = productos.filter((producto) => producto.id_producto !== id_producto); 
-                setProductos(nuevosProductos); 
-                
                 toast.success('Producto eliminado correctamente');
+                obtenerProducto(); 
             } else {
                 toast.error('No se pudo eliminar el producto.');
             }
@@ -51,6 +45,7 @@ function CRUDProducts() {
             console.error('Error al eliminar producto:', error);
         }
     };
+    
     
 
     const columns = [

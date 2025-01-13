@@ -30,7 +30,7 @@ router.post('/agregar',verifyToken(2), async (req, res) => {
     }
   });
 
-  // Ruta para obtener las categorías con sus productos
+// Ruta para obtener las categorías con sus productos
 router.get('/con-productos', verifyToken(), async (req, res) => {
   try {
     const result = await pool.query(`
@@ -38,8 +38,9 @@ router.get('/con-productos', verifyToken(), async (req, res) => {
         p.id_producto, p.nombre AS producto_nombre, p.descripcion AS producto_descripcion,
         p.precio, p.disponible, p.imagen_url
       FROM categorias c
-      LEFT JOIN productos_categorias pc ON c.id_categoria = pc.id_categoria
-      LEFT JOIN productos p ON pc.id_producto = p.id_producto
+      LEFT JOIN productos_categorias pc ON c.id_categoria = pc.id_categoria AND pc.is_deleted = FALSE
+      LEFT JOIN productos p ON pc.id_producto = p.id_producto AND p.is_deleted = FALSE
+      WHERE c.is_deleted = FALSE
     `);
 
     const categorias = {};
@@ -73,76 +74,77 @@ router.get('/con-productos', verifyToken(), async (req, res) => {
     });
   }
 });
+
 // Ruta para obtener las categorías
 
-  router.get('/', verifyToken(), async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM categorias');
-        res.status(200).json(result.rows); 
-    } catch (error) {
-        console.error('Error al obtener categorías:', error);
-        res.status(500).json({
-            message: 'Error al obtener categorías',
-            error: error.message
-        });
-    }
+router.get('/', verifyToken(), async (req, res) => {
+  try {
+      const result = await pool.query('SELECT * FROM categorias WHERE is_deleted = FALSE');
+      res.status(200).json(result.rows); 
+  } catch (error) {
+      console.error('Error al obtener categorías:', error);
+      res.status(500).json({
+          message: 'Error al obtener categorías',
+          error: error.message
+      });
+  }
 });
 
 // Ruta para eliminar una categoría (solo admin)
 router.delete('/:id', verifyToken(2), async (req, res) => {
-    const { id } = req.params;
-    console.log(`Intentando eliminar categoría con ID: ${id}`);
+  const { id } = req.params;
+  console.log(`Intentando eliminar de manera lógica la categoría con ID: ${id}`);
 
-    try {
-        const result = await pool.query(
-            'DELETE FROM categorias WHERE id_categoria = $1 RETURNING *',
-            [id]
-        );
+  try {
+      const result = await pool.query(
+          'UPDATE categorias SET is_deleted = TRUE WHERE id_categoria = $1 RETURNING *',
+          [id]
+      );
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({
-                message: 'Categoría no encontrada'
-            });
-        }
+      if (result.rowCount === 0) {
+          return res.status(404).json({
+              message: 'Categoría no encontrada'
+          });
+      }
 
-        res.status(200).json({
-            message: 'Categoría eliminada exitosamente',
-            categoria: result.rows[0]
-        });
-    } catch (error) {
-        console.error('Error al eliminar categoría', error);
-        res.status(500).json({
-            message: 'Error al eliminar categoría',
-            error: error.message
-        });
-    }
+      res.status(200).json({
+          message: 'Categoría eliminada de manera lógica',
+          categoria: result.rows[0]
+      });
+  } catch (error) {
+      console.error('Error al eliminar de manera lógica la categoría', error);
+      res.status(500).json({
+          message: 'Error al eliminar de manera lógica la categoría',
+          error: error.message
+      });
+  }
 });
 
 // Ruta para obtener una categoría por ID
 router.get('/:id', verifyToken(), async (req, res) => {
-    const { id } = req.params; // Obtiene el ID de los parámetros de la URL
-    try {
-      const result = await pool.query('SELECT * FROM categorias WHERE id_categoria = $1', [id]);
-  
-      if (result.rows.length === 0) {
-        return res.status(404).json({
-          message: 'Categoría no encontrada'
-        });
-      }
-  
-      res.status(200).json({
-        categoria: result.rows[0]  
-      });
-    } catch (error) {
-      console.error('Error al obtener la categoría:', error);
-      res.status(500).json({
-        message: 'Error al obtener la categoría',
-        error: error.message
+  const { id } = req.params; 
+  try {
+    const result = await pool.query('SELECT * FROM categorias WHERE id_categoria = $1 AND is_deleted = FALSE', [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Categoría no encontrada o eliminada'
       });
     }
-  });
+
+    res.status(200).json({
+      categoria: result.rows[0]  
+    });
+  } catch (error) {
+    console.error('Error al obtener la categoría:', error);
+    res.status(500).json({
+      message: 'Error al obtener la categoría',
+      error: error.message
+    });
+  }
+});
   
-  // Ruta para actualizar una categoría (solo admin)
+// Ruta para actualizar una categoría (solo admin)
 router.put('/:id', verifyToken(2), async (req, res) => {
     const { id } = req.params;
     const { nombre, descripcion, estado } = req.body;

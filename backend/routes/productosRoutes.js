@@ -47,7 +47,7 @@ router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res
 // Ruta para obtener productos (accesible para todos)
 router.get('/', verifyToken(), async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM productos'); 
+    const result = await pool.query('SELECT * FROM productos WHERE is_deleted = FALSE'); 
 
     if (result.rows.length === 0) {
       return res.status(404).json({ mensaje: 'No se encontraron productos.' });
@@ -60,15 +60,15 @@ router.get('/', verifyToken(), async (req, res) => {
   }
 });
 
+
 // Ruta para eliminar productos (solo admin)
 router.delete('/eliminar/:id', verifyToken(2), async (req, res) => {
   const { id } = req.params;
 
   try {
     const result = await pool.query(
-      'DELETE FROM productos WHERE id_producto = $1 RETURNING *', [id]
+      'UPDATE productos SET is_deleted = TRUE WHERE id_producto = $1 RETURNING *', [id]
     );
-    
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Producto no encontrado' });
@@ -81,12 +81,13 @@ router.delete('/eliminar/:id', verifyToken(2), async (req, res) => {
   }
 });
 
+
 // Ruta para obtener un producto por ID (accesible para todos)
 router.get('/:id', verifyToken(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const result = await pool.query('SELECT * FROM productos WHERE id_producto = $1', [id]);
+    const result = await pool.query('SELECT * FROM productos WHERE id_producto = $1 AND is_deleted = FALSE', [id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ mensaje: 'Producto no encontrado.' });
@@ -98,6 +99,7 @@ router.get('/:id', verifyToken(), async (req, res) => {
     res.status(500).json({ error: 'Error del servidor', detalles: err.message }); 
   }
 });
+
 
 // Ruta para actualizar productos (solo admin)
 router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (req, res) => {
