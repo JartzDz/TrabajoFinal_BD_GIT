@@ -52,13 +52,13 @@ function App() {
           <Route path="/MiPerfil" element={<MiPerfil />} />
           <Route path="/Menu" element={<MenuPage/>}/>
           <Route path="/AgregarTipoOferta" element={<AddTipoOferta/>}/>
+
           <Route path="/ReservasRecibidas" element={<ReservacionesRecibidas />} />
           <Route path="/ReservasEnProceso" element={<ReservacionesEnProceso />} /> 
           <Route path="/ReservasListas" element={<ReservacionesListas />} /> 
           <Route path="/ReservasHistorial" element={<ReservacionesHistorial />} /> 
-          <Route path="/RegistroComentarios/EditarComentarios/:id" element={<EditComentarios />} /> 
-          <Route path="/RegistroComentarios/AgregarComentarios" element={<AddComentario />} />
           <Route path="/HistorialReservas" element={<HistorialReserva />} /> 
+
         </Routes>
       </Router>
       </CommentsProvider>

@@ -28,7 +28,7 @@ app.use('/api/productos', productosRoutes);
 app.use('/uploads', express.static('uploads'));
 app.use('/api/users', userRoutes);
 app.use('/api/direcciones', direccionesRoutes);
-app.use('/api/ofertas',ofertasRoutes)
+app.use('/api/ofertas',ofertasRoutes);
 app.use('/api/categorias', categoriasRoutes);
 
 // Iniciar servidor
