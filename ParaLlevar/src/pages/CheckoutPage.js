@@ -15,7 +15,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isExistingAddressModalOpen, setIsExistingAddressModalOpen] = useState(false); // Modal para direcciones existentes
+  const [isExistingAddressModalOpen, setIsExistingAddressModalOpen] = useState(false); 
   const [direccion, setDireccion] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [codigo_postal, setCodigoPostal] = useState('');
@@ -244,7 +244,7 @@ const CheckoutPage = () => {
       <ul className="direcciones-lista">
         {userAddresses.map((direccion) => (
           <li key={direccion.id} className="direccion-item">
-            <span>{direccion.direccion}</span>
+            <span>{direccion.direccion} - {direccion.tipo_direccion} </span>
             <div className="acciones">
               <button onClick={""}>
               <GrCheckboxSelected className='accion-icon'/>
