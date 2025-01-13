@@ -40,7 +40,7 @@ function AddOferta() {
     }
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5000/api/ofertas/tipo/agregar', {
+      const response = await fetch('http://localhost:5000/api/ofertas/tipos/agregar', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${Cookies.get('authToken')}`,
@@ -62,7 +62,7 @@ function AddOferta() {
     }
     setIsSubmitting(false);
   };
-
+  
   const handleEditTipo = async () => {
     if (!descripcion) {
       toast.error('Por favor ingrese una descripción');
@@ -70,7 +70,7 @@ function AddOferta() {
     }
     setIsSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/ofertas/tipo/editar/${editingTipo.id_tipo_oferta}`, {
+      const response = await fetch(`http://localhost:5000/api/ofertas/tipos/${editingTipo.id_tipo_oferta}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${Cookies.get('authToken')}`,
@@ -92,14 +92,16 @@ function AddOferta() {
     }
     setIsSubmitting(false);
   };
-
+  
   const handleDeleteTipo = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/ofertas/tipo/eliminar/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/ofertas/tipos/eliminar`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${Cookies.get('authToken')}`,
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ id_tipo_oferta: id }),
       });
       if (response.ok) {
         toast.success('Tipo de oferta eliminado');
@@ -111,6 +113,7 @@ function AddOferta() {
       toast.error('Error al eliminar tipo de oferta');
     }
   };
+  
 
   const columns = [
     {

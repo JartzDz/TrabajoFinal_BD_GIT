@@ -5,24 +5,28 @@ const verifyToken = require('../middlewares/authMiddleware');
 
 // Obtener todas las ofertas con sus tipos y productos asociados
 router.get('/', verifyToken(), async (req, res) => {
-    try {
-        const result = await pool.query(`
-           SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo,
+  try {
+    const result = await pool.query(`
+      SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo,
              t.descripcion AS tipo_oferta,
              p.id_producto, p.nombre
-            FROM ofertas o
-            JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
-            LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
-            LEFT JOIN productos p ON po.id_producto = p.id_producto;
-        `);
-        if (result.rows.length === 0) {
-            return res.status(404).json({ mensaje: 'No se encontraron ofertas.' });
-        }
-        res.json(result.rows);
-    } catch (err) {
-        console.error('Error al obtener las ofertas:', err.message);
-        res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+      FROM ofertas o
+      JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
+      LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
+      LEFT JOIN productos p ON po.id_producto = p.id_producto
+      WHERE t.is_deleted = FALSE
+        AND o.is_deleted = FALSE  
+        AND po.is_deleted = FALSE  
+    `);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron ofertas.' });
     }
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener las ofertas:', err.message);
+    res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  }
 });
 
 // Actualizar una oferta
@@ -59,7 +63,6 @@ router.put('/:id_oferta', verifyToken(2), async (req, res) => {
       [id_tipo_oferta, valor, fecha_inicio, fecha_fin, activo, id_oferta]
     );
 
-    // Si la oferta no se actualizó
     if (updateResult.rows.length === 0) {
       return res.status(500).json({ message: 'Error al actualizar la oferta' });
     }
@@ -79,11 +82,11 @@ router.get('/tipos/:id_tipo_oferta?', verifyToken(), async (req, res) => {
   const { id_tipo_oferta } = req.params;  // Obtén el id_tipo_oferta (puede ser undefined)
 
   try {
-    let query = 'SELECT * FROM tipos_oferta';
+    let query = 'SELECT * FROM tipos_oferta WHERE is_deleted = FALSE';
     let params = [];
 
     if (id_tipo_oferta) {
-      query += ' WHERE id_tipo_oferta = $1';  
+      query += ' AND id_tipo_oferta = $1';  
       params = [id_tipo_oferta];
     }
 
@@ -109,11 +112,10 @@ router.post('/agregar', verifyToken(2), async (req, res) => {
     }
 
     try {
-        // Verificar si la oferta ya está asociada a este producto, excluyendo las relaciones eliminadas lógicamente
         const existingOffer = await pool.query(
             'SELECT * FROM productos_ofertas WHERE id_producto = $1 AND id_oferta IN (' +
-            '  SELECT id_oferta FROM ofertas WHERE id_tipo_oferta = $2 AND is_deleted = FALSE' +  // Excluir ofertas eliminadas lógicamente
-            ') AND is_deleted = FALSE',  // Excluir relaciones eliminadas lógicamente
+            '  SELECT id_oferta FROM ofertas WHERE id_tipo_oferta = $2 AND is_deleted = FALSE' + 
+            ') AND is_deleted = FALSE',  
             [id_producto, id_tipo_oferta]
         );
 
@@ -230,5 +232,78 @@ router.get('/:id_oferta', verifyToken(), async (req, res) => {
   }
 });
 
+// Agregar un nuevo tipo de oferta
+router.post('/tipos/agregar', verifyToken(2), async (req, res) => {
+  const { descripcion } = req.body;
+  try {
+    const result = await pool.query(
+      'INSERT INTO tipos_oferta (descripcion) VALUES ($1) RETURNING *',
+      [descripcion]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error al agregar tipo de oferta:', err);
+    res.status(500).json({ message: 'Error al agregar tipo de oferta', detalles: err.message });
+  }
+});
+
+// Actualizar tipo de oferta
+router.put('/tipos/:id_tipo_oferta', verifyToken(2), async (req, res) => {
+  const { id_tipo_oferta } = req.params;
+  const { descripcion } = req.body;
+
+  try {
+    const result = await pool.query(
+      'UPDATE tipos_oferta SET descripcion = $1 WHERE id_tipo_oferta = $2 RETURNING *',
+      [descripcion, id_tipo_oferta]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Tipo de oferta no encontrado' });
+    }
+
+    res.status(200).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error al actualizar tipo de oferta:', err);
+    res.status(500).json({ message: 'Error al actualizar tipo de oferta', detalles: err.message });
+  }
+});
+
+// Eliminar tipo de oferta
+// Eliminar tipo de oferta
+router.delete('/tipos/eliminar', verifyToken(2), async (req, res) => {
+  const { id_tipo_oferta } = req.body;
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM tipos_oferta WHERE id_tipo_oferta = $1 AND is_deleted = FALSE',
+      [id_tipo_oferta]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Tipo de oferta no encontrado' });
+    }
+
+    await pool.query(
+      'UPDATE ofertas SET is_deleted = TRUE WHERE id_tipo_oferta = $1',
+      [id_tipo_oferta]
+    );
+
+    await pool.query(
+      'UPDATE productos_ofertas SET is_deleted = TRUE WHERE id_oferta IN (SELECT id_oferta FROM ofertas WHERE id_tipo_oferta = $1)',
+      [id_tipo_oferta]
+    );
+
+    await pool.query(
+      'UPDATE tipos_oferta SET is_deleted = TRUE WHERE id_tipo_oferta = $1 RETURNING *',
+      [id_tipo_oferta]
+    );
+
+    res.status(200).json({ message: 'Tipo de oferta eliminado correctamente' });
+  } catch (err) {
+    console.error('Error al eliminar tipo de oferta:', err);
+    res.status(500).json({ message: 'Error al eliminar tipo de oferta', detalles: err.message });
+  }
+});
 
 module.exports = router;

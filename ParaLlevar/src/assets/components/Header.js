@@ -48,7 +48,7 @@ const Header = ({ onCartClick }) => {
           )}
           {authToken && userRole === 2 && (
             <>
-              <li><a href="/Inicio">Inicio</a></li>
+              <li><a href="/Inicio-Negocio">Inicio</a></li>
               <li><a href="/Menu">Menú</a></li>
               <li><a href="/RegistroCategoria">Categorías</a></li>
               <li><a href="/RegistroProductos">Productos</a></li>
