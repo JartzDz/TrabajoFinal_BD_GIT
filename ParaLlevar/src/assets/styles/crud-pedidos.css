@@ -1,0 +1,396 @@
+body.container-crud-pedido {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+    margin: 0;
+}
+main.crud-pedidos-container {
+    flex-grow: 1;  
+    
+}
+.crud-pedidos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: -15vh;
+    margin-bottom: 30px;
+    position: relative;
+    height: 100%; 
+    overflow: hidden; 
+}
+
+.producto-imagen {
+    width: 100px;
+    height: 100px;
+    object-fit: cover; 
+}
+
+.crud-pedidos-container .crud-pedido {
+    display: flex;
+    flex-direction: row; 
+    align-items: center;
+    justify-content: center;
+    margin-left: 75px;
+    background-color: #ccc;
+    margin-right: 75px;
+    padding-right: 25px; 
+    width: 100%;
+    border-radius: 15px;
+  
+}
+
+
+.crud-pedidos-container .BusquedaPedido {
+    background-color: white;
+    margin-right: 600px;
+    width: 100%;
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+
+    input {
+        height: 40px;
+        margin: 10px;
+        padding-left: 10px;
+        padding-right: 10px; 
+        border: 2px solid #ccc;
+        border-radius: 5px; 
+        font-size: 16px;
+    }
+    
+    input:focus {
+        border-color: #f46c3c ;
+        outline: none;
+    }
+
+}
+
+.crud-pedidos-container .FotoBuscar{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.crud-pedidos-container .TextoBusquedaProducto {
+    width: 100%;
+    padding: 0;
+    border:none;
+}
+
+.crud-pedidos-container .tabla-pedidos-container {
+    max-height: 400px;
+    overflow-y: auto; 
+    margin-top: -45vh;
+    width:90%;
+}
+
+.crud-pedidos-container .tabla-pedidos-container button {
+    background-color: var(--color-button);
+    cursor: pointer;
+    padding: 10px;
+    width: 50px;
+    margin: 10px;
+}
+
+.crud-pedidos-container .botonesCrud {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.crud-pedidos-container .sc-cwHqhk.kzZBXj{
+    margin: 0 auto;
+    font-weight: bold;
+
+}
+.crud-pedidos-container div[id^="row-"] {
+    background-color: rgb(245, 243, 243);
+    border: 2px solid #ccc;
+}
+
+.crud-pedidos-container div[id^="row-"] div {
+    margin: 0 auto;
+}
+
+.crud-pedidos-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+    background-color: rgb(245, 243, 243);
+}
+
+  
+.crud-pedidos-container .sc-eqUzNf.dODGfY.rdt_TableHeadRow> div {
+    border-right: 2px solid #ccc;
+}
+
+.crud-pedidos-container .sc-eqUzNf.dODGfY.rdt_TableHeadRow > div:last-child {
+    border-right: none;
+}
+
+.crud-pedidos-container .botonesCrud button {
+    background-color: var(--color-button);
+    cursor: pointer;
+    padding: 10px;
+    width: 50px;
+    margin: 10px;
+}
+
+.crud-pedidos-container .imagenProd {
+    width: 50px;  
+    height: 50px; 
+    border-radius: 8px; 
+    object-fit: cover;
+    margin: 0 auto;
+}
+  
+.contenedorFooter-prod {
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--color-fondoLogin);
+    color: var(--color-button);
+    text-align: right;
+    padding-right: 40px;
+    border-radius: 60px 60px 0 0;
+    z-index: 2;
+}
+
+
+.waves-background2-prod {
+    position: absolute;
+    margin-top: 8%;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/wave3.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.contenedorFooter-prod .textoFooter2 {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    padding-right: 40px;
+    text-align: right;
+  }
+  .custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .custom-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    z-index: 1001;
+  }
+  
+  .custom-modal h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: var(--color-primary);
+  }
+  
+  .modal-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .modal-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-button:hover {
+    opacity: 0.9;
+  }
+  
+  .modal-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .modal-button:not(.cancel) {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .modal-button.cancel {
+    background-color: var(--color-secundary);
+    color: white;
+  }
+@media screen and (max-width: 768px) {
+
+    .crud-pedidos-container .crud-pedido {
+        flex-direction: column;
+        align-items: center;
+        padding-left: 10px;
+        padding-right: 10px; 
+        margin: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .crud-pedidos-container .TextoBusquedaPedido {
+        width: 100%;
+    }
+    
+   
+    .crud-pedidos-container .BusquedaPedido {
+        margin-right: 50px;
+        width: 100%;
+        display: flex;
+        margin-left: 50px;
+        min-width: 200px;
+    }
+
+    .crud-pedidos-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+        background-color: rgb(255, 255, 255);
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .crud-pedidos-container .botonesCrud button {
+        background-color: var(--color-button);
+        cursor: pointer;
+        padding: 5px;
+        width: 35px; 
+        height: 35px;
+        margin: 5px;
+        font-size: 10px; 
+    }
+
+    .crud-pedidos-container .imagenProd {
+        width: 35px; 
+        height: 35px;
+        border-radius: 8px; 
+        object-fit: cover;  
+    }
+   
+}
+#fechaInicio, #fechaFin {
+    color: var(--color-secundary);
+}
+/*responsive para tablets*/
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .crud-producto-container .crud-producto {
+        align-items: center;
+        padding-left: 20px;
+        padding-right: 20px; 
+        margin: 20px;
+    }
+
+    .crud-producto-container .BusquedaProducto {
+        margin-right: 200px;
+        width: 100%; 
+        margin-left: 0; 
+    }
+
+    .crud-producto-container .TextoBusquedaProducto {
+        width: 100%; 
+        padding: 0;
+        border:none;
+    }
+    .crud-pedidos-container .ant-table-wrapper.css-dev-only-do-not-override-m4timi{
+        background-color: rgb(255, 255, 255);
+        max-width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+
+    .crud-pedidos-container .botonesCrud button {
+        padding: 5px;
+        width: 35px; 
+        height: 35px;
+        font-size: 10px;
+        margin: 5px;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1250px) {
+    .crud-producto-container .crud-producto {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .crud-producto-container .BusquedaProducto {
+        width: 100%;
+        margin-right: 350px;
+        padding: none;
+    }
+
+    .crud-pedidos-container .botonAgregarProducto {
+        width: 90%;
+        padding: 5px 12px 10px 10px;
+        font-size: 12px;
+    }
+
+    .crud-pedidos-container .botonesCrud button {
+        padding: 8px;
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+    }
+}
+
+@media screen and (min-width: 1250px) {
+    .crud-pedidos-container .crud-pedido {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+
+    .crud-pedidos-container .BusquedaPedido {
+        width: 100%;
+        margin-right: 600px;
+    }
+
+    .crud-pedidos-container .botonAgregarProducto {
+        width: 100%;
+        padding: 5px 12px 10px 10px;
+        font-size: 12px;
+    }
+
+    .botonesCrud button {
+        padding: 8px;
+        width: 45px;
+        height: 45px;
+        font-size: 12px;
+    }
+}
+
+
+  

@@ -3,7 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { CartContext } from './CartContext';
 import Cart from './Cart'; 
-import Header from './Header'; // Importamos el Header
+import Header from './Header';
 import '../styles/menu.css';
 
 const Menu = () => {
@@ -22,6 +22,7 @@ const Menu = () => {
       })
       .then((response) => {
         setCategorias(response.data);
+        console.log(response.data)
         setLoading(false);
       })
       .catch((err) => {
@@ -31,7 +32,7 @@ const Menu = () => {
   }, []);
 
   const toggleCart = () => {
-    setCartVisible(!cartVisible);  // Alterna la visibilidad del carrito
+    setCartVisible(!cartVisible); 
   };
 
   if (loading) return <div>Cargando...</div>;
@@ -39,7 +40,6 @@ const Menu = () => {
 
   return (
     <div className="menu">
-      {/* Pasamos la función toggleCart al Header */}
       <Header onCartClick={toggleCart} />
       
       {cartVisible && (
@@ -67,9 +67,31 @@ const Menu = () => {
                   <div className="producto-info">
                     <h3 className="producto-nombre">{producto.nombre}</h3>
                     <p className="producto-descripcion">{producto.descripcion}</p>
-                    <p className="producto-precio">
-                      Precio: ${!isNaN(parseFloat(producto.precio)) ? parseFloat(producto.precio).toFixed(2) : "N/A"}
-                    </p>
+
+                    {/* Mostrar precios con oferta */}
+                    {producto.oferta ? (
+                      <>
+                        <p className="producto-precio">
+                          <span className="precio-original">
+                            Precio: ${parseFloat(producto.precio).toFixed(2)}
+                          </span>
+                          <span className="precio-oferta">
+                            Oferta: ${parseFloat(producto.precio - producto.oferta.descuento).toFixed(2)}
+                          </span>
+                        </p>
+                        <p className="producto-oferta-tipo">
+                          Oferta: {producto.oferta.tipo}
+                        </p>
+                        <p className="producto-oferta-fechas">
+                          Válido desde {new Date(producto.oferta.fecha_inicio).toLocaleDateString()} hasta {new Date(producto.oferta.fecha_fin).toLocaleDateString()}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="producto-precio">
+                        Precio: ${parseFloat(producto.precio).toFixed(2)}
+                      </p>
+                    )}
+
                     {!producto.disponible && <p className="producto-no-disponible">No disponible</p>}
                     {producto.disponible && (
                       <button className="btn-add-to-cart" onClick={() => addToCart(producto)}>

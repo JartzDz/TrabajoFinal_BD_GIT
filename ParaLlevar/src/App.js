@@ -18,8 +18,7 @@ import AddOferta from "./pages/AddOferta";
 import EditOferta from "./pages/EditOferta";
 import MiPerfil from "./pages/MiPerfil";
 import ReservacionesRecibidas from "./pages/ReservacionesRecibidas";
-import EditComentarios from "./pages/EditComentarios";
-import AddComentario from "./pages/AddComentario";
+import PedidosClientePage from "./pages/PedidosClientePage"
 import { CommentsProvider } from './pages/commentsContext'; 
 import HistorialReserva from "./pages/HistorialReservas";
 import ReservacionesEnProceso from "./pages/ReservacionesEnProceso";
@@ -39,7 +38,7 @@ function App() {
           <Route path="/Registro-Cliente" element={<RegistroCliente />} />
           <Route path="/Restaurante" element={<Restaurante />} /> 
           <Route path="/" element={<Bienvenida />} />
-          <Route path="/checkout" element={<CheckoutPage />}/>
+          <Route path="/Checkout" element={<CheckoutPage />}/>
           <Route path="/RegistroOfertas" element={<CrudOferta />} /> 
           <Route path="/RegistroOfertas/AgregarOferta" element={<AddOferta />} /> 
           <Route path="/RegistroOfertas/EditarOferta" element={<EditOferta />} />
@@ -52,6 +51,7 @@ function App() {
           <Route path="/MiPerfil" element={<MiPerfil />} />
           <Route path="/Menu" element={<MenuPage/>}/>
           <Route path="/AgregarTipoOferta" element={<AddTipoOferta/>}/>
+          <Route path="/VerMisPedidos" element={<PedidosClientePage/>}/>
 
           <Route path="/ReservasRecibidas" element={<ReservacionesRecibidas />} />
           <Route path="/ReservasEnProceso" element={<ReservacionesEnProceso />} /> 
