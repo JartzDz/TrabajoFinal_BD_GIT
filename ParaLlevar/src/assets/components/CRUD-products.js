@@ -84,13 +84,6 @@ function CRUDProducts() {
             },
         },
         {
-            title: 'Oferta',
-            dataIndex: 'en_oferta',
-            key: 'en_oferta',
-            render: en_oferta => en_oferta ? 'Sí' : 'No',
-            sorter: (a, b) => a.en_oferta - b.en_oferta,
-        },
-        {
             title: 'Disponible',
             dataIndex: 'disponible',
             key: 'disponible',

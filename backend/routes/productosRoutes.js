@@ -60,7 +60,6 @@ router.get('/', verifyToken(), async (req, res) => {
   }
 });
 
-
 // Ruta para eliminar productos (solo admin)
 router.delete('/eliminar/:id', verifyToken(2), async (req, res) => {
   const { id } = req.params;
