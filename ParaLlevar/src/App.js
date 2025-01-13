@@ -27,6 +27,7 @@ import ReservacionesHistorial from "./pages/ReservacionesHistorial";
 import MenuPage from "./pages/MenuPage";
 import AddTipoOferta from "./pages/AddOfertasTipoPage"
 import PedidosNegocioPage from "./pages/PedidosNegocioPage";
+import InicioNegocio from "./pages/InicioNegocio"
 function App() {
   return (
     <div className="App">
@@ -35,6 +36,8 @@ function App() {
         <Routes>
           <Route path="/Login" element={<Login />} />
           <Route path="/Inicio" element={<Cliente />} /> 
+          <Route path="/Inicio-Negocio" element={<InicioNegocio/>} /> 
+
           <Route path="/Registro" element={<Register />} />
           <Route path="/Registro-Cliente" element={<RegistroCliente />} />
           <Route path="/Restaurante" element={<Restaurante />} /> 

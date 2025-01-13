@@ -3,20 +3,6 @@ const router = express.Router();
 const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
 
-router.get('/', verifyToken(1), async (req, res) => { 
-    const { usuario_id } = req.usuario;
-  
-    try {
-      const direcciones = await pool.query(
-        `SELECT * FROM direcciones WHERE usuario_id = $1`,
-        [usuario_id]
-      );
-      res.status(200).json(direcciones.rows);
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Error al obtener las direcciones' });
-    }
-  });
 
 // Para guardar una nueva dirección (solo clientes)
 router.post('/guardar-direccion', verifyToken(1), async (req, res) => {
@@ -36,7 +22,7 @@ router.post('/guardar-direccion', verifyToken(1), async (req, res) => {
 });
 
 // Obtener todas las direcciones de un cliente
-router.get('/direcciones/:usuario_id', verifyToken(1), async (req, res) => {
+router.get('/:usuario_id', verifyToken(1), async (req, res) => {
   const { usuario_id } = req.params;
 
   try {

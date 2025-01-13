@@ -1,18 +1,21 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import '../assets/styles/checkout.css';
 import HeaderReturn from '../assets/components/HeaderReturn';
 import { FaEdit } from 'react-icons/fa';
-import { CartContext } from '../assets/components/CartContext'; 
+import { CartContext } from '../assets/components/CartContext';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GrCheckboxSelected } from "react-icons/gr";
+import { MdDelete } from "react-icons/md";
 
 const CheckoutPage = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isExistingAddressModalOpen, setIsExistingAddressModalOpen] = useState(false); // Modal para direcciones existentes
   const [direccion, setDireccion] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [codigo_postal, setCodigoPostal] = useState('');
@@ -22,22 +25,24 @@ const CheckoutPage = () => {
   const [tipo_direccion, setTipoDireccion] = useState('Casa');
   const [address, setAddress] = useState(null);
   const [userId, setUserId] = useState(null);
-  
-  const token = Cookies.get('authToken'); 
+  const [userAddresses, setUserAddresses] = useState([]); 
+
+  const token = Cookies.get('authToken');
 
   useEffect(() => {
     if (!token) {
-      navigate('/login'); 
+      navigate('/login');
     }
   }, [token, navigate]);
 
   useEffect(() => {
     try {
-      const decodedToken = JSON.parse(atob(token.split('.')[1])); 
-      const userId = decodedToken.id; 
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      const userId = decodedToken.id;
       
       if (userId) {
         setUserId(userId);
+        fetchUserAddresses(userId); 
       } else {
         console.error('No se encontró el id en el token');
       }
@@ -46,6 +51,25 @@ const CheckoutPage = () => {
     }
   }, [token]);
   
+  const fetchUserAddresses = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/direcciones/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+  
+      if (response.status === 200) {
+        setUserAddresses(response.data); 
+        console.log('Direcciones obtenidas:', response.data); 
+      } else {
+        toast.error('No se pudieron cargar las direcciones.');
+      }
+    } catch (error) {
+      console.error('Error fetching addresses:', error);
+      toast.error('Error al obtener las direcciones');
+    }
+  };
+  
+
   const handleDireccionSubmit = async () => {
     if (!direccion || !ciudad || !codigo_postal || !telefono || !provincia || !pais) {
       toast.error("Por favor, complete todos los campos.");
@@ -65,7 +89,7 @@ const CheckoutPage = () => {
     const config = {
       headers: { Authorization: `Bearer ${token}` }
     };
-  
+
     try {
       const response = await axios.post('http://localhost:5000/api/direcciones/guardar-direccion', {
         direccion,
@@ -77,7 +101,7 @@ const CheckoutPage = () => {
         tipo_direccion: tipo_direccion,
         usuario_id: userId 
       }, config);
-    
+
       if (response.status === 201) {
         setAddress({
           direccion,
@@ -97,7 +121,7 @@ const CheckoutPage = () => {
       toast.error('Error en la solicitud de dirección: ' + error.message);
     }
   };
-  
+
   const handleEditDireccion = () => {
     if (address) {
       setDireccion(address.direccion);
@@ -111,6 +135,18 @@ const CheckoutPage = () => {
     }
   };
 
+  const handleSelectAddress = (selectedAddress) => {
+    setDireccion(selectedAddress.direccion);
+    setCiudad(selectedAddress.ciudad);
+    setCodigoPostal(selectedAddress.codigo_postal);
+    setTelefono(selectedAddress.telefono);
+    setProvincia(selectedAddress.provincia);
+    setPais(selectedAddress.pais);
+    setTipoDireccion(selectedAddress.tipo_direccion);
+    setIsExistingAddressModalOpen(false);
+    
+    toast.success("Dirección seleccionada con éxito.");
+  };
   const calculateSubtotal = () => {
     return cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
   };
@@ -201,6 +237,33 @@ const CheckoutPage = () => {
         </div>
       )}
 
+{isExistingAddressModalOpen && (
+  <div className="modal">
+    <div className="modal-content">
+      <h2>Selecciona una Dirección Existente</h2>
+      <ul className="direcciones-lista">
+        {userAddresses.map((direccion) => (
+          <li key={direccion.id} className="direccion-item">
+            <span>{direccion.direccion}</span>
+            <div className="acciones">
+              <button onClick={""}>
+              <GrCheckboxSelected className='accion-icon'/>
+
+              </button>
+              <button  onClick={"() => eliminarDireccion(direccion.id)"} >
+              <MdDelete className='accion-icon'/>
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div className="button-container">
+        <button onClick={() => setIsExistingAddressModalOpen(false)}>Cancelar</button>
+      </div>
+    </div>
+  </div>
+)}
+
       <div className="order-summary-container">
         <div className="order-summary-left">
           <h2 style={{ fontSize: '28px' }}>Resumen del Pedido</h2>
@@ -237,7 +300,10 @@ const CheckoutPage = () => {
               </button>
             </div>
           ) : (
-            <button onClick={() => setIsModalOpen(true)}>Agregar Dirección</button>
+            <div className="address-buttons">
+              <button onClick={() => setIsExistingAddressModalOpen(true)}>Agregar Dirección Existente</button>
+              <button onClick={() => setIsModalOpen(true)}>Agregar Nueva Dirección</button>
+            </div>
           )}
 
           <div className="payment-method">
