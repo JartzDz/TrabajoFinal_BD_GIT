@@ -4,29 +4,26 @@ const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
 
 // Obtener todas las ofertas con sus tipos y productos asociados
-// Obtener todas las ofertas con sus tipos y productos asociados
 router.get('/', verifyToken(), async (req, res) => {
-  try {
-      const result = await pool.query(`
-         SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo,
-           t.descripcion AS tipo_oferta,
-           p.id_producto, p.nombre
-          FROM ofertas o
-          JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
-          LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
-          LEFT JOIN productos p ON po.id_producto = p.id_producto
-          WHERE o.is_deleted = FALSE;  
-      `);
-      if (result.rows.length === 0) {
-          return res.status(404).json({ mensaje: 'No se encontraron ofertas.' });
-      }
-      res.json(result.rows);
-  } catch (err) {
-      console.error('Error al obtener las ofertas:', err.message);
-      res.status(500).json({ error: 'Error del servidor', detalles: err.message });
-  }
+    try {
+        const result = await pool.query(`
+           SELECT o.id_oferta, o.valor, o.fecha_inicio, o.fecha_fin, o.activo,
+             t.descripcion AS tipo_oferta,
+             p.id_producto, p.nombre
+            FROM ofertas o
+            JOIN tipos_oferta t ON o.id_tipo_oferta = t.id_tipo_oferta
+            LEFT JOIN productos_ofertas po ON o.id_oferta = po.id_oferta
+            LEFT JOIN productos p ON po.id_producto = p.id_producto;
+        `);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ mensaje: 'No se encontraron ofertas.' });
+        }
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error al obtener las ofertas:', err.message);
+        res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+    }
 });
-
 
 // Actualizar una oferta
 router.put('/:id_oferta', verifyToken(2), async (req, res) => {
@@ -105,45 +102,47 @@ router.get('/tipos/:id_tipo_oferta?', verifyToken(), async (req, res) => {
 
 // Agregar una nueva oferta
 router.post('/agregar', verifyToken(2), async (req, res) => {
-  const { id_producto, id_tipo_oferta, valor, fecha_inicio, fecha_fin } = req.body;
+    const { id_producto, id_tipo_oferta, valor, fecha_inicio, fecha_fin } = req.body;
 
-  if (new Date(fecha_inicio) > new Date(fecha_fin)) {
-      return res.status(400).json({ message: 'La fecha de inicio no puede ser posterior a la fecha de fin' });
-  }
+    if (new Date(fecha_inicio) > new Date(fecha_fin)) {
+        return res.status(400).json({ message: 'La fecha de inicio no puede ser posterior a la fecha de fin' });
+    }
 
-  try {
-      // Verificar si la oferta ya está asociada a este producto, excluyendo las relaciones eliminadas lógicamente
-      const existingOffer = await pool.query(
-          'SELECT * FROM productos_ofertas WHERE id_producto = $1 AND id_oferta IN (' +
-          '  SELECT id_oferta FROM ofertas WHERE id_tipo_oferta = $2 AND is_deleted = FALSE' +  
-          ') AND is_deleted = FALSE',  
-          [id_producto, id_tipo_oferta]
-      );
+    try {
+        // Verificar si la oferta ya está asociada a este producto, excluyendo las relaciones eliminadas lógicamente
+        const existingOffer = await pool.query(
+            'SELECT * FROM productos_ofertas WHERE id_producto = $1 AND id_oferta IN (' +
+            '  SELECT id_oferta FROM ofertas WHERE id_tipo_oferta = $2 AND is_deleted = FALSE' +  // Excluir ofertas eliminadas lógicamente
+            ') AND is_deleted = FALSE',  // Excluir relaciones eliminadas lógicamente
+            [id_producto, id_tipo_oferta]
+        );
 
-      if (existingOffer.rows.length > 0) {
-          return res.status(400).json({ message: 'La oferta ya está asociada a este producto.' });
-      }
+        if (existingOffer.rows.length > 0) {
+            return res.status(400).json({ message: 'La oferta ya está asociada a este producto.' });
+        }
 
-      const ofertaResult = await pool.query(
-          'INSERT INTO ofertas (id_tipo_oferta, valor, fecha_inicio, fecha_fin, activo) VALUES ($1, $2, $3, $4, TRUE) RETURNING *',
-          [id_tipo_oferta, valor, fecha_inicio, fecha_fin]
-      );
+        // Crear una nueva oferta
+        const ofertaResult = await pool.query(
+            'INSERT INTO ofertas (id_tipo_oferta, valor, fecha_inicio, fecha_fin, activo) VALUES ($1, $2, $3, $4, TRUE) RETURNING *',
+            [id_tipo_oferta, valor, fecha_inicio, fecha_fin]
+        );
 
-      const oferta = ofertaResult.rows[0];
+        const oferta = ofertaResult.rows[0];
 
-      await pool.query(
-          'INSERT INTO productos_ofertas (id_producto, id_oferta) VALUES ($1, $2)',
-          [id_producto, oferta.id_oferta]
-      );
+        // Asociar la oferta al producto
+        await pool.query(
+            'INSERT INTO productos_ofertas (id_producto, id_oferta) VALUES ($1, $2)',
+            [id_producto, oferta.id_oferta]
+        );
 
-      res.status(201).json({
-          message: 'Oferta agregada correctamente al producto',
-          oferta,
-      });
-  } catch (err) {
-      console.error('Error al agregar la oferta:', err);
-      res.status(500).json({ message: 'Error al agregar la oferta' });
-  }
+        res.status(201).json({
+            message: 'Oferta agregada correctamente al producto',
+            oferta,
+        });
+    } catch (err) {
+        console.error('Error al agregar la oferta:', err);
+        res.status(500).json({ message: 'Error al agregar la oferta' });
+    }
 });
 
   

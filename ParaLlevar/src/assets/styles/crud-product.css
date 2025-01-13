@@ -195,8 +195,78 @@ main.crud-producto-container {
     padding-right: 40px;
     text-align: right;
   }
-
-
+  .custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .custom-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    z-index: 1001;
+  }
+  
+  .custom-modal h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: var(--color-primary);
+  }
+  
+  .modal-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .modal-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-button:hover {
+    opacity: 0.9;
+  }
+  
+  .modal-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .modal-button:not(.cancel) {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .modal-button.cancel {
+    background-color: var(--color-secundary);
+    color: white;
+  }
 @media screen and (max-width: 768px) {
 
     .crud-producto-container .crud-producto {
@@ -350,3 +420,5 @@ main.crud-producto-container {
     }
 }
 
+
+  

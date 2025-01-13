@@ -184,6 +184,7 @@ nav .iconMenu {
   width: 250px;
   z-index: 9999;
   padding: 0;
+  text-align: justify;
   transform: translateZ(0);
   white-space: nowrap;
 }
