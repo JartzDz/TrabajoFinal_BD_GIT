@@ -52,7 +52,13 @@ const Header = ({ onCartClick }) => {
               <li><a href="/Menu">Menú</a></li>
               <li><a href="/RegistroCategoria">Categorías</a></li>
               <li><a href="/RegistroProductos">Productos</a></li>
-              <li><a href="/RegistroOfertas">Ofertas</a></li>
+              <li className="reservas-menu">
+                <a href="#">Ofertas</a>
+                <ul className="submenu">
+                  <li><a href="/AgregarTipoOferta">Agregar tipo de oferta</a></li>
+                  <li><a href="/RegistroOfertas">Manejo de ofertas</a></li>
+                </ul>
+              </li>
               <li><button className='buttonIniciarSesion' onClick={handleLogOut}>Cerrar Sesión</button></li>
             </>
           )}
