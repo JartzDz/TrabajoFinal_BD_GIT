@@ -26,6 +26,7 @@ import ReservacionesListas from "./pages/ReservacionesListas";
 import ReservacionesHistorial from "./pages/ReservacionesHistorial";
 import MenuPage from "./pages/MenuPage";
 import AddTipoOferta from "./pages/AddOfertasTipoPage"
+import PedidosNegocioPage from "./pages/PedidosNegocioPage";
 function App() {
   return (
     <div className="App">
@@ -52,7 +53,7 @@ function App() {
           <Route path="/Menu" element={<MenuPage/>}/>
           <Route path="/AgregarTipoOferta" element={<AddTipoOferta/>}/>
           <Route path="/VerMisPedidos" element={<PedidosClientePage/>}/>
-
+          <Route path="/Pedidos" element={<PedidosNegocioPage/>}/>
           <Route path="/ReservasRecibidas" element={<ReservacionesRecibidas />} />
           <Route path="/ReservasEnProceso" element={<ReservacionesEnProceso />} /> 
           <Route path="/ReservasListas" element={<ReservacionesListas />} /> 
