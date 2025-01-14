@@ -17,10 +17,10 @@ const ClientePage = () => {
   return (
     
     <div>
-      <div className='client-page'>
-        <Header />
+      <div className='client-page' style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+        <Header/>
         <DynamicBreadcrumb/>
-        <HomeCliente />
+        <HomeCliente/>
       </div>
     </div>
   );

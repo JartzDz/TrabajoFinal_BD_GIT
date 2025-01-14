@@ -82,7 +82,7 @@ function HomeCliente() {
     .filter(producto => producto !== null);
 
   return (
-    <div className='ClienteContainer'>
+    <div className='ClienteContainer' >
       <Header cartCount={cartItems.length} onCartClick={() => setShowCart(!showCart)} />
       <div className='textoImagen'>
         <h1 className='texto1'>Disfruta </h1>
@@ -95,26 +95,29 @@ function HomeCliente() {
       <div className="waves-background2"></div>
       <div className="contenedorRojo"></div>
       <div className="contenedorBlanco">
-        <h1>OFERTAS</h1>
-        <div className="linea"></div>
-        <ProductosCards 
-          productos={productosConOferta} 
-          nombreBoton={'AÑADIR AL CARRITO'} 
-          carruselId={`carrusel-ofertas`}
-          onBuyClick={addToCart}
-          mostrarPrecio={true} 
-        />
-
+        <div className="contenedorOfertas">
+          <h1>OFERTAS</h1>
+          <ProductosCards 
+            productos={productosConOferta} 
+            nombreBoton={'AÑADIR AL CARRITO'} 
+            carruselId={`carrusel-ofertas`}
+            onBuyClick={addToCart}
+            mostrarPrecio={true} 
+          />
+        </div>
         <h1>MENÚ</h1>
+        <div className="contenedorMenu">
         <ProductosCards 
           productos={productosParaMenu}
           nombreBoton={'AÑADIR AL CARRITO'} 
           carruselId={`carrusel-productos`}
           onBuyClick={addToCart}
         />
-        
+        </div>
+        <div className="mapa">
         <h1>NUESTRA UBICACIÓN</h1>
         <MapComponent />
+        </div>
       </div>
       <div className="contenedorFooter">
         <div className="textoFooter2">

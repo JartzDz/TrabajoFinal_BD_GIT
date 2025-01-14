@@ -68,7 +68,6 @@ const Menu = () => {
                     <h3 className="producto-nombre">{producto.nombre}</h3>
                     <p className="producto-descripcion">{producto.descripcion}</p>
 
-                    {/* Mostrar precios con oferta */}
                     {producto.oferta ? (
                       <>
                         <p className="producto-precio">
