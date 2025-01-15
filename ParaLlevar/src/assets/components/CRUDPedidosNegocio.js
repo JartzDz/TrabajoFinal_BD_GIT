@@ -82,6 +82,19 @@ function CRUDPedidosNegocio() {
             key: 'estado',
         },
         {
+            title: 'Productos',
+            key: 'productos',
+            render: (_, registro) => (
+                <ul>
+                    {registro.productos && registro.productos.map(producto => (
+                        <li key={producto.id_producto}>
+                            {producto.producto} - {producto.cantidad} x ${producto.subtotal}
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
+        {
             title: '',
             key: 'cancelar',
             render: (_, registro) => (

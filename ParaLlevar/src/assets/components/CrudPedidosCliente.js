@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "antd";
-import { BsTrash } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
 import Cookies from 'js-cookie';
 import axios from 'axios'; // Importa Axios
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,6 +20,7 @@ function CRUDPedidosCliente() {
                     }
                 });
                 setPedidos(response.data);
+                console.log(response.data)
             } catch (error) {
                 console.error("Error al obtener los pedidos", error);
                 toast.error("Hubo un error al cargar los pedidos.");
@@ -31,7 +30,6 @@ function CRUDPedidosCliente() {
         obtenerPedidos();
     }, []);
 
-    // Función para cancelar un pedido
     const cancelarPedido = async (id_pedido) => {
         try {
             const response = await axios.put('http://localhost:5000/api/pedidos/cancelar', 
@@ -44,7 +42,7 @@ function CRUDPedidosCliente() {
             );
 
             toast.success('Pedido cancelado correctamente.');
-            setPedidos(pedidos.filter(pedido => pedido.id_pedido !== id_pedido)); // Actualiza el estado
+            setPedidos(pedidos.filter(pedido => pedido.id_pedido !== id_pedido)); 
         } catch (error) {
             console.error('Error al cancelar el pedido', error);
             toast.error('Hubo un error al cancelar el pedido.');
@@ -82,6 +80,19 @@ function CRUDPedidosCliente() {
             key: 'estado',
         },
         {
+            title: 'Productos',
+            key: 'productos',
+            render: (_, registro) => (
+                <ul>
+                    {registro.productos && registro.productos.map(producto => (
+                        <li key={producto.id_producto}>
+                            {producto.producto} - {producto.cantidad} x ${producto.subtotal}
+                        </li>
+                    ))}
+                </ul>
+            ),
+        },
+        {
             title: '',
             key: 'cancelar',
             render: (_, registro) => (
@@ -96,7 +107,7 @@ function CRUDPedidosCliente() {
             ),
         },
     ];
-
+    
     return (
         <body className="container-crud-pedido">
                 <main className="crud-pedidos-container">
