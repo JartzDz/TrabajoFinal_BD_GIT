@@ -4,6 +4,7 @@ const pool = require('../config/db');
 const multer = require('multer');
 const path = require('path');
 const verifyToken = require('../middlewares/authMiddleware');
+const { registrarAuditoria } = require('../controllers/auditoriaController');  
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -33,6 +34,9 @@ router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res
       'INSERT INTO productos_categorias (id_producto, id_categoria) VALUES ($1, $2)',
       [idProducto, categoria] 
     );
+    
+    //const usuario_id = req.user.id_usuario; 
+    //await registrarAuditoria('CREAR', 'productos', idProducto, usuario_id, 'Producto agregado');
 
     res.status(201).json({
       message: 'Producto agregado correctamente',
