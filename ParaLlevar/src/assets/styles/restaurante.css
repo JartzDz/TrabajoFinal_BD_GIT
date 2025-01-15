@@ -7,7 +7,7 @@
   min-height: calc(100vh - 100px); 
 }
 
-.chart-card {
+.RestauranteContainer .chart-card {
   flex: 1;
   background-color: white;
   border-radius: 12px;
@@ -20,7 +20,7 @@
 }
 
 
-.chart-card .card-title {
+.RestauranteContainer .chart-card .card-title {
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 1.5rem;
@@ -28,13 +28,13 @@
   text-align: center;
 }
 
-.chart-card .card-body {
+.RestauranteContainer .chart-card .card-body {
   height: 400px;
   width: 100%;
 }
 
 /* Reviews Container Styles */
-.reviews-container {
+.RestauranteContainer .reviews-container {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -42,7 +42,7 @@
   max-width: 450px;
 }
 
-.review-card {
+.RestauranteContainer .review-card {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
@@ -50,29 +50,29 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.review-card:hover {
+.RestauranteContainer .review-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3);
 }
 
-.review-card h3 {
+.RestauranteContainer .review-card h3 {
   margin: 0 0 1rem 0;
   color: #333;
   font-size: 1.2rem;
 }
 
-.review-card p {
+.RestauranteContainer .review-card p {
   margin: 0.75rem 0;
   color: #555;
   line-height: 1.5;
 }
 
-.review-card small {
+.RestauranteContainer .review-card small {
   color: #777;
   font-size: 0.9rem;
 }
 
-.producto-MasVendido {
+.RestauranteContainer .producto-MasVendido {
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
@@ -83,24 +83,24 @@
 
 }
 
-h1 {
+.RestauranteContainer h1 {
   color: var(--color-primary);
 }
 /* Footer Styles */
-.contenedorFooter {
+.RestauranteContainer .contenedorFooter {
   width: 100%;
   padding: 1rem;
   background-color: #f8f8f8;
   margin-top: auto;
 }
 
-.textoFooter2 {
+.RestauranteContainer .textoFooter2 {
   text-align: center;
   color: #666;
   font-size: 0.9rem;
 }
 
-.producto-card {
+.RestauranteContainer .producto-card {
   width: 100% !important;
   max-width: 800px;
   margin: 0 auto; 
@@ -113,7 +113,7 @@ h1 {
 
 }
 
-.producto-imagen {
+.RestauranteContainer .producto-imagen {
   max-width: 100%;
   height: auto;
   margin-bottom: 10px;
@@ -127,12 +127,12 @@ h1 {
     align-items: center;
   }
 
-  .chart-card {
+  .RestauranteContainer .chart-card {
     position: static;
     max-width: 100%;
   }
 
-  .reviews-container {
+  .RestauranteContainer .reviews-container {
     max-width: 100%;
   }
 }
