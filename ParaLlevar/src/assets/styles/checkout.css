@@ -2,9 +2,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 5rem;
+    margin-top: 1rem;
+    margin-bottom: 5rem;
     padding: 25px;
-    height: 80vh; 
+    height: 100%; 
     box-sizing: border-box;
     overflow: auto;
     justify-content: center;
