@@ -4,21 +4,21 @@
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: calc(100vh - 100px); /* Adjust based on your header/footer height */
+  min-height: calc(100vh - 100px); 
 }
 
-/* Chart Card Styles */
 .chart-card {
   flex: 1;
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
   padding: 1.5rem;
-  height: fit-content;
+  height: 380px;
   max-width: 650px;
   position: sticky;
   top: 2rem;
 }
+
 
 .chart-card .card-title {
   font-size: 1.5rem;
@@ -45,14 +45,14 @@
 .review-card {
   background-color: white;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
   padding: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .review-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.3);
 }
 
 .review-card h3 {
@@ -72,6 +72,20 @@
   font-size: 0.9rem;
 }
 
+.producto-MasVendido {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 80%;
+  max-width: 1200px;
+
+}
+
+h1 {
+  color: var(--color-primary);
+}
 /* Footer Styles */
 .contenedorFooter {
   width: 100%;
@@ -84,6 +98,26 @@
   text-align: center;
   color: #666;
   font-size: 0.9rem;
+}
+
+.producto-card {
+  width: 100% !important;
+  max-width: 800px;
+  margin: 0 auto; 
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5) !important;
+  padding: 1.5rem;
+  text-align: center;
+  margin-top: 1.5rem !important;
+
+}
+
+.producto-imagen {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
 /* Responsive Design */

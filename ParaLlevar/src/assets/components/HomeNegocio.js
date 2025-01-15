@@ -10,7 +10,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 function HomeNegocio() {
   
   const [resenas, setResenas] = useState([]);
-
+  const[productoMasVendido, setProductoMasVendido] = useState(false)
   useEffect(() => {
     const fetchResenas = async () => {
       try {
@@ -49,7 +49,7 @@ function HomeNegocio() {
         if (Array.isArray(productos)) {
           const nombres = productos.map(producto => producto.nombre);
           const totalPedidos = productos.map(producto => Number(producto.total_pedidos));
-
+          console.log('Producto más vendido:', productos[0]);
           setProductData({
             labels: nombres,
             datasets: [
@@ -62,6 +62,10 @@ function HomeNegocio() {
               }
             ]
           });
+          const maxPedidos = Math.max(...totalPedidos);
+          const indexMasVendido = totalPedidos.indexOf(maxPedidos);
+          setProductoMasVendido(productos[indexMasVendido]);
+          console.log(indexMasVendido);
         } else {
           console.error('La respuesta no es un arreglo válido:', productos);
         }
@@ -73,14 +77,35 @@ function HomeNegocio() {
 
     return (
       <div className="RestauranteContainer">
-      <div className="chart-card">
-        <h3 className="card-title">Total de Pedidos por Producto</h3>
-        <div className="card-body">
-          <Bar data={productData} options={{ responsive: true }} />
+      <div className='grafico'>
+        <div className="chart-card">
+          <h3 className="card-title">Total de Pedidos por Producto</h3>
+          <div className="card-body">
+            <Bar data={productData} options={{ responsive: true }} />
+          </div>
         </div>
       </div>
-      
+      <div className='producto-masVendido'>
+        <h1>Producto más Vendido</h1>
+        {productoMasVendido ? (
+          <div className="producto-card">
+            <img 
+              src={`http://localhost:5000/${productoMasVendido.imagen_url}`} 
+              alt={productoMasVendido.nombre} 
+              className="producto-imagen"
+              onError={(e) => {
+                console.error('Error al cargar la imagen:', e);
+              }}
+            />
+            <h2>{productoMasVendido.nombre}</h2>
+            <p>Total Pedidos: {productoMasVendido.total_pedidos}</p>
+          </div>
+        ) : (
+          <p>Cargando...</p>
+        )}
+      </div>
       <div className="reviews-container">
+      <h1>Reseñas</h1>
         {resenas.map((resena) => (
           !resena.is_deleted && (
             <div className="review-card" key={resena.id_reseña}>
@@ -91,6 +116,7 @@ function HomeNegocio() {
           )
         ))}
       </div>
+      
     </div>
     );
     

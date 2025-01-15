@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "antd";
-import { BsTrash } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
 import Cookies from 'js-cookie';
 import axios from 'axios'; // Importa Axios
 import { ToastContainer, toast } from 'react-toastify';
