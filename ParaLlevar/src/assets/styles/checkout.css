@@ -364,3 +364,53 @@
   transform: scale(1.1);
   transition: transform 0.2s;
 }
+
+
+.factura-label input {
+  margin-left: 10px;
+}
+
+.custom-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.custom-checkbox input {
+  display: none;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-primary);
+  border-radius: 4px;
+  margin-left: 10px;
+  position: relative;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-checkbox input:checked + .checkbox-custom {
+  background-color: var(--color-secundary);
+  border-color: var(--color-primary);
+}
+
+.checkbox-custom::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 6px;
+  width: 6px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.custom-checkbox input:checked + .checkbox-custom::after {
+  opacity: 1;
+}

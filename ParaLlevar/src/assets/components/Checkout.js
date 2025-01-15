@@ -15,6 +15,7 @@ const CheckoutPage = () => {
   const { cartItems } = useContext(CartContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isExistingAddressModalOpen, setIsExistingAddressModalOpen] = useState(false); 
+  const [isBillingModalOpen, setIsBillingModalOpen] = useState(false);
   const [direccion, setDireccion] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [codigo_postal, setCodigoPostal] = useState('');
@@ -27,7 +28,12 @@ const CheckoutPage = () => {
   const [userAddresses, setUserAddresses] = useState([]); 
   const [tiposPago, setTiposPago] = useState([]);
   const [selectedTipoPago, setSelectedTipoPago] = useState('');
-  
+  const [razonSocial, setRazonSocial] = useState('');
+  const [rucCedula, setRucCedula] = useState('');
+  const [direccionFacturacion, setFacturacionDireccion] = useState('');
+  const [requerirFactura, setRequerirFactura] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
+
   const token = Cookies.get('authToken');
 
   useEffect(() => {
@@ -50,7 +56,16 @@ const CheckoutPage = () => {
     }
   }, [token, navigate]);
   
-  
+  const handleCheckboxChange = (e) => {
+    const checked = e.target.checked;
+    setRequerirFactura(checked);
+    if (checked) {
+      setIsBillingModalOpen(true); 
+    } else {
+      setIsBillingModalOpen(false); 
+    }
+  };
+
   useEffect(() => {
     const fetchTiposPago = async () => {
       try {
@@ -210,6 +225,106 @@ const CheckoutPage = () => {
     return subtotal + impuestos;
   };
 
+  const handleCrearPedido = async () => {
+    if (!userId) {
+      toast.error('No se pudo obtener el id del usuario.');
+      return;
+    }
+  
+    const subtotal = calculateSubtotal();
+    const impuestos = subtotal * 0.12; // Calculando el IVA
+    const total = subtotal + impuestos; // Calculando el total
+  
+    try {
+      // Crear el pedido
+      const responsePedido = await axios.post('http://localhost:5000/api/pedidos/agregar', {
+        id_usuario: userId,
+        id_estado: 1, 
+        id_tipo_pago: selectedTipoPago, 
+        total: total.toFixed(2),
+        direccion_envio: JSON.stringify(address),
+      });
+  
+      if (responsePedido.status === 201) {
+        const id_pedido = responsePedido.data.pedido.id_pedido;
+  
+        const detallePromises = cartItems.map(item => {
+          return axios.post('http://localhost:5000/api/pedidos/detalle', {
+            id_pedido: id_pedido,
+            id_producto: item.id_producto,
+            cantidad: item.cantidad,
+            subtotal: (item.precio * item.cantidad).toFixed(2),
+          });
+        });
+  
+        await Promise.all(detallePromises);
+  
+        if (requerirFactura) {
+          const responseFactura = await axios.post('http://localhost:5000/api/facturas', {
+            id_pedido: id_pedido,
+            numero_factura: 'F' + Date.now(), 
+            fecha_emision: new Date().toISOString(),
+            subtotal: subtotal.toFixed(2),
+            iva: impuestos.toFixed(2),
+            total: total.toFixed(2),
+            razon_social: razonSocial, 
+            ruc_cedula: rucCedula,
+            direccion_facturacion: direccionFacturacion,
+          });
+  
+          if (responseFactura.status === 201) {
+            const facturaId = responseFactura.data.id_factura;
+  
+            // Detalles de la factura
+            const detalleFacturaPromises = cartItems.map(item => {
+              return axios.post('http://localhost:5000/api/facturas/detalle', {
+                id_factura: facturaId,
+                id_producto: item.id_producto,
+                cantidad: item.cantidad,
+                precio_unitario: item.precio,
+                subtotal: (item.precio * item.cantidad).toFixed(2),
+              });
+            });
+  
+            await Promise.all(detalleFacturaPromises);
+          }
+        }
+  
+        toast.success('Pedido realizado con éxito!');
+        navigate('/VerMisPedidos');
+      }
+    } catch (error) {
+      console.error('Error al crear el pedido o la factura:', error);
+      toast.error('Error al realizar el pedido');
+    }
+  };
+  
+  const handleOpenModal = () => {
+    setIsModalOpen2(true);
+  };
+
+  // Función para cerrar el modal
+  const handleCloseModal = () => {
+    setIsModalOpen2(false);
+  };
+  
+  const handleBillingSubmit = () => {
+    if (!razonSocial || !rucCedula || !direccionFacturacion) {
+      alert('Por favor complete todos los campos.');
+      return;
+    }
+  
+    const billingData = {
+      razonSocial,
+      rucCedula,
+      direccionFacturacion,
+    };
+  
+    console.log('Datos de facturación enviados:', billingData);
+  
+    setIsBillingModalOpen(false);
+  };
+  
   return (
     <div className="checkout-container">
       <div className="waves-background"></div>
@@ -360,6 +475,42 @@ const CheckoutPage = () => {
               <button onClick={() => setIsModalOpen(true)}>Agregar Nueva Dirección</button>
             </div>
           )}
+          
+          {isBillingModalOpen && (
+              <div className="modal">
+                <div className="modal-content">
+                  <h2>Agregar Datos de Facturación</h2>
+                  <label>
+                    Razón Social / Nombre:
+                    <input
+                      type="text"
+                      value={razonSocial}
+                      onChange={(e) => setRazonSocial(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    RUC / Cédula:
+                    <input
+                      type="text"
+                      value={rucCedula}
+                      onChange={(e) => setRucCedula(e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Dirección de Facturación:
+                    <input
+                      type="text"
+                      value={direccionFacturacion}
+                      onChange={(e) => setFacturacionDireccion(e.target.value)}
+                    />
+                  </label>
+                  <div className="button-container">
+                    <button onClick={handleBillingSubmit}>Guardar</button>
+                    <button onClick={() => setIsBillingModalOpen(false)}>Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="payment-method">
               <h3>Selecciona el Método de Pago</h3>
               {tiposPago.map((tipo) => (
@@ -374,7 +525,27 @@ const CheckoutPage = () => {
                 </label>
               ))}
             </div>
-          <button className="confirm-button">Confirmar Pedido</button>
+            <label className="custom-checkbox">
+              ¿Requiere factura?
+              <input
+                type="checkbox"
+                checked={requerirFactura}
+                onChange={handleCheckboxChange} 
+              />
+              <span className="checkbox-custom"></span> 
+            </label>
+            <button className="confirm-button" onClick={handleOpenModal}>
+              Confirmar Pedido
+            </button>      
+          {isModalOpen2 && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>¿Estás seguro de que quieres confirmar el pedido?</p>
+              <button onClick={handleCrearPedido} style={{ marginRight: '10px' }}>Sí, Confirmar</button>
+              <button onClick={handleCloseModal}>Cancelar</button>
+            </div>
+          </div>
+        )}
         </div>
       </div>
 
