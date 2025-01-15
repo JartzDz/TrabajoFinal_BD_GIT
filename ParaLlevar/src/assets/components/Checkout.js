@@ -232,8 +232,8 @@ const CheckoutPage = () => {
     }
   
     const subtotal = calculateSubtotal();
-    const impuestos = subtotal * 0.12; // Calculando el IVA
-    const total = subtotal + impuestos; // Calculando el total
+    const impuestos = subtotal * 0.12; 
+    const total = subtotal + impuestos;
   
     try {
       // Crear el pedido
