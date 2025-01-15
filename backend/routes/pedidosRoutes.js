@@ -4,26 +4,38 @@ const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
 
 // Obtener todos los pedidos
+// Obtener todos los pedidos con productos asociados
 router.get('/', verifyToken(), async (req, res) => {
-    try {
-      const result = await pool.query(`
-        SELECT p.id_pedido, p.total, p.fecha_pedido, u.nombre AS usuario, 
-               e.descripcion AS estado, t.descripcion AS tipo_pago
-        FROM pedidos p
-        JOIN usuarios u ON p.id_usuario = u.id_usuario
-        JOIN estados_pedido e ON p.id_estado = e.id_estado
-        JOIN tipos_pago t ON p.id_tipo_pago = t.id_tipo_pago
-        WHERE p.is_deleted = FALSE;
-      `);
-      if (result.rows.length === 0) {
-        return res.status(404).json({ mensaje: 'No se encontraron pedidos.' });
-      }
-      res.json(result.rows);
-    } catch (err) {
-      console.error('Error al obtener los pedidos:', err.message);
-      res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  try {
+    const result = await pool.query(`
+      SELECT p.id_pedido, p.total, p.fecha_pedido, u.nombre AS usuario, 
+             e.descripcion AS estado, t.descripcion AS tipo_pago,
+             json_agg(
+               json_build_object(
+                 'id_producto', dp.id_producto,
+                 'cantidad', dp.cantidad,
+                 'subtotal', dp.subtotal,
+                 'producto', pr.nombre
+               )
+             ) AS productos
+      FROM pedidos p
+      JOIN usuarios u ON p.id_usuario = u.id_usuario
+      JOIN estados_pedido e ON p.id_estado = e.id_estado
+      JOIN tipos_pago t ON p.id_tipo_pago = t.id_tipo_pago
+      LEFT JOIN detalle_pedidos dp ON p.id_pedido = dp.id_pedido
+      LEFT JOIN productos pr ON dp.id_producto = pr.id_producto
+      WHERE p.is_deleted = FALSE
+      GROUP BY p.id_pedido, u.nombre, e.descripcion, t.descripcion
+    `);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'No se encontraron pedidos.' });
     }
-  });
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error al obtener los pedidos:', err.message);
+    res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  }
+});
 
 // Obtener un pedido por ID
 router.get('/:id_pedido', verifyToken(), async (req, res) => {
