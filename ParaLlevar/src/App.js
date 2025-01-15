@@ -17,13 +17,8 @@ import EditCategoria from "./pages/EditCategoria";
 import AddOferta from "./pages/AddOferta";
 import EditOferta from "./pages/EditOferta";
 import MiPerfil from "./pages/MiPerfil";
-import ReservacionesRecibidas from "./pages/ReservacionesRecibidas";
 import PedidosClientePage from "./pages/PedidosClientePage"
 import { CommentsProvider } from './pages/commentsContext'; 
-import HistorialReserva from "./pages/HistorialReservas";
-import ReservacionesEnProceso from "./pages/ReservacionesEnProceso";
-import ReservacionesListas from "./pages/ReservacionesListas";
-import ReservacionesHistorial from "./pages/ReservacionesHistorial";
 import MenuPage from "./pages/MenuPage";
 import AddTipoOferta from "./pages/AddOfertasTipoPage"
 import PedidosNegocioPage from "./pages/PedidosNegocioPage";
@@ -37,7 +32,6 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/Inicio" element={<Cliente />} /> 
           <Route path="/Inicio-Negocio" element={<InicioNegocio/>} /> 
-
           <Route path="/Registro" element={<Register />} />
           <Route path="/Registro-Cliente" element={<RegistroCliente />} />
           <Route path="/Restaurante" element={<Restaurante />} /> 
@@ -57,11 +51,7 @@ function App() {
           <Route path="/AgregarTipoOferta" element={<AddTipoOferta/>}/>
           <Route path="/VerMisPedidos" element={<PedidosClientePage/>}/>
           <Route path="/Pedidos" element={<PedidosNegocioPage/>}/>
-          <Route path="/ReservasRecibidas" element={<ReservacionesRecibidas />} />
-          <Route path="/ReservasEnProceso" element={<ReservacionesEnProceso />} /> 
-          <Route path="/ReservasListas" element={<ReservacionesListas />} /> 
-          <Route path="/ReservasHistorial" element={<ReservacionesHistorial />} /> 
-          <Route path="/HistorialReservas" element={<HistorialReserva />} /> 
+        
 
         </Routes>
       </Router>

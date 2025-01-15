@@ -4,7 +4,6 @@ const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
 
 // Obtener todos los pedidos
-// Obtener todos los pedidos con productos asociados
 router.get('/', verifyToken(), async (req, res) => {
   try {
     const result = await pool.query(`
@@ -222,4 +221,20 @@ router.delete('/detalle/eliminar', verifyToken(2), async (req, res) => {
     }
   });
   
+  router.get('/resultados/resenias', verifyToken(2), async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM resenias WHERE is_deleted = FALSE');
+        
+        // Verificar si se obtuvieron resultados
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No hay reseñas disponibles.' });
+        }
+
+        res.json(result.rows);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Error del servidor');
+    }
+});
+
   module.exports = router;
