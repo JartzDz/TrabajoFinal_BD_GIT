@@ -30,28 +30,29 @@ export default class Login extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
     const { correo, contrasena } = this.state;
-
+  
     if (!correo || !contrasena) {
       toast.error("Por favor, complete todos los campos.");
       return;
     }
-
+  
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', {
         correo: correo,
         contrasena: contrasena,
       });
-
+  
       if (response.status === 200) {
         if (response.data.token && response.data.user && response.data.user.id_tipo_usuario) {
           console.log('Respuesta del backend:', response.data);
-
+  
           Cookies.set('authToken', response.data.token);
           Cookies.set('role', response.data.user.id_tipo_usuario);
           toast.success('Inicio de sesión exitoso');
           
           setTimeout(() => {
-            window.location.href = '/Inicio'; 
+            const redirectPath = response.data.user.id_tipo_usuario === 2 ? '/Inicio-Negocio' : '/Inicio';
+            window.location.href = redirectPath;
           }, 1000);
         } else {
           toast.error("Datos incompletos en la respuesta del servidor");
