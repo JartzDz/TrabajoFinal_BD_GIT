@@ -6,7 +6,15 @@ const verifyToken = require('../middlewares/authMiddleware');
 // Obtener todos los pedidos
 router.get('/', verifyToken(), async (req, res) => {
   try {
-    const result = await pool.query(`
+    // Verificar si hay usuario autenticado
+    if (!req.user) {
+      return res.status(403).json({ mensaje: 'Acceso no autorizado' });
+    }
+
+    // Obtener el id y role del usuario del token decodificado
+    const userId = req.user.id;
+    const userRole = req.user.role; 
+    let query = `
       SELECT p.id_pedido, p.total, p.fecha_pedido, u.nombre AS usuario, 
              e.descripcion AS estado, t.descripcion AS tipo_pago,
              json_agg(
@@ -24,8 +32,20 @@ router.get('/', verifyToken(), async (req, res) => {
       LEFT JOIN detalle_pedidos dp ON p.id_pedido = dp.id_pedido
       LEFT JOIN productos pr ON dp.id_producto = pr.id_producto
       WHERE p.is_deleted = FALSE
-      GROUP BY p.id_pedido, u.nombre, e.descripcion, t.descripcion
-    `);
+    `;
+
+    // Si no es admin (role 2), filtrar solo los pedidos del usuario
+    if (userRole !== 2) {
+      query += ` AND p.id_usuario = $1`;
+    }
+
+    query += ` GROUP BY p.id_pedido, u.nombre, e.descripcion, t.descripcion
+               ORDER BY p.fecha_pedido DESC`;
+
+    const result = userRole === 2 
+      ? await pool.query(query)
+      : await pool.query(query, [userId]);
+
     if (result.rows.length === 0) {
       return res.status(404).json({ mensaje: 'No se encontraron pedidos.' });
     }
@@ -36,30 +56,56 @@ router.get('/', verifyToken(), async (req, res) => {
   }
 });
 
-// Obtener un pedido por ID
+// Obtener un pedido específico por ID (con verificación de permisos)
 router.get('/:id_pedido', verifyToken(), async (req, res) => {
-    const { id_pedido } = req.params;
-  
-    try {
-      const result = await pool.query(`
-        SELECT p.id_pedido, p.total, p.fecha_pedido, u.nombre AS usuario, 
-               e.descripcion AS estado, t.descripcion AS tipo_pago
-        FROM pedidos p
-        JOIN usuarios u ON p.id_usuario = u.id_usuario
-        JOIN estados_pedido e ON p.id_estado = e.id_estado
-        JOIN tipos_pago t ON p.id_tipo_pago = t.id_tipo_pago
-        WHERE p.id_pedido = $1 AND p.is_deleted = FALSE;
-      `, [id_pedido]);
-  
-      if (result.rows.length === 0) {
-        return res.status(404).json({ mensaje: 'Pedido no encontrado.' });
-      }
-      res.json(result.rows[0]);
-    } catch (err) {
-      console.error('Error al obtener el pedido:', err.message);
-      res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  try {
+    if (!req.user) {
+      return res.status(403).json({ mensaje: 'Acceso no autorizado' });
     }
-  });
+
+    const { id_pedido } = req.params;
+    const userId = req.user.id;
+    const userRole = req.user.role; // Cambiado de rol a role
+
+    let query = `
+      SELECT p.id_pedido, p.total, p.fecha_pedido, u.nombre AS usuario, 
+             e.descripcion AS estado, t.descripcion AS tipo_pago,
+             json_agg(
+               json_build_object(
+                 'id_producto', dp.id_producto,
+                 'cantidad', dp.cantidad,
+                 'subtotal', dp.subtotal,
+                 'producto', pr.nombre
+               )
+             ) AS productos
+      FROM pedidos p
+      JOIN usuarios u ON p.id_usuario = u.id_usuario
+      JOIN estados_pedido e ON p.id_estado = e.id_estado
+      JOIN tipos_pago t ON p.id_tipo_pago = t.id_tipo_pago
+      LEFT JOIN detalle_pedidos dp ON p.id_pedido = dp.id_pedido
+      LEFT JOIN productos pr ON dp.id_producto = pr.id_producto
+      WHERE p.id_pedido = $1 AND p.is_deleted = FALSE
+    `;
+
+    if (userRole !== 2) {
+      query += ` AND p.id_usuario = $2`;
+    }
+
+    query += ` GROUP BY p.id_pedido, u.nombre, e.descripcion, t.descripcion`;
+
+    const result = userRole === 2
+      ? await pool.query(query, [id_pedido])
+      : await pool.query(query, [id_pedido, userId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'Pedido no encontrado o no tiene permisos para verlo.' });
+    }
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error al obtener el pedido:', err.message);
+    res.status(500).json({ error: 'Error del servidor', detalles: err.message });
+  }
+});
 
 // Crear un nuevo pedido
 router.post('/agregar', verifyToken(), async (req, res) => {
