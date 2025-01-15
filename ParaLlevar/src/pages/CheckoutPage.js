@@ -26,31 +26,60 @@ const CheckoutPage = () => {
   const [address, setAddress] = useState(null);
   const [userId, setUserId] = useState(null);
   const [userAddresses, setUserAddresses] = useState([]); 
-
+  const [tiposPago, setTiposPago] = useState([]);
+  const [selectedTipoPago, setSelectedTipoPago] = useState('');
+  
   const token = Cookies.get('authToken');
 
   useEffect(() => {
     if (!token) {
       navigate('/login');
+    } else {
+      try {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        const userId = decodedToken.id;
+        
+        if (userId) {
+          setUserId(userId);
+          fetchUserAddresses(userId);
+        } else {
+          console.error('No se encontró el id en el token');
+        }
+      } catch (error) {
+        console.error('Error al decodificar el token o al extraer el id:', error);
+      }
     }
   }, [token, navigate]);
-
-  useEffect(() => {
-    try {
-      const decodedToken = JSON.parse(atob(token.split('.')[1]));
-      const userId = decodedToken.id;
-      
-      if (userId) {
-        setUserId(userId);
-        fetchUserAddresses(userId); 
-      } else {
-        console.error('No se encontró el id en el token');
-      }
-    } catch (error) {
-      console.error('Error al decodificar el token o al extraer el id:', error);
-    }
-  }, [token]);
   
+  
+  useEffect(() => {
+    const fetchTiposPago = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/tiposPagos', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        if (response.status === 200) {
+          setTiposPago(response.data);
+          console.log(response.data)
+        }
+      } catch (error) {
+        console.error('Error al cargar los tipos de pago:', error);
+        if (error.response) {
+          toast.error(error.response.data.message || 'Error al cargar los tipos de pago');
+        } else {
+          toast.error('Error al cargar los tipos de pago');
+        }
+      }
+    };
+
+    if (token) {
+      fetchTiposPago();
+    }
+  }, [token]); 
+
+
   const fetchUserAddresses = async (userId) => {
     try {
       const response = await axios.get(`http://localhost:5000/api/direcciones/${userId}`, {
@@ -58,8 +87,8 @@ const CheckoutPage = () => {
       });
   
       if (response.status === 200) {
-        setUserAddresses(response.data); 
-        console.log('Direcciones obtenidas:', response.data); 
+        setUserAddresses(response.data);
+        console.log('Direcciones obtenidas:', response.data);
       } else {
         toast.error('No se pudieron cargar las direcciones.');
       }
@@ -68,6 +97,7 @@ const CheckoutPage = () => {
       toast.error('Error al obtener las direcciones');
     }
   };
+  
   
 
   const handleDireccionSubmit = async () => {
@@ -143,6 +173,7 @@ const CheckoutPage = () => {
     setProvincia(selectedAddress.provincia);
     setPais(selectedAddress.pais);
     setTipoDireccion(selectedAddress.tipo_direccion);
+    setAddress(selectedAddress);
     setIsExistingAddressModalOpen(false);
     
     toast.success("Dirección seleccionada con éxito.");
@@ -150,6 +181,29 @@ const CheckoutPage = () => {
   const calculateSubtotal = () => {
     return cartItems.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
   };
+
+  const handleDeleteAddress = async (direccionId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:5000/api/direcciones/eliminar-direccion/${direccionId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (response.status === 200) {
+        // Actualizar el estado local eliminando la dirección
+        setUserAddresses(prevAddresses => 
+          prevAddresses.filter(address => address.id_direccion !== direccionId)
+        );
+        toast.success('Dirección eliminada con éxito');
+      }
+    } catch (error) {
+      console.error('Error al eliminar la dirección:', error);
+      toast.error(error.response?.data?.message || 'Error al eliminar la dirección');
+    }
+  };
+
 
   const calculateTotal = () => {
     const subtotal = calculateSubtotal();
@@ -238,31 +292,36 @@ const CheckoutPage = () => {
       )}
 
 {isExistingAddressModalOpen && (
-  <div className="modal">
-    <div className="modal-content">
-      <h2>Selecciona una Dirección Existente</h2>
-      <ul className="direcciones-lista">
-        {userAddresses.map((direccion) => (
-          <li key={direccion.id} className="direccion-item">
-            <span>{direccion.direccion} - {direccion.tipo_direccion} </span>
-            <div className="acciones">
-              <button onClick={""}>
-              <GrCheckboxSelected className='accion-icon'/>
-
-              </button>
-              <button  onClick={"() => eliminarDireccion(direccion.id)"} >
-              <MdDelete className='accion-icon'/>
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div className="button-container">
-        <button onClick={() => setIsExistingAddressModalOpen(false)}>Cancelar</button>
+      <div className="modal">
+        <div className="modal-content">
+          <h2>Selecciona una Dirección Existente</h2>
+          <ul className="direcciones-lista">
+            {userAddresses.map((direccion) => (
+              <li key={direccion.id_direccion} className="direccion-item">
+                <span>{direccion.direccion} - {direccion.tipo_direccion}</span>
+                <div className="acciones">
+                  <button onClick={() => handleSelectAddress(direccion)}>
+                    <GrCheckboxSelected className='accion-icon'/>
+                  </button>
+                  <button 
+                    onClick={() => handleDeleteAddress(direccion.id_direccion)}
+                    className="delete-button"
+                  >
+                    <MdDelete className='accion-icon'/>
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="button-container">
+            <button onClick={() => setIsExistingAddressModalOpen(false)}>
+              Cancelar
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-)}
+    )}
+
 
       <div className="order-summary-container">
         <div className="order-summary-left">
@@ -305,17 +364,20 @@ const CheckoutPage = () => {
               <button onClick={() => setIsModalOpen(true)}>Agregar Nueva Dirección</button>
             </div>
           )}
-
-          <div className="payment-method">
-            <h3>Selecciona el Método de Pago</h3>
-            <label>
-              <input type="radio" name="payment" value="credit-card" /> Tarjeta de Crédito
-            </label>
-            <label>
-              <input type="radio" name="payment" value="paypal" /> PayPal
-            </label>
-          </div>
-
+            <div className="payment-method">
+              <h3>Selecciona el Método de Pago</h3>
+              {tiposPago.map((tipo) => (
+                <label key={tipo.id_tipo_pago}>
+                  <input
+                    type="radio"
+                    name="payment"
+                    value={tipo.id_tipo_pago}
+                    onChange={(e) => setSelectedTipoPago(e.target.value)}
+                  />
+                  {tipo.descripcion}
+                </label>
+              ))}
+            </div>
           <button className="confirm-button">Confirmar Pedido</button>
         </div>
       </div>

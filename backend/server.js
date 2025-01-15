@@ -9,6 +9,7 @@ const userRoutes = require('./routes/userRoutes');
 const ofertasRoutes = require('./routes/ofertasRoutes');
 const direccionesRoutes = require('./routes/direccionesRoutes');
 const categoriasRoutes = require('./routes/categoriasRoutes');
+const tiposPagosRoutes = require('./routes/tiposPagosRoutes');
 const cookieParser = require('cookie-parser');
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/direcciones', direccionesRoutes);
 app.use('/api/ofertas',ofertasRoutes);
 app.use('/api/categorias', categoriasRoutes);
+app.use('/api/tiposPagos',tiposPagosRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000;

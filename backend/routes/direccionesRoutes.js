@@ -40,7 +40,7 @@ router.get('/:usuario_id', verifyToken(1), async (req, res) => {
 // Eliminar una dirección (solo admin o el usuario propietario de la dirección)
 router.delete('/eliminar-direccion/:id', verifyToken(1), async (req, res) => {
   const { id } = req.params;
-  const { usuario_id } = req;
+  const usuario_id = req.user.id; 
 
   try {
     // Verificar si la dirección pertenece al usuario
@@ -55,7 +55,15 @@ router.delete('/eliminar-direccion/:id', verifyToken(1), async (req, res) => {
 
     const direccionPropietario = direccion.rows[0].usuario_id;
 
-    if (direccionPropietario === usuario_id || await esAdmin(usuario_id)) {
+    // Verificar si el usuario autenticado es el propietario o es admin
+    const esAdminResult = await pool.query(
+      `SELECT id_tipo_usuario FROM usuarios WHERE id_usuario = $1 AND is_deleted = FALSE`,
+      [usuario_id]
+    );
+
+    const esAdmin = esAdminResult.rows[0]?.id_tipo_usuario === 2;
+
+    if (direccionPropietario === usuario_id || esAdmin) {
       await pool.query(
         `DELETE FROM direcciones WHERE id_direccion = $1`,
         [id]
@@ -71,11 +79,22 @@ router.delete('/eliminar-direccion/:id', verifyToken(1), async (req, res) => {
 });
 
 const esAdmin = async (usuario_id) => {
-  const result = await pool.query(
-    `SELECT rol FROM usuarios WHERE id_usuario = $1`,
-    [usuario_id]
-  );
-  return result.rows[0]?.rol === 2;
+  try {
+    const result = await pool.query(
+      `SELECT u.id_tipo_usuario, t.descripcion 
+       FROM usuarios u 
+       JOIN tipos_usuario t ON u.id_tipo_usuario = t.id_tipo_usuario 
+       WHERE u.id_usuario = $1 AND u.is_deleted = FALSE`,
+      [usuario_id]
+    );
+    
+    return result.rows[0]?.id_tipo_usuario === 2;
+    
+  } catch (error) {
+    console.error('Error al verificar si es admin:', error);
+    return false;
+  }
 };
+
 
 module.exports = router;
