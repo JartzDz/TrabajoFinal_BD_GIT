@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { MdOutlineFoodBank } from "react-icons/md";
-import { AiOutlineShopping } from "react-icons/ai";
+import { FaCartShopping } from "react-icons/fa6";
 import { FaBars } from "react-icons/fa";
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
@@ -76,7 +76,7 @@ const Header = ({ onCartClick }) => {
       {authToken && userRole === 1 && (
         <div className="cart-icon">
           <a className='logo' onClick={onCartClick}>
-            <AiOutlineShopping className='iconOrders' />
+          <FaCartShopping className='iconOrders' />
             {cartItems.length > 0 && <span className="cart-count">{cartItems.length}</span>}
           </a>
         </div>

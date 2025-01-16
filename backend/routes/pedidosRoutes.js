@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
 const verifyToken = require('../middlewares/authMiddleware');
-
+const { registrarAuditoria } = require('../controllers/auditoriaController');
 // Obtener todos los pedidos
 router.get('/', verifyToken(), async (req, res) => {
   try {
-    // Verificar si hay usuario autenticado
     if (!req.user) {
       return res.status(403).json({ mensaje: 'Acceso no autorizado' });
     }
@@ -33,7 +32,6 @@ router.get('/', verifyToken(), async (req, res) => {
       WHERE p.is_deleted = FALSE
     `;
 
-    // Si no es admin (role 2), filtrar solo los pedidos del usuario
     if (userRole !== 2) {
       query += ` AND p.id_usuario = $1`;
     }
@@ -55,7 +53,7 @@ router.get('/', verifyToken(), async (req, res) => {
   }
 });
 
-// Obtener un pedido específico por ID (con verificación de permisos)
+// Obtener un pedido específico por ID
 router.get('/:id_pedido', verifyToken(), async (req, res) => {
   try {
     if (!req.user) {
@@ -64,7 +62,7 @@ router.get('/:id_pedido', verifyToken(), async (req, res) => {
 
     const { id_pedido } = req.params;
     const userId = req.user.id;
-    const userRole = req.user.role; // Cambiado de rol a role
+    const userRole = req.user.role; 
 
     let query = `
       SELECT p.id_pedido, p.total, p.fecha_pedido, u.nombre AS usuario, 
@@ -109,23 +107,29 @@ router.get('/:id_pedido', verifyToken(), async (req, res) => {
 // Crear un nuevo pedido
 router.post('/agregar', verifyToken(), async (req, res) => {
     const { id_usuario, id_estado, id_tipo_pago, total, direccion_envio } = req.body;
-  
     try {
       const result = await pool.query(
         'INSERT INTO pedidos (id_usuario, id_estado, id_tipo_pago, total, direccion_envio) VALUES ($1, $2, $3, $4, $5) RETURNING *',
         [id_usuario, id_estado, id_tipo_pago, total, direccion_envio]
       );
+      const id_pedido = result.rows[0].id_pedido; 
       res.status(201).json({
         message: 'Pedido creado correctamente',
         pedido: result.rows[0],
       });
+      await registrarAuditoria(
+        'INSERT',            
+        'pedidos',        
+        id_pedido,          
+        id_usuario,         
+        `Se agrega el pedido con id: ${id_pedido}` 
+      );
     } catch (err) {
       console.error('Error al crear el pedido:', err);
       res.status(500).json({ message: 'Error al crear el pedido' });
     }
   });
   
-// Actualizar un pedido
 router.put('/:id_pedido', verifyToken(2), async (req, res) => {
     const { id_pedido } = req.params;
     const { id_estado, id_tipo_pago, total, direccion_envio } = req.body;

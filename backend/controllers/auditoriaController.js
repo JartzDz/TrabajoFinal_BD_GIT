@@ -1,6 +1,5 @@
 const pool = require('../config/db');
 
-// Función para registrar auditoría
 const registrarAuditoria = async (accion, tabla, id_registro, usuario_id, detalles = '') => {
     try {
         await pool.query(`
