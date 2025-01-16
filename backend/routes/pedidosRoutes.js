@@ -312,5 +312,40 @@ router.put('/entregar/:id_pedido', verifyToken(2), async (req, res) => {
   }
 });
 
+router.post('/resenias', verifyToken(1), async (req, res) => {
+  const { id_usuario, id_pedido, calificacion, comentario } = req.body;
+  
+  console.log('ID Usuario recibido:', id_usuario);
 
-  module.exports = router;
+  // Validación de campos
+  if (!id_usuario || !id_pedido || !calificacion || !comentario) {
+    return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
+  }
+
+  try {
+    const pedidoResult = await pool.query(
+      'SELECT * FROM pedidos WHERE id_pedido = $1 AND is_deleted = FALSE',
+      [id_pedido]
+    );
+
+    if (pedidoResult.rows.length === 0) {
+      return res.status(404).json({ message: 'Pedido no encontrado o ya eliminado.' });
+    }
+
+    const insertResult = await pool.query(
+      'INSERT INTO resenias (id_usuario, id_pedido, calificacion, comentario) VALUES ($1, $2, $3, $4) RETURNING *',
+      [id_usuario, id_pedido, calificacion, comentario]
+    );
+
+    res.status(201).json({
+      message: 'Reseña agregada correctamente.',
+      resenia: insertResult.rows[0],
+    });
+
+  } catch (err) {
+    console.error('Error al agregar la reseña:', err);
+    res.status(500).json({ message: 'Error al agregar la reseña.', detalles: err.message });
+  }
+});
+
+module.exports = router;

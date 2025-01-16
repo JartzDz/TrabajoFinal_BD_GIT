@@ -303,7 +303,6 @@ const CheckoutPage = () => {
     setIsModalOpen2(true);
   };
 
-  // Función para cerrar el modal
   const handleCloseModal = () => {
     setIsModalOpen2(false);
   };

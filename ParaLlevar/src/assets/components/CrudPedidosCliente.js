@@ -14,12 +14,15 @@ function CRUDPedidosCliente() {
     const [searchTerm, setSearchTerm] = useState('');
     const [cartVisible, setCartVisible] = useState(false);  
     const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [calificacion,setCalificacion] = useState('')
+    const [comentario,setComentario] = useState('')
+    const [pedidoSeleccionado, setPedidoSeleccionado] = useState(null);
     const toggleCart = () => {
         setCartVisible(!cartVisible); 
       };
-    
-    // Función para obtener los pedidos del usuario
+    const token = Cookies.get('authToken');
+
     useEffect(() => {
         const obtenerPedidos = async () => {
             try {
@@ -39,7 +42,6 @@ function CRUDPedidosCliente() {
         obtenerPedidos();
     }, []);
 
-    // Función para cancelar un pedido
     const cancelarPedido = async (id_pedido) => {
         try {
             const response = await axios.put('http://localhost:5000/api/pedidos/cancelar', 
@@ -58,8 +60,32 @@ function CRUDPedidosCliente() {
             toast.error('Hubo un error al cancelar el pedido.');
         }
     };
-
-    // Filtrar los pedidos por búsqueda
+    
+    const decodedToken = JSON.parse(atob(token.split('.')[1]));
+    const userId = decodedToken.id;
+    const enviarResena = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/pedidos/resenias', {
+                id_usuario: userId, 
+                id_pedido: pedidoSeleccionado.id_pedido,
+                calificacion,
+                comentario
+            }, {
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('authToken')}`
+                }
+            });
+            console.log(response.data)
+            toast.success('Reseña agregada correctamente.');
+            setCalificacion(''); 
+            setComentario('');
+            setIsModalOpen(false); 
+        } catch (error) {
+            console.error('Error al agregar la reseña', error);
+            toast.error('Hubo un error al agregar la reseña.');
+        }
+    };
+    
     const filteredData = pedidos.filter(pedido =>
         pedido.id_pedido.toString().includes(searchTerm.toLowerCase()) ||
         pedido.fecha_pedido.toLowerCase().includes(searchTerm.toLowerCase())
@@ -108,21 +134,43 @@ function CRUDPedidosCliente() {
             ),
           },
         {
-            title: '',
-            key: 'cancelar',
+            title: 'Acciones',
+            key: 'acciones',
             render: (_, registro) => (
-                registro.estado === 'En proceso' && (
-                    <button 
-                        className="CancelarPedido" 
-                        onClick={() => cancelarPedido(registro.id_pedido)}
-                    >
-                        Cancelar Pedido
-                    </button>
-                )
+                <>
+                    {registro.estado === 'En proceso' && (
+                        <button 
+                            className="CancelarPedido" 
+                            onClick={() => cancelarPedido(registro.id_pedido)}
+                        >
+                            Cancelar Pedido
+                        </button>
+                    )}
+                    {registro.estado === "Entregado" && ( 
+                       <button 
+                       style={{ width: '200px' }}
+                       onClick={() => {
+                           setPedidoSeleccionado(registro);
+                           setIsModalOpen(true);
+                       }}
+                   >
+                       Agregar Reseña
+                   </button>
+                    )}
+                </>
             ),
         },
     ];
 
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+      };
+    
+      const handleCloseModal = () => {
+        setIsModalOpen(false);
+      };
+  
+      
     return (
         
         <body className="container-crud-pedido">
@@ -157,6 +205,39 @@ function CRUDPedidosCliente() {
                                 dataSource={filteredData}
                             />
                         </div>
+                        {isModalOpen && (
+                        <div className="modal">
+                        <div className="modal-content">
+                            <h2>Ingresa tu reseña</h2>                           
+                            <label>
+                            Calificación:
+                            <input
+                                type="number"
+                                value={calificacion}
+                                max="5"
+                                min="1"
+                                onChange={(e) => {
+                                    const value = Math.min(5, Math.max(1, Number(e.target.value))); 
+                                    setCalificacion(value);
+                                }}
+                            />
+                            </label>
+                            <label>
+                            Comentario:
+                            <input
+                                type="text"
+                                value={comentario}
+                                onChange={(e) => setComentario(e.target.value)}
+                            />
+                            </label>
+                            
+                            <div className="button-container">
+                            <button onClick={enviarResena}>Enviar</button>
+                            <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
+                            </div>
+                        </div>
+                        </div>
+                    )}
                     </main>
                    
                 <ToastContainer
