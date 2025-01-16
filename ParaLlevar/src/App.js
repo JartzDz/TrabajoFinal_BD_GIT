@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { CartProvider } from './assets/components/CartContext'; 
 import Login from "./pages/Login";
 import "./assets/styles/App.css";
 import Cliente from "./pages/Cliente"
@@ -18,48 +19,44 @@ import AddOferta from "./pages/AddOferta";
 import EditOferta from "./pages/EditOferta";
 import MiPerfil from "./pages/MiPerfil";
 import PedidosClientePage from "./pages/PedidosClientePage"
-import { CommentsProvider } from './pages/commentsContext'; 
 import MenuPage from "./pages/MenuPage";
 import AddTipoOferta from "./pages/AddOfertasTipoPage"
 import PedidosNegocioPage from "./pages/PedidosNegocioPage";
 import InicioNegocio from "./pages/InicioNegocio"
+
 function App() {
   return (
     <div className="App">
-      <CommentsProvider>
-      <Router>
-        <Routes>
-          <Route path="/Login" element={<Login />} />
-          <Route path="/Inicio" element={<Cliente />} /> 
-          <Route path="/Inicio-Negocio" element={<InicioNegocio/>} /> 
-          <Route path="/Registro" element={<Register />} />
-          <Route path="/Registro-Cliente" element={<RegistroCliente />} />
-          <Route path="/Restaurante" element={<Restaurante />} /> 
-          <Route path="/" element={<Bienvenida />} />
-          <Route path="/Checkout" element={<CheckoutPage />}/>
-          <Route path="/RegistroOfertas" element={<CrudOferta />} /> 
-          <Route path="/RegistroOfertas/AgregarOferta" element={<AddOferta />} /> 
-          <Route path="/RegistroOfertas/EditarOferta" element={<EditOferta />} />
-          <Route path="/RegistroProductos" element={<CrudProducto />} />
-          <Route path="/RegistroProductos/AgregarProducto" element={<AddProduct />} /> 
-          <Route path="/RegistroCategoria" element={<RegistroCategoria />} /> 
-          <Route path="/RegistroCategoria/AgregarCategoria" element={<AddCategoria />} /> 
-          <Route path="/RegistroProductos/EditarProducto" element={<EditProduct />} /> 
-          <Route path="/RegistroCategoria/EditarCategoria" element={<EditCategoria />} /> 
-          <Route path="/MiPerfil" element={<MiPerfil />} />
-          <Route path="/Menu" element={<MenuPage/>}/>
-          <Route path="/AgregarTipoOferta" element={<AddTipoOferta/>}/>
-          <Route path="/VerMisPedidos" element={<PedidosClientePage/>}/>
-          <Route path="/Pedidos" element={<PedidosNegocioPage/>}/>
-        
-
-        </Routes>
-      </Router>
-      </CommentsProvider>
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/Login" element={<Login />} />
+            <Route path="/Inicio" element={<Cliente />} /> 
+            <Route path="/Inicio-Negocio" element={<InicioNegocio/>} /> 
+            <Route path="/Registro" element={<Register />} />
+            <Route path="/Registro-Cliente" element={<RegistroCliente />} />
+            <Route path="/Restaurante" element={<Restaurante />} /> 
+            <Route path="/" element={<Bienvenida />} />
+            <Route path="/Checkout" element={<CheckoutPage />}/>
+            <Route path="/RegistroOfertas" element={<CrudOferta />} /> 
+            <Route path="/RegistroOfertas/AgregarOferta" element={<AddOferta />} /> 
+            <Route path="/RegistroOfertas/EditarOferta" element={<EditOferta />} />
+            <Route path="/RegistroProductos" element={<CrudProducto />} />
+            <Route path="/RegistroProductos/AgregarProducto" element={<AddProduct />} /> 
+            <Route path="/RegistroCategoria" element={<RegistroCategoria />} /> 
+            <Route path="/RegistroCategoria/AgregarCategoria" element={<AddCategoria />} /> 
+            <Route path="/RegistroProductos/EditarProducto" element={<EditProduct />} /> 
+            <Route path="/RegistroCategoria/EditarCategoria" element={<EditCategoria />} /> 
+            <Route path="/MiPerfil" element={<MiPerfil />} />
+            <Route path="/Menu" element={<MenuPage/>}/>
+            <Route path="/AgregarTipoOferta" element={<AddTipoOferta/>}/>
+            <Route path="/VerMisPedidos" element={<PedidosClientePage/>}/>
+            <Route path="/Pedidos" element={<PedidosNegocioPage/>}/>
+          </Routes>
+        </Router>
+      </CartProvider>
     </div>
   );
 }
 
 export default App;
-
-

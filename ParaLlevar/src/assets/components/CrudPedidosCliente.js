@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext} from "react";
 import { Table } from "antd";
-import { BsTrash } from "react-icons/bs";
-import { FiEdit } from "react-icons/fi";
 import Cookies from 'js-cookie';
 import axios from 'axios'; // Importa Axios
 import { ToastContainer, toast } from 'react-toastify';
 import "../styles/crud-pedidos.css"
 import buscar from "../images/buscar.png";
+import { CartContext } from './CartContext';
+import Cart from './Cart'; 
+import Header from './Header';
 
 function CRUDPedidosCliente() {
     const [pedidos, setPedidos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [cartVisible, setCartVisible] = useState(false);  
+    const { cartItems, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useContext(CartContext);
+
+    const toggleCart = () => {
+        setCartVisible(!cartVisible); 
+      };
     
     // Función para obtener los pedidos del usuario
     useEffect(() => {
@@ -117,7 +124,18 @@ function CRUDPedidosCliente() {
     ];
 
     return (
+        
         <body className="container-crud-pedido">
+               <Header onCartClick={toggleCart} />
+                    
+                {cartVisible && (
+                    <Cart
+                        cartItems={cartItems}
+                        onIncreaseQuantity={increaseQuantity}
+                        onDecreaseQuantity={decreaseQuantity}
+                        onRemoveItem={removeFromCart}
+                        />
+                )}
                 <main className="crud-pedidos-container">
                     <div className="crud-pedido">
                         <div className="BusquedaPedido">
