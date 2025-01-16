@@ -17,6 +17,7 @@
   max-width: 650px;
   position: sticky;
   top: 2rem;
+  width: 500px;
 }
 
 
@@ -45,6 +46,8 @@
 .RestauranteContainer .review-card {
   background-color: white;
   border-radius: 12px;
+  width: 300px;
+
   box-shadow: 0 10px 16px rgba(0, 0, 0, 0.5);
   padding: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -101,7 +104,7 @@
 }
 
 .RestauranteContainer .producto-card {
-  width: 100% !important;
+  width: 60% !important;
   max-width: 800px;
   margin: 0 auto; 
   background-color: #fff;

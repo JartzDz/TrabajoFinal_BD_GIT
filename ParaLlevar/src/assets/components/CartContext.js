@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { toast } from 'react-toastify'; // Importar toast
-import 'react-toastify/dist/ReactToastify.css'; // Importar estilos de toast
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 
 export const CartContext = createContext();
 

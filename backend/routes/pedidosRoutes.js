@@ -11,7 +11,6 @@ router.get('/', verifyToken(), async (req, res) => {
       return res.status(403).json({ mensaje: 'Acceso no autorizado' });
     }
 
-    // Obtener el id y role del usuario del token decodificado
     const userId = req.user.id;
     const userRole = req.user.role; 
     let query = `
@@ -282,5 +281,36 @@ router.delete('/detalle/eliminar', verifyToken(2), async (req, res) => {
         res.status(500).send('Error del servidor');
     }
 });
+
+// Marcar un pedido como entregado
+router.put('/entregar/:id_pedido', verifyToken(2), async (req, res) => {
+  const { id_pedido } = req.params;
+  const estadoEntregado = 4; 
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM pedidos WHERE id_pedido = $1 AND is_deleted = FALSE',
+      [id_pedido]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Pedido no encontrado' });
+    }
+
+    const updateResult = await pool.query(
+      `UPDATE pedidos SET id_estado = $1 WHERE id_pedido = $2 RETURNING *`,
+      [estadoEntregado, id_pedido]
+    );
+
+    res.status(200).json({
+      message: 'Pedido marcado como entregado correctamente',
+      pedido: updateResult.rows[0],
+    });
+  } catch (err) {
+    console.error('Error al marcar el pedido como entregado:', err);
+    res.status(500).json({ message: 'Error al marcar el pedido como entregado', detalles: err.message });
+  }
+});
+
 
   module.exports = router;

@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 import Cookies from 'js-cookie';
-import axios from 'axios'; // Importa Axios
+import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import "../styles/crud-pedidos.css"
+import "../styles/crud-pedidos.css";
 import buscar from "../images/buscar.png";
 
 function CRUDPedidosNegocio() {
     const [pedidos, setPedidos] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     
-    // Función para obtener los pedidos del usuario
     useEffect(() => {
         const obtenerPedidos = async () => {
             try {
@@ -29,10 +28,9 @@ function CRUDPedidosNegocio() {
         obtenerPedidos();
     }, []);
 
-    // Función para cancelar un pedido
     const cancelarPedido = async (id_pedido) => {
         try {
-            const response = await axios.put('http://localhost:5000/api/pedidos/cancelar', 
+            await axios.put('http://localhost:5000/api/pedidos/cancelar', 
                 { id_pedido }, 
                 {
                     headers: {
@@ -40,16 +38,32 @@ function CRUDPedidosNegocio() {
                     }
                 }
             );
-
             toast.success('Pedido cancelado correctamente.');
-            setPedidos(pedidos.filter(pedido => pedido.id_pedido !== id_pedido)); // Actualiza el estado
+            setPedidos(pedidos.filter(pedido => pedido.id_pedido !== id_pedido));
         } catch (error) {
             console.error('Error al cancelar el pedido', error);
             toast.error('Hubo un error al cancelar el pedido.');
         }
     };
 
-    // Filtrar los pedidos por búsqueda
+    const marcarComoEntregado = async (idPedido) => {
+        try {
+          const response = await axios.put(`http://localhost:5000/api/pedidos/entregar/${idPedido}`, {}, {
+            headers: {
+                Authorization: `Bearer ${Cookies.get('authToken')}`
+            },
+          });
+          toast.success('Pedido marcado como entregado.');
+
+          setPedidos(prevPedidos => prevPedidos.map(pedido =>
+              pedido.id_pedido === idPedido ? { ...pedido, estado: 'Entregado' } : pedido
+          ));
+          console.log('Pedido marcado como entregado:', response.data);
+        } catch (error) {
+          console.error('Error al marcar como entregado:', error.response ? error.response.data : error.message);
+        }
+      };
+
     const filteredData = pedidos.filter(pedido =>
         pedido.id_pedido.toString().includes(searchTerm.toLowerCase()) ||
         pedido.fecha_pedido.toLowerCase().includes(searchTerm.toLowerCase())
@@ -96,54 +110,63 @@ function CRUDPedidosNegocio() {
                 )}
               </ul>
             ),
-          },
+        },
         {
             title: '',
-            key: 'cancelar',
+            key: 'acciones',
             render: (_, registro) => (
-                registro.estado === 'En proceso' && (
-                    <button 
-                        className="CancelarPedido" 
-                        onClick={() => cancelarPedido(registro.id_pedido)}
-                    >
-                        Cancelar Pedido
-                    </button>
-                )
+                <>
+                    {registro.estado === 'En proceso' && (
+                        <button 
+                            className="CancelarPedido" 
+                            onClick={() => cancelarPedido(registro.id_pedido)}
+                        >
+                            Cancelar Pedido
+                        </button>
+                    )}
+                    {registro.estado !== 'Entregado' && (
+                       <button 
+                       className="MarcarEntregado" 
+                       style={{ width: '250px' }}
+                       onClick={() => marcarComoEntregado(registro.id_pedido)}
+                   >
+                       Marcar Entregado
+                   </button>
+                   
+                    )}
+                </>
             ),
         },
     ];
 
     return (
         <body className="container-crud-pedido">
-                <main className="crud-pedidos-container">
-                    <div className="crud-pedido">
-                        <div className="BusquedaPedido">
-                            <img className="FotoBuscar" src={buscar} alt="Buscar" />
-                                <input
-                                    type="text"
-                                    className="TextoBusquedaPedido"
-                                    placeholder="Buscar Pedido"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                />
-                            </div>
-                            <React.Fragment>
-                            </React.Fragment>
-                        </div>
-                        <div className="tabla-pedidos-container">
-                            <Table
-                                columns={columns}
-                                dataSource={filteredData}
-                            />
-                        </div>
-                    </main>
-                   
-                <ToastContainer
-                    style={{ width: '400px' }} 
-                    autoClose={2000}
-                    closeButton={false}
-                />
-                <div className="waves-background2-prod"></div>
+            <main className="crud-pedidos-container">
+                <div className="crud-pedido">
+                    <div className="BusquedaPedido">
+                        <img className="FotoBuscar" src={buscar} alt="Buscar" />
+                        <input
+                            type="text"
+                            className="TextoBusquedaPedido"
+                            placeholder="Buscar Pedido"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="tabla-pedidos-container">
+                    <Table
+                        columns={columns}
+                        dataSource={filteredData}
+                    />
+                </div>
+            </main>
+            <ToastContainer
+                style={{ width: '400px' }} 
+                autoClose={2000}
+                closeButton={false}
+            />
+            <div className="waves-background2-prod"></div>
         </body>
     );
 }
