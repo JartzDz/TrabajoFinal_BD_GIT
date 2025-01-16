@@ -45,7 +45,7 @@ function CRUDPedidosCliente() {
             );
 
             toast.success('Pedido cancelado correctamente.');
-            setPedidos(pedidos.filter(pedido => pedido.id_pedido !== id_pedido)); // Actualiza el estado
+            setPedidos(pedidos.filter(pedido => pedido.id_pedido !== id_pedido));
         } catch (error) {
             console.error('Error al cancelar el pedido', error);
             toast.error('Hubo un error al cancelar el pedido.');
