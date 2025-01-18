@@ -15,7 +15,6 @@ function CRUDOferta() {
     const [ofertas, setOfertas] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Función para obtener las ofertas desde el backend
     useEffect(() => {
         const obtenerOfertas = async () => {
             try {
@@ -48,7 +47,7 @@ function CRUDOferta() {
             });
 
             toast.success('Oferta eliminada correctamente.');
-            setOfertas(ofertas.filter(oferta => oferta.id_oferta !== id_oferta));  // Actualiza el estado
+            setOfertas(ofertas.filter(oferta => oferta.id_oferta !== id_oferta)); 
         } catch (error) {
             console.error('Error al eliminar la oferta', error);
             toast.error('Hubo un error al eliminar la oferta.');

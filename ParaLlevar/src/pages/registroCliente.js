@@ -29,7 +29,6 @@ const RegistroCliente = () => {
   const handleSubmit = async (event) => {
     event.preventDefault(); 
 
-    // Validación simple para contraseñas
     if (password !== passwordConfirm) {
       toast.error("Las contraseñas no coinciden");
       return;
@@ -43,19 +42,16 @@ const RegistroCliente = () => {
         contrasena: password
       });
 
-      // Limpiar los campos
       setName("");
       setEmail("");
       setTelefono("");
       setPassword("");
       setPasswordConfirm("");
 
-      // Mostrar mensaje de éxito
       toast.success("Usuario registrado con éxito");
 
-      // Redirigir al login
       setTimeout(() => {
-        navigate("/Login");  // Redirige al login
+        navigate("/Login");  
       }, 2000);
 
     } catch (error) {
@@ -63,7 +59,6 @@ const RegistroCliente = () => {
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.error;
         
-        // Mostrar el mensaje de error específico
         if (errorMessage.includes("correo electrónico")) {
           toast.error("Correo electrónico no válido.");
         } else if (errorMessage.includes("teléfono")) {

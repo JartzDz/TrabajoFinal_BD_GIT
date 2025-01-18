@@ -9,19 +9,25 @@ function AddOferta() {
   const [productos, setProductos] = useState([]);
   const [tiposOferta, setTiposOferta] = useState([]);
   const [valor, setValor] = useState('');
+  const [precioOriginal, setPrecioOriginal] = useState(null); // Precio original del producto
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
   const [productoSeleccionado, setProductoSeleccionado] = useState('');
   const [tipoOfertaSeleccionado, setTipoOfertaSeleccionado] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Cargar productos y tipos de oferta al montar el componente
   useEffect(() => {
     const fetchProductos = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/productos');
         const data = await response.json();
-        setProductos(data);
+        
+        const productosTransformados = data.map(producto => ({
+          ...producto,
+          precio: parseFloat(producto.precio),
+        }));
+
+        setProductos(productosTransformados);
       } catch (error) {
         console.error('Error al cargar productos:', error);
       }
@@ -31,42 +37,47 @@ function AddOferta() {
       try {
         const response = await fetch('http://localhost:5000/api/ofertas/tipos');
         const data = await response.json();
-        console.log('Tipos de oferta:', data);
-    
-        if (Array.isArray(data)) {
-          setTiposOferta(data);
-        } else {
-          console.error('La respuesta no es un arreglo:', data);
-          setTiposOferta([]);
-        }
+        setTiposOferta(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Error al cargar tipos de oferta:', error);
-        setTiposOferta([]);  
+        setTiposOferta([]);
       }
     };
-    
+
     fetchProductos();
     fetchTiposOferta();
   }, []);
+
+  useEffect(() => {
+    if (productoSeleccionado) {
+      const producto = productos.find((p) => p.id_producto === parseInt(productoSeleccionado, 10));
+      if (producto) {
+        setPrecioOriginal(producto.precio); 
+      }
+    } else {
+      setPrecioOriginal(null);
+    }
+  }, [productoSeleccionado, productos]);
+
   const validarFechas = () => {
     const inicio = new Date(fechaInicio);
     const fin = new Date(fechaFin);
     const hoy = new Date();
-  
+
     hoy.setHours(0, 0, 0, 0);
     inicio.setHours(0, 0, 0, 0);
     fin.setHours(0, 0, 0, 0);
-  
+
     if (inicio < hoy) {
       toast.error('La fecha de inicio no puede ser anterior a hoy');
       return false;
     }
-  
+
     if (fin <= inicio) {
       toast.error('La fecha de fin debe ser posterior a la fecha de inicio');
       return false;
     }
-  
+
     return true;
   };
 
@@ -75,22 +86,27 @@ function AddOferta() {
       toast.error('El valor de la oferta debe ser un número positivo.');
       return false;
     }
+
+    if (precioOriginal !== null && parseFloat(valor) > precioOriginal) {
+      toast.error('El valor de la oferta no puede ser mayor al precio original del producto.');
+      return false;
+    }
+
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Verificar si el tipo de oferta está seleccionado
+
     if (!tipoOfertaSeleccionado) {
       toast.error('Por favor, selecciona un tipo de oferta');
       return;
     }
-  
+
     if (!validarValor() || !validarFechas()) {
       return;
     }
-  
+
     const ofertaData = {
       id_producto: parseInt(productoSeleccionado, 10),
       id_tipo_oferta: parseInt(tipoOfertaSeleccionado, 10),
@@ -99,20 +115,18 @@ function AddOferta() {
       fecha_fin: new Date(fechaFin).toISOString(),
     };
 
-    console.log(ofertaData);
     try {
-     const response = await fetch('http://localhost:5000/api/ofertas/agregar', {
+      const response = await fetch('http://localhost:5000/api/ofertas/agregar', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${Cookies.get('authToken')}`,
-          'Content-Type': 'application/json', 
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(ofertaData),      
+        body: JSON.stringify(ofertaData),
+      });
 
-     });
-  
       const data = await response.json();
-  
+
       if (response.ok) {
         toast.success('Oferta agregada exitosamente!');
         setProductoSeleccionado('');
@@ -128,8 +142,7 @@ function AddOferta() {
       toast.error('Error al conectar con el servidor');
     }
   };
-  
-  
+
   return (
     <div className="contenedorAgregarProducto">
       <form onSubmit={handleSubmit}>
@@ -156,7 +169,7 @@ function AddOferta() {
           onChange={(e) => setTipoOfertaSeleccionado(e.target.value)}
           required
         >
-          <option value="" disabled>Selecciona una oferta</option>
+          <option value="" disabled>Selecciona un tipo de oferta</option>
           {tiposOferta.map((tipo) => (
             <option key={tipo.id_tipo_oferta} value={tipo.id_tipo_oferta}>
               {tipo.descripcion}
@@ -174,6 +187,8 @@ function AddOferta() {
           onChange={(e) => setValor(e.target.value)}
           required
         />
+
+        
 
         <input
           type="date"

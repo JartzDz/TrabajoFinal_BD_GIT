@@ -16,7 +16,6 @@ const getAllUsers = async (req, res) => {
 const getUserById = async (req, res) => {
   const { id } = req.params;
 
-  // Validar que el id es un número entero
   if (!id || isNaN(id) || parseInt(id) <= 0) {
     return res.status(400).json({ error: 'ID de usuario no válido' });
   }
@@ -32,7 +31,6 @@ const getUserById = async (req, res) => {
     res.status(500).json({ error: 'Error al obtener el usuario' });
   }
 };
-
 
 const updateUserById = async (req, res) => {
   const { id } = req.params;
@@ -65,7 +63,7 @@ const updateUserById = async (req, res) => {
       return res.status(400).json({ error: 'No se ha proporcionado ningún campo para actualizar' });
     }
 
-    updateQuery = updateQuery.slice(0, -2);  // Elimina la última coma
+    updateQuery = updateQuery.slice(0, -2);  
     updateQuery += ` WHERE id_usuario = $${counter} RETURNING id_usuario, nombre, id_tipo_usuario;`;
 
     values.push(id);
