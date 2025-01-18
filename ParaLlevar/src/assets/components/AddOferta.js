@@ -91,7 +91,6 @@ function AddOferta() {
       toast.error('El valor de la oferta no puede ser mayor al precio original del producto.');
       return false;
     }
-
     return true;
   };
 
@@ -188,8 +187,7 @@ function AddOferta() {
           required
         />
 
-        
-
+      
         <input
           type="date"
           id="fechaInicio"
