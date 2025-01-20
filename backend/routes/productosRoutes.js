@@ -35,8 +35,6 @@ router.post('/agregar', verifyToken(2), upload.single('imagen'), async (req, res
       [idProducto, categoria] 
     );
     
-    //const usuario_id = req.user.id_usuario; 
-    //await registrarAuditoria('CREAR', 'productos', idProducto, usuario_id, 'Producto agregado');
 
     res.status(201).json({
       message: 'Producto agregado correctamente',
@@ -115,7 +113,6 @@ router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (re
   }
 
   try {
-    // Verificar si existe el producto
     const productoExistente = await pool.query('SELECT * FROM productos WHERE id_producto = $1', [id]); 
     if (productoExistente.rows.length === 0) {
       return res.status(404).json({ message: 'Producto no encontrado' });
@@ -139,7 +136,6 @@ router.put('/actualizar/:id', verifyToken(2), upload.single('imagen'), async (re
       [id, categoria]
     );
 
-    // Si la relación ya existe, no es necesario insertarla nuevamente
     if (categoriaExistente.rows.length === 0) {
       await pool.query(
         'INSERT INTO productos_categorias (id_producto, id_categoria) VALUES ($1, $2)',

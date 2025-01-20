@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const pool = require('../config/db');
 const router = express.Router();
 
-// Endpoint para crear un usuario admin
+// Usuario admin
 router.post('/createAdminUser', async (req, res) => {
   const nombre = 'Admin User';
   const correo = 'admin@prueba.com';
@@ -12,10 +12,8 @@ router.post('/createAdminUser', async (req, res) => {
   const idTipoUsuario = 2; 
 
   try {
-    // Encriptamos la contraseña
     const hashContrasena = await bcrypt.hash(contrasena, 10);
 
-    // Insertamos el nuevo usuario con tipo admin
     const result = await pool.query(
       'INSERT INTO usuarios (nombre, correo, contrasena, telefono, id_tipo_usuario) VALUES ($1, $2, $3, $4, $5) RETURNING id_usuario, nombre, correo, id_tipo_usuario',
       [nombre, correo, hashContrasena, telefono, idTipoUsuario]

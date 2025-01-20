@@ -274,7 +274,6 @@ router.delete('/detalle/eliminar', verifyToken(2), async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM resenias WHERE is_deleted = FALSE');
         
-        // Verificar si se obtuvieron resultados
         if (result.rows.length === 0) {
             return res.status(404).json({ message: 'No hay reseñas disponibles.' });
         }

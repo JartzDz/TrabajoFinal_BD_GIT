@@ -8,7 +8,6 @@ router.post('/agregar',verifyToken(2), async (req, res) => {
     const { nombre, descripcion, estado } = req.body;
   
     try {
-      // Insertar nueva categoría en la base de datos
       const result = await pool.query(
         'INSERT INTO categorias (nombre, descripcion, estado) VALUES ($1, $2, $3) RETURNING *',
         [nombre, descripcion, estado]
@@ -16,7 +15,6 @@ router.post('/agregar',verifyToken(2), async (req, res) => {
   
       const nuevaCategoria = result.rows[0];
   
-      // Responder con la categoría creada
       res.status(201).json({
         message: 'Categoría creada exitosamente',
         categoria: nuevaCategoria
@@ -76,7 +74,6 @@ router.get('/con-productos', verifyToken(), async (req, res) => {
 });
 
 // Ruta para obtener las categorías
-
 router.get('/', verifyToken(), async (req, res) => {
   try {
       const result = await pool.query('SELECT * FROM categorias WHERE is_deleted = FALSE');

@@ -40,7 +40,6 @@ router.put('/:id_oferta', verifyToken(2), async (req, res) => {
   }
 
   try {
-    // Verificar si la oferta existe
     const result = await pool.query(
       'SELECT * FROM ofertas WHERE id_oferta = $1',
       [id_oferta]
@@ -50,7 +49,6 @@ router.put('/:id_oferta', verifyToken(2), async (req, res) => {
       return res.status(404).json({ message: 'Oferta no encontrada' });
     }
 
-    // Actualizar la oferta en la base de datos
     const updateResult = await pool.query(
       `UPDATE ofertas SET 
         id_tipo_oferta = $1, 
@@ -79,7 +77,7 @@ router.put('/:id_oferta', verifyToken(2), async (req, res) => {
 
 // Obtener tipos de oferta con opción de filtrar por ID
 router.get('/tipos/:id_tipo_oferta?', verifyToken(), async (req, res) => {
-  const { id_tipo_oferta } = req.params;  // Obtén el id_tipo_oferta (puede ser undefined)
+  const { id_tipo_oferta } = req.params;  
 
   try {
     let query = 'SELECT * FROM tipos_oferta WHERE is_deleted = FALSE';
@@ -269,7 +267,6 @@ router.put('/tipos/:id_tipo_oferta', verifyToken(2), async (req, res) => {
   }
 });
 
-// Eliminar tipo de oferta
 // Eliminar tipo de oferta
 router.delete('/tipos/eliminar', verifyToken(2), async (req, res) => {
   const { id_tipo_oferta } = req.body;
